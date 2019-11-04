@@ -1,0 +1,56 @@
+---
+id: 309
+title: 如何使PHP IDE 识别__CALL魔法函数引用
+date: 2019-03-22T16:37:06+08:00
+author: 徐艺洲
+layout: revision
+guid: http://www.fireidea.com/archives/309
+permalink: /archives/309
+---
+在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。
+
+具体模拟效果如下图：
+
+<pre class="wp-block-code"><code>class ServiceHelper
+{
+
+    public static function invoke($service = '', $serviceFunction = '', $params = array())
+    {
+        try {
+            $result = {$serviceFunction}(...$params);
+            return new Service_Result($result);
+        } catch ( Exception $e ) {
+            $code = $e->getCode();
+            if ( $code == 1 ) {
+                $code = -1;
+            }
+            return new Service_Result(array("stat" => $code, "msg" => $e->getMessage(), "data" => array(), "backtrace" => $e->getTraceAsString()));
+        }
+    }
+
+    public static function isOk($result)
+    {
+        return isset($result["stat"]) && $result["stat"] == 1 ? true : false;
+    }
+
+}</code></pre>
+
+但是这样的封装会有其他问题，在IDE下我们如果使用一个代理类去调用Service，按住CTRL或CMD点击是无法直接跳转对应函数。如下图：Services\_xxxx\_xxx是可以点击跳转到对应类，但是submitXXXX点击无法跳转
+
+调用效果代码如下：
+
+<pre class="wp-block-code"><code>$Ret = ServiceHelper::invoke('Services_xxxx_xxx', 'submitXXXX', [“param1”,"param2");
+
+if ( !$Ret->isOk() ) {
+    return xxxxx error;
+}</code></pre>
+
+行业常见办法是在ServiceHelper类的注释中加入@Method \xxxxpkg\xxxxclass
+
+今天发现call\_user\_function这个函数的参数类名和method都可以点
+
+追过去后发现有@param callback $xxxx注释，这个注释可以让IDE主动识别Array(&#8220;classname&#8221;,&#8221;methodname&#8221;);
+
+设置这个参数给ServiceHelper后传入的Services\_xxxx\_xxx和submitXXXX都可以被点击跳转了
+
+考虑到之前这个问题我也被困扰过很久，但是相关资料网上没有，特在这里记录一下，分享给有缘人。

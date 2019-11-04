@@ -1,0 +1,15 @@
+# url: http://www.fireidea.com
+title: 徐艺洲
+description: 知止定静安虑得
+github_username: xcl3721
+twitter_username: xcl3721
+
+# baseurl: "" # the subpath of your site, e.g. /blog
+# url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+theme: minima
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag

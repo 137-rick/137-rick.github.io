@@ -1,0 +1,19 @@
+---
+id: 204
+title: innodb变态分页，COUNT
+date: 2018-10-10T14:01:54+08:00
+author: 徐艺洲
+layout: revision
+guid: http://www.fireidea.com/archives/204
+permalink: /archives/204
+---
+<div id="sina_keyword_ad_area2" class="articalContent   ">
+  今天跟“校长”研究怎么加快innodb一些操作，弄出以下语句</p> 
+  
+  <p>
+    优化过的count<br /> //强制使用索引，进行count<br /> //SELECTcount(1) FROM xxxxy use index(PRIMARY);
+  </p>
+  
+  <p>
+    如果数据连续，中间没有断数据，那么可以用以下方法加快分页，<br />平时如果用limit数据越往后分页查询速度会越慢……<br /> //变态分页<br /> //SELECT *FROM coupon_xxxxy WHERE xxxxy_id between 4007373 and4007385 ;<br /> //变态count<br /> //SELECTorder_id FROM coupon_order_pay order by order_id desc limit 0,1;
+  </p>
