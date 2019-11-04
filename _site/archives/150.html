@@ -4,7 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>高并发下CURL请求缓慢原因及解决方法 | 徐艺洲</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v3.7.4" />
 <meta property="og:title" content="高并发下CURL请求缓慢原因及解决方法" />
 <meta name="author" content="徐艺洲" />
 <meta property="og:locale" content="en_US" />
@@ -16,10 +16,10 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2012-12-01T14:25:03+08:00" />
 <script type="application/ld+json">
-{"description":"这几天在做一个对内的服务：&lt;/p&gt; 由一个封装好的类发送curl请求到接收端，接收端收到鉴权后入到队列内。 开发完毕后自己使用php单进程能够达到每秒400左右请求。 但是使用ab、loadrunner，100高并发的时候发现每秒只能处理8个请求。 而并发在10个的时候一切正常 经过测试发现当发送端和接收端都在同一台服务器的时候会有这个现象。 起初怀疑是curl有问题，几次尝试无果。 又通过写性能日志进行排查，发现php客户端处curl执行时间很长（平均8秒处理完一个），响应端代码实际处理时间很短。 而用top命令发现php-fpm进程启动很少，只有10几个每秒 百思不得其解…… 后来单步调试逐步将注意力从curl上转到nginx及php-fpm上，首先觉得nginx肯定没问题，后来转移到php-fpm上，发现curl请求虽然过去，但是php-fpm好像被限制住，启动很多链接接口但是就是不处理一直在等待。 查看linux load正常 中午吃饭前四处搜索了下优化相关信息 突然发现linux下最大文件打开数的提示 悲催啊，终于找到原因在哪里了 php-fpm自己限制了进程可以打开文件个数，linux下也对最大打开文件个数进行了限制 我们的开发机是虚拟机，所以也没有针对运营时使用环境进行优化…… 解决方法如下修改php-fpm.confrlimit_files改成65535 修改/etc/security/limits.conf* soft nofile 51200* hard nofile 51200 用命令netstat -np | grep:9000 |wc -l如果很少那么修改php-fpm.confmax_children改多一些比如200 手动执行以下命令可以增加系统打开文件句柄个数ulimit -HSn 65536 ulimit -n可以查看当前最大打开文件句柄个数 以上……经过测试，每秒8个请求的事情解决掉了，各种黑线……","datePublished":"2012-12-01T14:25:03+08:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/150"},"url":"http://localhost:4000/archives/150","author":{"@type":"Person","name":"徐艺洲"},"headline":"高并发下CURL请求缓慢原因及解决方法","dateModified":"2012-12-01T14:25:03+08:00","@context":"https://schema.org"}</script>
+{"description":"这几天在做一个对内的服务：&lt;/p&gt; 由一个封装好的类发送curl请求到接收端，接收端收到鉴权后入到队列内。 开发完毕后自己使用php单进程能够达到每秒400左右请求。 但是使用ab、loadrunner，100高并发的时候发现每秒只能处理8个请求。 而并发在10个的时候一切正常 经过测试发现当发送端和接收端都在同一台服务器的时候会有这个现象。 起初怀疑是curl有问题，几次尝试无果。 又通过写性能日志进行排查，发现php客户端处curl执行时间很长（平均8秒处理完一个），响应端代码实际处理时间很短。 而用top命令发现php-fpm进程启动很少，只有10几个每秒 百思不得其解…… 后来单步调试逐步将注意力从curl上转到nginx及php-fpm上，首先觉得nginx肯定没问题，后来转移到php-fpm上，发现curl请求虽然过去，但是php-fpm好像被限制住，启动很多链接接口但是就是不处理一直在等待。 查看linux load正常 中午吃饭前四处搜索了下优化相关信息 突然发现linux下最大文件打开数的提示 悲催啊，终于找到原因在哪里了 php-fpm自己限制了进程可以打开文件个数，linux下也对最大打开文件个数进行了限制 我们的开发机是虚拟机，所以也没有针对运营时使用环境进行优化…… 解决方法如下修改php-fpm.confrlimit_files改成65535 修改/etc/security/limits.conf* soft nofile 51200* hard nofile 51200 用命令netstat -np | grep:9000 |wc -l如果很少那么修改php-fpm.confmax_children改多一些比如200 手动执行以下命令可以增加系统打开文件句柄个数ulimit -HSn 65536 ulimit -n可以查看当前最大打开文件句柄个数 以上……经过测试，每秒8个请求的事情解决掉了，各种黑线……","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/150"},"@type":"BlogPosting","url":"http://localhost:4000/archives/150","headline":"高并发下CURL请求缓慢原因及解决方法","dateModified":"2012-12-01T14:25:03+08:00","datePublished":"2012-12-01T14:25:03+08:00","author":{"@type":"Person","name":"徐艺洲"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
-<body><header class="site-header" role="banner">
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
+<body><header class="site-header">
 
   <div class="wrapper"><a class="site-title" rel="author" href="/">徐艺洲</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
@@ -149,20 +149,19 @@
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">徐艺洲</h2>
-
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
+      <div class="footer-col one-half">
+      <h2 class="footer-heading">徐艺洲</h2>
         <ul class="contact-list">
-          <li class="p-name">徐艺洲</li></ul>
+          <li class="p-name"></li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">xcl3721</span></a></li><li><a href="https://www.twitter.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">xcl3721</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
+      <div class="footer-col one-half">
         <p>知止定静安虑得</p>
       </div>
+
+      <div class="social-links"><ul class="social-media-list"></ul>
+</div>
     </div>
 
   </div>

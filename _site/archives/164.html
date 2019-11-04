@@ -4,7 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>tomcat导入证书时碰到的坑 | 徐艺洲</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v3.7.4" />
 <meta property="og:title" content="tomcat导入证书时碰到的坑" />
 <meta name="author" content="徐艺洲" />
 <meta property="og:locale" content="en_US" />
@@ -16,10 +16,10 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2013-07-08T16:25:56+08:00" />
 <script type="application/ld+json">
-{"description":"当我们使用httpclient连接远程的https服务的时候，我们可以将对方的证书导入到我们本地环境内，导入后即可访问对方的https网址了。&lt;/p&gt; keytool -import -file xxxx.cer -alias paypalm -keystore cacerts.jks-storepass xxxx 但是我碰到了这个错误 sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target at com.sun.net.ssl.internal.ssl.Alerts.getSSLException(Alerts.java:174) at com.sun.net.ssl.internal.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1611) at com.sun.net.ssl.internal.ssl.Handshaker.fatalSE(Handshaker.java:187) at com.sun.net.ssl.internal.ssl.Handshaker.fatalSE(Handshaker.java:181) at com.sun.net.ssl.internal.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1035) at com.sun.net.ssl.internal.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:124) at com.sun.net.ssl.internal.ssl.Handshaker.processLoop(Handshaker.java:516) at com.sun.net.ssl.internal.ssl.Handshaker.process_record(Handshaker.java:454) at com.sun.net.ssl.internal.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:884) at com.sun.net.ssl.internal.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1112) at com.sun.net.ssl.internal.ssl.SSLSocketImpl.writeRecord(SSLSocketImpl.java:623) at com.sun.net.ssl.internal.ssl.AppOutputStream.write(AppOutputStream.java:59) at java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:65)略我们几个人折腾个半死，一连接总是报这个错误后来去掉了生成的证书的扩展名jks覆盖掉系统内的cacerts，这样导入……keytool -import -file xxxx.cer -alias paypalm -keystore cacerts -storepass xxxx成功了，一地眼泪……发在这里给同样碰到类似问题的兄弟们……","datePublished":"2013-07-08T16:25:56+08:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/164"},"url":"http://localhost:4000/archives/164","author":{"@type":"Person","name":"徐艺洲"},"headline":"tomcat导入证书时碰到的坑","dateModified":"2013-07-08T16:25:56+08:00","@context":"https://schema.org"}</script>
+{"description":"当我们使用httpclient连接远程的https服务的时候，我们可以将对方的证书导入到我们本地环境内，导入后即可访问对方的https网址了。&lt;/p&gt; keytool -import -file xxxx.cer -alias paypalm -keystore cacerts.jks-storepass xxxx 但是我碰到了这个错误 sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target at com.sun.net.ssl.internal.ssl.Alerts.getSSLException(Alerts.java:174) at com.sun.net.ssl.internal.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1611) at com.sun.net.ssl.internal.ssl.Handshaker.fatalSE(Handshaker.java:187) at com.sun.net.ssl.internal.ssl.Handshaker.fatalSE(Handshaker.java:181) at com.sun.net.ssl.internal.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1035) at com.sun.net.ssl.internal.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:124) at com.sun.net.ssl.internal.ssl.Handshaker.processLoop(Handshaker.java:516) at com.sun.net.ssl.internal.ssl.Handshaker.process_record(Handshaker.java:454) at com.sun.net.ssl.internal.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:884) at com.sun.net.ssl.internal.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1112) at com.sun.net.ssl.internal.ssl.SSLSocketImpl.writeRecord(SSLSocketImpl.java:623) at com.sun.net.ssl.internal.ssl.AppOutputStream.write(AppOutputStream.java:59) at java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:65)略我们几个人折腾个半死，一连接总是报这个错误后来去掉了生成的证书的扩展名jks覆盖掉系统内的cacerts，这样导入……keytool -import -file xxxx.cer -alias paypalm -keystore cacerts -storepass xxxx成功了，一地眼泪……发在这里给同样碰到类似问题的兄弟们……","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/164"},"@type":"BlogPosting","url":"http://localhost:4000/archives/164","headline":"tomcat导入证书时碰到的坑","dateModified":"2013-07-08T16:25:56+08:00","datePublished":"2013-07-08T16:25:56+08:00","author":{"@type":"Person","name":"徐艺洲"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
-<body><header class="site-header" role="banner">
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
+<body><header class="site-header">
 
   <div class="wrapper"><a class="site-title" rel="author" href="/">徐艺洲</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
@@ -72,20 +72,19 @@
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">徐艺洲</h2>
-
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
+      <div class="footer-col one-half">
+      <h2 class="footer-heading">徐艺洲</h2>
         <ul class="contact-list">
-          <li class="p-name">徐艺洲</li></ul>
+          <li class="p-name"></li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">xcl3721</span></a></li><li><a href="https://www.twitter.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">xcl3721</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
+      <div class="footer-col one-half">
         <p>知止定静安虑得</p>
       </div>
+
+      <div class="social-links"><ul class="social-media-list"></ul>
+</div>
     </div>
 
   </div>

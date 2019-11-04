@@ -4,7 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>fastdfs php v5.01 中文 bug appender文件更新后 返回空 null | 徐艺洲</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v3.7.4" />
 <meta property="og:title" content="fastdfs php v5.01 中文 bug appender文件更新后 返回空 null" />
 <meta name="author" content="徐艺洲" />
 <meta property="og:locale" content="en_US" />
@@ -16,10 +16,10 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2014-04-23T16:34:44+08:00" />
 <script type="application/ld+json">
-{"description":"首先使用php client&lt;/p&gt; $storage = fastdfs_tracker_query_storage_store($group_name);添加内容有utf8中文fastdfs_storage_upload_appender_by_filebuff(“测试提交 @xcl3721@sd^&amp;*$#@^&amp;(*%!(#dd@s我了个dkjkfd @_fds4444jlk”, $file_ext,$file_meta, $group_name, self:tracker, $storage); 然后更新内容为随意一个英文字符串 fastdfs_storage_modify_by_filebuff($content, 0, $group_name,$remote_filename, self:tracker, $storage); 然后读取fastdfs_tracker_query_storage_fetchfastdfs_storage_download_file_to_buff($group_name,$remote_filename, $file_offset, $file_range, self:tracker, $storage); 结果错误的返回值为null，文件内容丢失查看info以及existe都为正常 后来解决办法，每次更新的时候使用truncate函数清空，然后再更新后会正常","datePublished":"2014-04-23T16:34:44+08:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/174"},"url":"http://localhost:4000/archives/174","author":{"@type":"Person","name":"徐艺洲"},"headline":"fastdfs php v5.01 中文 bug appender文件更新后 返回空 null","dateModified":"2014-04-23T16:34:44+08:00","@context":"https://schema.org"}</script>
+{"description":"首先使用php client&lt;/p&gt; $storage = fastdfs_tracker_query_storage_store($group_name);添加内容有utf8中文fastdfs_storage_upload_appender_by_filebuff(“测试提交 @xcl3721@sd^&amp;*$#@^&amp;(*%!(#dd@s我了个dkjkfd @_fds4444jlk”, $file_ext,$file_meta, $group_name, self:tracker, $storage); 然后更新内容为随意一个英文字符串 fastdfs_storage_modify_by_filebuff($content, 0, $group_name,$remote_filename, self:tracker, $storage); 然后读取fastdfs_tracker_query_storage_fetchfastdfs_storage_download_file_to_buff($group_name,$remote_filename, $file_offset, $file_range, self:tracker, $storage); 结果错误的返回值为null，文件内容丢失查看info以及existe都为正常 后来解决办法，每次更新的时候使用truncate函数清空，然后再更新后会正常","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/174"},"@type":"BlogPosting","url":"http://localhost:4000/archives/174","headline":"fastdfs php v5.01 中文 bug appender文件更新后 返回空 null","dateModified":"2014-04-23T16:34:44+08:00","datePublished":"2014-04-23T16:34:44+08:00","author":{"@type":"Person","name":"徐艺洲"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
-<body><header class="site-header" role="banner">
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
+<body><header class="site-header">
 
   <div class="wrapper"><a class="site-title" rel="author" href="/">徐艺洲</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
@@ -83,20 +83,19 @@
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">徐艺洲</h2>
-
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
+      <div class="footer-col one-half">
+      <h2 class="footer-heading">徐艺洲</h2>
         <ul class="contact-list">
-          <li class="p-name">徐艺洲</li></ul>
+          <li class="p-name"></li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">xcl3721</span></a></li><li><a href="https://www.twitter.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">xcl3721</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
+      <div class="footer-col one-half">
         <p>知止定静安虑得</p>
       </div>
+
+      <div class="social-links"><ul class="social-media-list"></ul>
+</div>
     </div>
 
   </div>

@@ -4,7 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>android dpi模式与px dip dp sp关系 | 徐艺洲</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v3.7.4" />
 <meta property="og:title" content="android dpi模式与px dip dp sp关系" />
 <meta name="author" content="徐艺洲" />
 <meta property="og:locale" content="en_US" />
@@ -16,10 +16,10 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2013-12-18T13:32:08+08:00" />
 <script type="application/ld+json">
-{"description":"一般来说android是有多种dpi模式，分别为：ldpimdpi hdpi xhdpi&lt;/p&gt; 在我们制作android的时候res目录下会对这些资源分了以上具体目录 在我们制作android应用的图片资源的时候要注意只有在mdpi模式下1px=1dip ，其他模式对应px的资源大小是不同的如 mdpi与hdpi是2：3的关系 即2px=3dip在hdpi模式下 mdpi与xhdpi是1：2的关系 即2px=4dip在xhdpi模式下ldpi与mdpi是3：4的关系 即3px=4dip在ldpi模式下&lt;/div&gt; 这样就是说，我们做一个图片是10像素宽，在mdpi文件夹下放10像素的，在xhdpi放20像素图片，在hdpi下放30像素，才能保证图片质量 另外，这个dpi模式是android ROM内固定的，不同的手机分辨率及屏幕制材dpi模式是不同的 题外话，如果android是mdpi的距离高清还是有距离的……因为实际绘制到屏幕上是缩放过的视频……","datePublished":"2013-12-18T13:32:08+08:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/170"},"url":"http://localhost:4000/archives/170","author":{"@type":"Person","name":"徐艺洲"},"headline":"android dpi模式与px dip dp sp关系","dateModified":"2013-12-18T13:32:08+08:00","@context":"https://schema.org"}</script>
+{"description":"一般来说android是有多种dpi模式，分别为：ldpimdpi hdpi xhdpi&lt;/p&gt; 在我们制作android的时候res目录下会对这些资源分了以上具体目录 在我们制作android应用的图片资源的时候要注意只有在mdpi模式下1px=1dip ，其他模式对应px的资源大小是不同的如 mdpi与hdpi是2：3的关系 即2px=3dip在hdpi模式下 mdpi与xhdpi是1：2的关系 即2px=4dip在xhdpi模式下ldpi与mdpi是3：4的关系 即3px=4dip在ldpi模式下&lt;/div&gt; 这样就是说，我们做一个图片是10像素宽，在mdpi文件夹下放10像素的，在xhdpi放20像素图片，在hdpi下放30像素，才能保证图片质量 另外，这个dpi模式是android ROM内固定的，不同的手机分辨率及屏幕制材dpi模式是不同的 题外话，如果android是mdpi的距离高清还是有距离的……因为实际绘制到屏幕上是缩放过的视频……","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/170"},"@type":"BlogPosting","url":"http://localhost:4000/archives/170","headline":"android dpi模式与px dip dp sp关系","dateModified":"2013-12-18T13:32:08+08:00","datePublished":"2013-12-18T13:32:08+08:00","author":{"@type":"Person","name":"徐艺洲"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
-<body><header class="site-header" role="banner">
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
+<body><header class="site-header">
 
   <div class="wrapper"><a class="site-title" rel="author" href="/">徐艺洲</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
@@ -100,20 +100,19 @@
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">徐艺洲</h2>
-
     <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
+      <div class="footer-col one-half">
+      <h2 class="footer-heading">徐艺洲</h2>
         <ul class="contact-list">
-          <li class="p-name">徐艺洲</li></ul>
+          <li class="p-name"></li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">xcl3721</span></a></li><li><a href="https://www.twitter.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">xcl3721</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
+      <div class="footer-col one-half">
         <p>知止定静安虑得</p>
       </div>
+
+      <div class="social-links"><ul class="social-media-list"></ul>
+</div>
     </div>
 
   </div>
