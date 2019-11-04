@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>PHP框架结构优化方向词条 | Your awesome title</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="PHP框架结构优化方向词条" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="转载请说明出处，请尊重作者http://blog.sina.com/thinkpc大家好，首先做个小广告我的的CMS，有空大家捧场，我最近太忙没怎么继续更新：）过段时间工作稳定后就继续更新，大家多提提意见这里只是想实现一个万能发布系统，实现后再进行深层次优化：）地址：http://code.google.com/p/fireideacms/&lt;/p&gt; 目前我将之前经历的各种框架发现的特性总结了一下写下以下心得和大家分享，期望得到大家回馈好有更多的词条加入 各位务必记住不要过渡优化自己的系统，只有碰到性能瓶颈的时候才去针对性优化，否则会导致系统结构很乱，并且无用，一般来说一个系统越复杂，那么维护成本以及风险就会越大。 系统结构分成多层对系统的分层就是为了避免系统过于复杂，分清系统的各个职能是维护系统简洁和好维护的关键。 Router层（dispatcher层或者java的control层）业务层：引用各种公共库，对各个模块的API进行组合，以及逻辑处理模块封装层：包含模块一些封装逻辑的操作，以及对其他模块的APIAPI层，包括给业务层调用的函数类库，以及其他系统的API封装数据适配层：数据类操作的ORM以及适配，并提供NOSQL服务，隔离数据库细节以及NOSQL细节 其他一些优化tips 硬件的性能瓶颈：网卡吞吐可以用多个网卡合并，CPU用多核，内存多加，硬盘用RFID，极限了就集群分组， 软件性能极限：数据库主从，nginx反向代理，memcache，nosql，LVS，DNS分地域、轮询，SQuid类CDN缓冲，前端SPI。 用于服务类API，通过URL重写可以缩短URL的长度，比如/url/参数1/参数2/ 不管目录内部文件结构怎么变化，都可以在升级的时候保持API地址不变更 可以对一些资源重定向，如404错误提示,302跳转，且有助于SEO，防盗链等 有规律文件拼写URL直接定位资源，如知道用户UID直接拼url获取用户头像：url/uid/size.jpg 网站设计的时候动态和静态内容URL有明确区分，这样做CDN前端CACHE很方便 个别浏览器同一个域名并发只有两个下载，如果要优化速度建议考虑下这个，但是域名太多DNS压力会大 通过DNS解析，可以分流用户压力，但是DNS更新周期很慢，如果一组服务器挂掉会导致一小时才能恢复 F5路由对压力分流很有帮助具有承受压力很强的特点，但是很贵，他有两种工作模式，直接分流，编程分流 Apache需要重启下服务才会生效，如果写错了很悲剧，这里可用php的kelin一类重定向，但是并发不怎么好 需要用正则写规则，如果用的多可能导致规则覆盖，找起来很麻烦 一次性hash这个算法应用场景好多好多……比如资源定位，信息分布式保存，memcache多服务器保存HA 只有看rewrite.log才知道当前请求定位到哪里去了，悲催 建议开启http 304可以减低很多服务器压力 LVS下apache建议在header头内加服务器name，用于找到那个服务器出问题 前端CDN可以用Squid一类cache 不经常更新的内容生成静态页面，不需要搜索引擎记录的东西可用ajax获取或者SPI技术合并 LVS集群下应取消自动TAG缓冲功能，因为不同子服务器Tag不同，改为其他方式更新tag 服务器间同步建议用Rsync，这个更新很方便 周期性处理的东西，可以用crontab，但是务必小心，因为集群时谁运行是个问题 NFS很有用，适合一些共享数据保存，但是要注意IO压力 SVN的bugziller很好用，对与bug维护很有用 PHP OPCODE Cache，减少PHP编译时间 PHP插件类调用越少，IO越少 PHP实时include越少，工作效能越高 使用fastcgi，减少php进程加载时间 apache多进程可以加强PHP并发 PHP尽量少做Socket通讯类事情 PHP尽量少做阻塞类工作 使用nginx的html缓冲可以减少硬盘IO，类似Squid 使用Nginx反向代理做集群可以加强系统并发 模块与模块对外的业务逻辑做成API供其他模块调用 各种API要做性能测试争取在0.05秒以内，API做大数据性能测试，并做性能日志进行监视，定期做单元测试 不经常更新运算结果保存到内存Cache内，如Redis 经常更新数据，如计数器放独立内存Cache 用双写方式保证Cache稳定 排序一类可以使用Redis去做 redis多key操作用Mset一类命令 重要数据要保存LOG，哪怕是文本LOG 高并发的数据操作要注意并发问题，如文件写入，数据库事务 消息队列是一个很好的系统之间通讯或任务下发的载体，如短信，邮件，消息通知 java的消息触发方式的工作方式很节省系统资源，并发很高，个别需求可让java去处理。 算法类收集 最好所有算法要根据输入数据量进行测试，不同算法数据量不同会有不同的效果 大数据量处理，统计类建议对统计数据进行分割统计 处理数据量十分巨大，可以考虑导成文本并任务分割多份，然后投放到Hadoop一类的云框架进行异步处理 Mysql数据库类 mysql开启慢数据查询log myiasm适合经常查询如，查询占使用比例80%以上，更新20%以内 innodb适合更新，适合事务，务必关闭自动commit选项，可以加快插入，但是内存要大 索引对会降低数据插入速度 数据库索引有左前缀顺序问题，使用的时候多用explain评估下 mysql有查询cache当没有更新的时候索引没有变化的时候同样的sql语句（分大小写）会直接走cache mysql主从模式务必在同局域网，否则数据同步很慢，主库可以用innodb做事务，从库用myiasm 打开binlog以用于恢复数据 更新过于频繁的表放memcache内 不经常更新的数据放php内常量或者memcache内 redis 数组排序用redis不错 做数据关联关系类用redis mysql也记得存一份备份 做集合的交集不错 最后，奉劝大家不要有技术偏见，对于PHP不擅长的，一定要用其他语言取长补短，完善整个系统结构，作为技术保证一个系统的完善高效是我们的责任。&lt;/div&gt;" />
+<meta property="og:description" content="转载请说明出处，请尊重作者http://blog.sina.com/thinkpc大家好，首先做个小广告我的的CMS，有空大家捧场，我最近太忙没怎么继续更新：）过段时间工作稳定后就继续更新，大家多提提意见这里只是想实现一个万能发布系统，实现后再进行深层次优化：）地址：http://code.google.com/p/fireideacms/&lt;/p&gt; 目前我将之前经历的各种框架发现的特性总结了一下写下以下心得和大家分享，期望得到大家回馈好有更多的词条加入 各位务必记住不要过渡优化自己的系统，只有碰到性能瓶颈的时候才去针对性优化，否则会导致系统结构很乱，并且无用，一般来说一个系统越复杂，那么维护成本以及风险就会越大。 系统结构分成多层对系统的分层就是为了避免系统过于复杂，分清系统的各个职能是维护系统简洁和好维护的关键。 Router层（dispatcher层或者java的control层）业务层：引用各种公共库，对各个模块的API进行组合，以及逻辑处理模块封装层：包含模块一些封装逻辑的操作，以及对其他模块的APIAPI层，包括给业务层调用的函数类库，以及其他系统的API封装数据适配层：数据类操作的ORM以及适配，并提供NOSQL服务，隔离数据库细节以及NOSQL细节 其他一些优化tips 硬件的性能瓶颈：网卡吞吐可以用多个网卡合并，CPU用多核，内存多加，硬盘用RFID，极限了就集群分组， 软件性能极限：数据库主从，nginx反向代理，memcache，nosql，LVS，DNS分地域、轮询，SQuid类CDN缓冲，前端SPI。 用于服务类API，通过URL重写可以缩短URL的长度，比如/url/参数1/参数2/ 不管目录内部文件结构怎么变化，都可以在升级的时候保持API地址不变更 可以对一些资源重定向，如404错误提示,302跳转，且有助于SEO，防盗链等 有规律文件拼写URL直接定位资源，如知道用户UID直接拼url获取用户头像：url/uid/size.jpg 网站设计的时候动态和静态内容URL有明确区分，这样做CDN前端CACHE很方便 个别浏览器同一个域名并发只有两个下载，如果要优化速度建议考虑下这个，但是域名太多DNS压力会大 通过DNS解析，可以分流用户压力，但是DNS更新周期很慢，如果一组服务器挂掉会导致一小时才能恢复 F5路由对压力分流很有帮助具有承受压力很强的特点，但是很贵，他有两种工作模式，直接分流，编程分流 Apache需要重启下服务才会生效，如果写错了很悲剧，这里可用php的kelin一类重定向，但是并发不怎么好 需要用正则写规则，如果用的多可能导致规则覆盖，找起来很麻烦 一次性hash这个算法应用场景好多好多……比如资源定位，信息分布式保存，memcache多服务器保存HA 只有看rewrite.log才知道当前请求定位到哪里去了，悲催 建议开启http 304可以减低很多服务器压力 LVS下apache建议在header头内加服务器name，用于找到那个服务器出问题 前端CDN可以用Squid一类cache 不经常更新的内容生成静态页面，不需要搜索引擎记录的东西可用ajax获取或者SPI技术合并 LVS集群下应取消自动TAG缓冲功能，因为不同子服务器Tag不同，改为其他方式更新tag 服务器间同步建议用Rsync，这个更新很方便 周期性处理的东西，可以用crontab，但是务必小心，因为集群时谁运行是个问题 NFS很有用，适合一些共享数据保存，但是要注意IO压力 SVN的bugziller很好用，对与bug维护很有用 PHP OPCODE Cache，减少PHP编译时间 PHP插件类调用越少，IO越少 PHP实时include越少，工作效能越高 使用fastcgi，减少php进程加载时间 apache多进程可以加强PHP并发 PHP尽量少做Socket通讯类事情 PHP尽量少做阻塞类工作 使用nginx的html缓冲可以减少硬盘IO，类似Squid 使用Nginx反向代理做集群可以加强系统并发 模块与模块对外的业务逻辑做成API供其他模块调用 各种API要做性能测试争取在0.05秒以内，API做大数据性能测试，并做性能日志进行监视，定期做单元测试 不经常更新运算结果保存到内存Cache内，如Redis 经常更新数据，如计数器放独立内存Cache 用双写方式保证Cache稳定 排序一类可以使用Redis去做 redis多key操作用Mset一类命令 重要数据要保存LOG，哪怕是文本LOG 高并发的数据操作要注意并发问题，如文件写入，数据库事务 消息队列是一个很好的系统之间通讯或任务下发的载体，如短信，邮件，消息通知 java的消息触发方式的工作方式很节省系统资源，并发很高，个别需求可让java去处理。 算法类收集 最好所有算法要根据输入数据量进行测试，不同算法数据量不同会有不同的效果 大数据量处理，统计类建议对统计数据进行分割统计 处理数据量十分巨大，可以考虑导成文本并任务分割多份，然后投放到Hadoop一类的云框架进行异步处理 Mysql数据库类 mysql开启慢数据查询log myiasm适合经常查询如，查询占使用比例80%以上，更新20%以内 innodb适合更新，适合事务，务必关闭自动commit选项，可以加快插入，但是内存要大 索引对会降低数据插入速度 数据库索引有左前缀顺序问题，使用的时候多用explain评估下 mysql有查询cache当没有更新的时候索引没有变化的时候同样的sql语句（分大小写）会直接走cache mysql主从模式务必在同局域网，否则数据同步很慢，主库可以用innodb做事务，从库用myiasm 打开binlog以用于恢复数据 更新过于频繁的表放memcache内 不经常更新的数据放php内常量或者memcache内 redis 数组排序用redis不错 做数据关联关系类用redis mysql也记得存一份备份 做集合的交集不错 最后，奉劝大家不要有技术偏见，对于PHP不擅长的，一定要用其他语言取长补短，完善整个系统结构，作为技术保证一个系统的完善高效是我们的责任。&lt;/div&gt;" />
+<link rel="canonical" href="http://localhost:4000/archives/139" />
+<meta property="og:url" content="http://localhost:4000/archives/139" />
+<meta property="og:site_name" content="Your awesome title" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-05-29T10:28:25+08:00" />
+<script type="application/ld+json">
+{"description":"转载请说明出处，请尊重作者http://blog.sina.com/thinkpc大家好，首先做个小广告我的的CMS，有空大家捧场，我最近太忙没怎么继续更新：）过段时间工作稳定后就继续更新，大家多提提意见这里只是想实现一个万能发布系统，实现后再进行深层次优化：）地址：http://code.google.com/p/fireideacms/&lt;/p&gt; 目前我将之前经历的各种框架发现的特性总结了一下写下以下心得和大家分享，期望得到大家回馈好有更多的词条加入 各位务必记住不要过渡优化自己的系统，只有碰到性能瓶颈的时候才去针对性优化，否则会导致系统结构很乱，并且无用，一般来说一个系统越复杂，那么维护成本以及风险就会越大。 系统结构分成多层对系统的分层就是为了避免系统过于复杂，分清系统的各个职能是维护系统简洁和好维护的关键。 Router层（dispatcher层或者java的control层）业务层：引用各种公共库，对各个模块的API进行组合，以及逻辑处理模块封装层：包含模块一些封装逻辑的操作，以及对其他模块的APIAPI层，包括给业务层调用的函数类库，以及其他系统的API封装数据适配层：数据类操作的ORM以及适配，并提供NOSQL服务，隔离数据库细节以及NOSQL细节 其他一些优化tips 硬件的性能瓶颈：网卡吞吐可以用多个网卡合并，CPU用多核，内存多加，硬盘用RFID，极限了就集群分组， 软件性能极限：数据库主从，nginx反向代理，memcache，nosql，LVS，DNS分地域、轮询，SQuid类CDN缓冲，前端SPI。 用于服务类API，通过URL重写可以缩短URL的长度，比如/url/参数1/参数2/ 不管目录内部文件结构怎么变化，都可以在升级的时候保持API地址不变更 可以对一些资源重定向，如404错误提示,302跳转，且有助于SEO，防盗链等 有规律文件拼写URL直接定位资源，如知道用户UID直接拼url获取用户头像：url/uid/size.jpg 网站设计的时候动态和静态内容URL有明确区分，这样做CDN前端CACHE很方便 个别浏览器同一个域名并发只有两个下载，如果要优化速度建议考虑下这个，但是域名太多DNS压力会大 通过DNS解析，可以分流用户压力，但是DNS更新周期很慢，如果一组服务器挂掉会导致一小时才能恢复 F5路由对压力分流很有帮助具有承受压力很强的特点，但是很贵，他有两种工作模式，直接分流，编程分流 Apache需要重启下服务才会生效，如果写错了很悲剧，这里可用php的kelin一类重定向，但是并发不怎么好 需要用正则写规则，如果用的多可能导致规则覆盖，找起来很麻烦 一次性hash这个算法应用场景好多好多……比如资源定位，信息分布式保存，memcache多服务器保存HA 只有看rewrite.log才知道当前请求定位到哪里去了，悲催 建议开启http 304可以减低很多服务器压力 LVS下apache建议在header头内加服务器name，用于找到那个服务器出问题 前端CDN可以用Squid一类cache 不经常更新的内容生成静态页面，不需要搜索引擎记录的东西可用ajax获取或者SPI技术合并 LVS集群下应取消自动TAG缓冲功能，因为不同子服务器Tag不同，改为其他方式更新tag 服务器间同步建议用Rsync，这个更新很方便 周期性处理的东西，可以用crontab，但是务必小心，因为集群时谁运行是个问题 NFS很有用，适合一些共享数据保存，但是要注意IO压力 SVN的bugziller很好用，对与bug维护很有用 PHP OPCODE Cache，减少PHP编译时间 PHP插件类调用越少，IO越少 PHP实时include越少，工作效能越高 使用fastcgi，减少php进程加载时间 apache多进程可以加强PHP并发 PHP尽量少做Socket通讯类事情 PHP尽量少做阻塞类工作 使用nginx的html缓冲可以减少硬盘IO，类似Squid 使用Nginx反向代理做集群可以加强系统并发 模块与模块对外的业务逻辑做成API供其他模块调用 各种API要做性能测试争取在0.05秒以内，API做大数据性能测试，并做性能日志进行监视，定期做单元测试 不经常更新运算结果保存到内存Cache内，如Redis 经常更新数据，如计数器放独立内存Cache 用双写方式保证Cache稳定 排序一类可以使用Redis去做 redis多key操作用Mset一类命令 重要数据要保存LOG，哪怕是文本LOG 高并发的数据操作要注意并发问题，如文件写入，数据库事务 消息队列是一个很好的系统之间通讯或任务下发的载体，如短信，邮件，消息通知 java的消息触发方式的工作方式很节省系统资源，并发很高，个别需求可让java去处理。 算法类收集 最好所有算法要根据输入数据量进行测试，不同算法数据量不同会有不同的效果 大数据量处理，统计类建议对统计数据进行分割统计 处理数据量十分巨大，可以考虑导成文本并任务分割多份，然后投放到Hadoop一类的云框架进行异步处理 Mysql数据库类 mysql开启慢数据查询log myiasm适合经常查询如，查询占使用比例80%以上，更新20%以内 innodb适合更新，适合事务，务必关闭自动commit选项，可以加快插入，但是内存要大 索引对会降低数据插入速度 数据库索引有左前缀顺序问题，使用的时候多用explain评估下 mysql有查询cache当没有更新的时候索引没有变化的时候同样的sql语句（分大小写）会直接走cache mysql主从模式务必在同局域网，否则数据同步很慢，主库可以用innodb做事务，从库用myiasm 打开binlog以用于恢复数据 更新过于频繁的表放memcache内 不经常更新的数据放php内常量或者memcache内 redis 数组排序用redis不错 做数据关联关系类用redis mysql也记得存一份备份 做集合的交集不错 最后，奉劝大家不要有技术偏见，对于PHP不擅长的，一定要用其他语言取长补短，完善整个系统结构，作为技术保证一个系统的完善高效是我们的责任。&lt;/div&gt;","headline":"PHP框架结构优化方向词条","dateModified":"2012-05-29T10:28:25+08:00","datePublished":"2012-05-29T10:28:25+08:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/139"},"url":"http://localhost:4000/archives/139","author":{"@type":"Person","name":"徐艺洲"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Your awesome title" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Your awesome title</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/%25e5%2585%25b3%25e4%25ba%258e%25e6%259c%25ac%25e4%25ba%25ba.html">关于本人</a><a class="page-link" href="/%25e5%2585%25b3%25e4%25ba%258e%25e8%2593%259d%25e5%25a4%25a9.html">关于我</a><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">PHP框架结构优化方向词条</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2012-05-29T10:28:25+08:00" itemprop="datePublished">May 29, 2012
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">徐艺洲</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <div id="sina_keyword_ad_area2" class="articalContent   ">
+  <div style="">
+    <span style="color: rgb(247, 14, 2); text-indent: 2em;">转载请说明出处，请尊重作者http://blog.sina.com/thinkpc</span><br style="color: rgb(247, 14, 2); text-indent: 2em;" /><br style="text-indent: 2em;" />大家好，首先做个小广告我的的CMS，有空大家捧场，我最近太忙没怎么继续更新：）<br />过段时间工作稳定后就继续更新，大家多提提意见<br />这里只是想实现一个万能发布系统，实现后再进行深层次优化：）<br />地址：<span style="font-weight: bold; color: rgb(23, 12, 255);">http://code.google.com/p/fireideacms/</span>&lt;/p&gt; 
+    
+    <p>
+      目前我将之前经历的各种框架发现的特性总结了一下<br />写下以下心得和大家分享，期望得到大家回馈好有更多的词条加入
+    </p>
+    
+    <p>
+      各位务必记住不要过渡优化自己的系统，只有碰到性能瓶颈的时候才去针对性优化，否则会导致系统结构很乱，并且无用，一般来说一个系统越复杂，那么维护成本以及风险就会越大。
+    </p>
+    
+    <p>
+      <span style="font-weight: bold;">系统结构分成多层</span><br />对系统的分层就是为了避免系统过于复杂，分清系统的各个职能是维护系统简洁和好维护的关键。
+    </p>
+    
+    <p>
+      <span style="font-weight: bold;">Router层</span>（dispatcher层或者java的control层）<br /><span style="font-weight: bold;">业务层</span>：引用各种公共库，对各个模块的API进行组合，以及逻辑处理<br /><span style="font-weight: bold;">模块封装层</span>：包含模块一些封装逻辑的操作，以及对其他模块的API<br /><span style="font-weight: bold;">API层</span>，包括给业务层调用的函数类库，以及其他系统的API封装<br /><span style="font-weight: bold;">数据适配层</span>：数据类操作的ORM以及适配，并提供NOSQL服务，隔离数据库细节以及NOSQL细节
+    </p>
+    
+    <p>
+      <span style="font-weight: bold;">其他一些优化tips</span>
+    </p>
+    
+    <p>
+      硬件的性能瓶颈：网卡吞吐可以用多个网卡合并，CPU用多核，内存多加，硬盘用RFID，极限了就集群分组，<br /> 软件性能极限：数据库主从，nginx反向代理，memcache，nosql，LVS，DNS分地域、轮询，SQuid类CDN缓冲，前端SPI。
+    </p>
+    
+    <p>
+      用于服务类API，通过URL重写可以缩短URL的长度，比如/url/参数1/参数2/<br /> 不管目录内部文件结构怎么变化，都可以在升级的时候保持API地址不变更<br /> 可以对一些资源重定向，如404错误提示,302跳转，且有助于SEO，防盗链等<br /> 有规律文件拼写URL直接定位资源，如知道用户UID直接拼url获取用户头像：url/uid/size.jpg<br /> 网站设计的时候动态和静态内容URL有明确区分，这样做CDN前端CACHE很方便<br /> 个别浏览器同一个域名并发只有两个下载，如果要优化速度建议考虑下这个，但是域名太多DNS压力会大<br /> 通过DNS解析，可以分流用户压力，但是DNS更新周期很慢，如果一组服务器挂掉会导致一小时才能恢复<br /> F5路由对压力分流很有帮助具有承受压力很强的特点，但是很贵，他有两种工作模式，直接分流，编程分流<br /> Apache需要重启下服务才会生效，如果写错了很悲剧，这里可用php的kelin一类重定向，但是并发不怎么好<br /> 需要用正则写规则，如果用的多可能导致规则覆盖，找起来很麻烦<br /> 一次性hash这个算法应用场景好多好多……比如资源定位，信息分布式保存，memcache多服务器保存HA<br /> 只有看rewrite.log才知道当前请求定位到哪里去了，悲催<br /> 建议开启http 304可以减低很多服务器压力<br /> LVS下apache建议在header头内加服务器name，用于找到那个服务器出问题<br /> 前端CDN可以用Squid一类cache<br /> 不经常更新的内容生成静态页面，不需要搜索引擎记录的东西可用ajax获取或者SPI技术合并
+    </p>
+    
+    <p>
+      LVS集群下应取消自动TAG缓冲功能，因为不同子服务器Tag不同，改为其他方式更新tag<br /> 服务器间同步建议用Rsync，这个更新很方便<br /> 周期性处理的东西，可以用crontab，但是务必小心，因为集群时谁运行是个问题<br /> NFS很有用，适合一些共享数据保存，但是要注意IO压力<br /> SVN的bugziller很好用，对与bug维护很有用
+    </p>
+    
+    <p>
+      PHP OPCODE Cache，减少PHP编译时间<br /> PHP插件类调用越少，IO越少<br /> PHP实时include越少，工作效能越高<br /> 使用fastcgi，减少php进程加载时间<br /> apache多进程可以加强PHP并发<br /> PHP尽量少做Socket通讯类事情<br /> PHP尽量少做阻塞类工作<br /> 使用nginx的html缓冲可以减少硬盘IO，类似Squid<br /> 使用Nginx反向代理做集群可以加强系统并发<br /> 模块与模块对外的业务逻辑做成API供其他模块调用<br /> 各种API要做性能测试争取在0.05秒以内，API做大数据性能测试，并做性能日志进行监视，定期做单元测试<br /> 不经常更新运算结果保存到内存Cache内，如Redis<br /> 经常更新数据，如计数器放独立内存Cache<br /> 用双写方式保证Cache稳定<br /> 排序一类可以使用Redis去做<br /> redis多key操作用Mset一类命令<br /> 重要数据要保存LOG，哪怕是文本LOG<br /> 高并发的数据操作要注意并发问题，如文件写入，数据库事务<br /> 消息队列是一个很好的系统之间通讯或任务下发的载体，如短信，邮件，消息通知<br /> java的消息触发方式的工作方式很节省系统资源，并发很高，个别需求可让java去处理。
+    </p>
+    
+    <p>
+      算法类收集<br /> 最好所有算法要根据输入数据量进行测试，不同算法数据量不同会有不同的效果<br /> 大数据量处理，统计类建议对统计数据进行分割统计<br /> 处理数据量十分巨大，可以考虑导成文本并任务分割多份，然后投放到Hadoop一类的云框架进行异步处理
+    </p>
+    
+    <p>
+      Mysql数据库类<br /> mysql开启慢数据查询log<br /> myiasm适合经常查询如，查询占使用比例80%以上，更新20%以内<br /> innodb适合更新，适合事务，务必关闭自动commit选项，可以加快插入，但是内存要大<br /> 索引对会降低数据插入速度<br /> 数据库索引有左前缀顺序问题，使用的时候多用explain评估下<br /> mysql有查询cache当没有更新的时候索引没有变化的时候同样的sql语句（分大小写）会直接走cache<br /> mysql主从模式务必在同局域网，否则数据同步很慢，主库可以用innodb做事务，从库用myiasm<br /> 打开binlog以用于恢复数据<br /> 更新过于频繁的表放memcache内<br /> 不经常更新的数据放php内常量或者memcache内
+    </p>
+    
+    <p>
+      redis<br /> 数组排序用redis不错<br /> 做数据关联关系类用redis<br /> mysql也记得存一份备份<br /> 做集合的交集不错
+    </p>
+    
+    <p>
+      最后，奉劝大家不要有技术偏见，对于PHP不擅长的，一定要用其他语言取长补短，完善整个系统结构，作为技术保证一个系统的完善高效是我们的责任。&lt;/div&gt;
+</p></div></div>
+
+  </div><a class="u-url" href="/archives/139" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Your awesome title</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Your awesome title</li><li><a class="u-email" href="mailto:your-email@example.com">your-email@example.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/jekyll"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">jekyll</span></a></li><li><a href="https://www.twitter.com/jekyllrb"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">jekyllrb</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

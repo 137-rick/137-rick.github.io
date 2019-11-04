@@ -1,0 +1,2 @@
+I"<p>在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。</p>
+:ET

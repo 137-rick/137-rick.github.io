@@ -1,0 +1,16 @@
+I"�<div id="sina_keyword_ad_area2" class="articalContent   ">
+  获取当前你正在访问的页面互联网所在的目录,这里的index.php是页面名称<br />$basepath=substr($_SERVER[&#8220;PHP_SELF&#8221;],0,strpos($_SERVER[&#8220;PHP_SELF&#8221;],&#8221;index.php&#8221;));&lt;/p&gt; 
+  
+  <p>
+    和这个目录拼接成实际的地址<br />$output_name=&#8221;http://&#8221;.$_SERVER[&#8220;SERVER_NAME&#8221;] .$basepath;
+  </p>
+  
+  <p>
+    获取上传文件的扩展名<br />$tmp_filename = $file[&#8216;tmp_name&#8217;];<br />$ext = end(explode(&#8220;.&#8221;,$file[&#8216;name&#8217;]));
+  </p>
+  
+  <p>
+    这里都是一些山寨用法，还需要讨论。。
+  </p>
+</div>
+:ET

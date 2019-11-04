@@ -1,0 +1,43 @@
+I"�<div id="sina_keyword_ad_area2" class="articalContent   ">
+  <div>
+    <div>
+      <div>
+        <div>
+          <div>
+            <div>
+              今天用false和FALSE突然想到他俩是否一样<br />纠结了一会儿<br />查了下<br />以下来自http://home.phpchina.com/space.php?uid=11162&amp;do=blog&amp;id=48838&lt;/p&gt; 
+              
+              <p>
+                //比较值 &#8221; NULL 0 false true FALSE TRUE<br />//相等判断<br />//&#8221; == NULL == 0 == false (相等)<br />//array() = 0 == NULL == false (相等)<br />//array() &lt;&gt; &#8221; (不相等)<br />//恒等判断<br />//任何两个数比较都不恒等&lt;/div&gt; 
+                
+                <div>
+                  //var_dump(false == FALSE); //bool(true)<br />//var_dump(false === FALSE); //bool(true)<br />//var_dump(true == TRUE); //bool(true)<br />//var_dump(true === TRUE); //bool(true)
+                </div>
+                
+                <div>
+                  //var_dump(&#8221; == NULL); //bool(true)<br />//var_dump(&#8221; === NULL); //bool(false)<br />//var_dump(&#8221; == 0); //bool(true)<br />//var_dump(&#8221; === 0); //bool(false)<br />//var_dump(&#8221; == false); //bool(true)<br />//var_dump(&#8221; === false); //bool(false)<br />//var_dump(&#8221; == true); //bool(false)<br />//var_dump(&#8221; === true); //bool(false)
+                </div>
+                
+                <div>
+                  //var_dump(null == 0); //bool(true)<br />//var_dump(null === 0); //bool(false)<br />//var_dump(null == false); //bool(true)<br />//var_dump(null === false); //bool(false)<br />//var_dump(null == true); //bool(false)<br />//var_dump(null === true); //bool(false)
+                </div>
+                
+                <div>
+                  //var_dump(0 == false); //bool(true)<br />//var_dump(0 === false); //bool(false)<br />//var_dump(0 == true); //bool(false)<br />//var_dump(0 === true); //bool(false)
+                </div>
+                
+                <div>
+                  //对true的一些判断<br />//var_dump(&#8216;1&#8217; == true); //bool(true)<br />//var_dump(&#8216;1&#8217; === true); //bool(false)<br />//var_dump(1 == true); //bool(true)<br />//var_dump(1 === true); //bool(false)<br />//var_dump(array() == true); //bool(false)<br />//var_dump(array() === true); //bool(false)
+                </div>
+                
+                <div>
+                  //array()比较<br />//var_dump(array() == &#8221;); //bool(false)<br />//var_dump(array() === &#8221;); //bool(false)<br />//var_dump(array() == NULL); //bool(true)<br />//var_dump(array() === NULL); //bool(false)<br />//var_dump(array() == 0); //bool(false)<br />//var_dump(array() === 0); //bool(false)<br />//var_dump(array() == false); //bool(true)<br />//var_dump(array() === false); //bool(false)<br />//var_dump(array() == true); //bool(false)<br />//var_dump(array() === true); //bool(false)
+                </div>
+                
+                <div>
+                  //恒等比较<br />//var_dump(0 === &#8216;0&#8217;); //bool(false)<br />//var_dump(0 === 00); //bool(true)<br />//var_dump(00 === intval(&#8216;0&#8217;)); //bool(true)&lt;/p&gt; 
+                  
+                  <p>
+                    另外 我弄了个小站，http://www.fireidea.com 蓝天搜索 大家有空来玩&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt;
+</p></div></p></div></div></div></div></div></div></div>
+:ET

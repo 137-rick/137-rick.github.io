@@ -1,0 +1,124 @@
+I" 
+<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+  本身是不支持的，但是可以用其他方法制作出来，参考了下别人的资料&lt;/p&gt; 
+  
+  <div>
+    发现缺少说明，这次转过来只是加个说明&lt;/p&gt; 
+    
+    <div>
+    </div>
+    
+    <div>
+      <div>
+        #include <b><font STYLE="font-size: 14px;"> 《<span style="margin: 0px; padding: 0px; border: none; font-family: Consolas, 'Courier new', Courier, mono, serif; line-height: 18px; background-color: rgb(255, 255, 255);">algorithm》</span></font></b>
+      </div>
+      
+      <div>
+        //pair类型定义
+      </div>
+      
+      <div>
+        typedef pair PAIR;
+      </div>
+      
+      <div>
+      </div>
+      
+      <div>
+        //排序对比函数
+      </div>
+      
+      <div>
+        int cmp(const PAIR &amp;x, const PAIR &amp;y)
+      </div>
+      
+      <div>
+        {
+      </div>
+      
+      <div>
+        return x.second &gt; y.second;
+      </div>
+      
+      <div>
+        }
+      </div>
+      
+      <div>
+      </div>
+      
+      <div>
+        <span style="line-height: 21px;">std::vector《PAIR》 pair_vec;//排序用的vector对象（原文少了这个）</span>
+      </div>
+      
+      <div>
+        <span style="line-height: 21px;"><br /></span>
+      </div>
+      
+      <div>
+        //将要排序的map数据遍历并将其值插入到vector对象内
+      </div>
+      
+      <div>
+        for (map::iterator map_iter = map_verb.begin(); map_iter !=map_verb.end(); ++map_iter)
+      </div>
+      
+      <div>
+        {
+      </div>
+      
+      <div>
+        pair_vec.push_back(make_pair(map_iter-&gt;first,map_iter-&gt;second));
+      </div>
+      
+      <div>
+        }
+      </div>
+      
+      <div>
+      </div>
+      
+      <div>
+        //对vector进行排序
+      </div>
+      
+      <div>
+        sort(pair_vec.begin(), pair_vec.end(),cmp);
+      </div>
+      
+      <div>
+      </div>
+      
+      <div>
+        //排序结果输出
+      </div>
+      
+      <div>
+        for (vector::iterator curr = pair_vec.begin(); curr !=pair_vec.end(); ++curr)
+      </div>
+      
+      <div>
+        {
+      </div>
+      
+      <div>
+        outfile &lt;&lt; curr-&gt;first &lt;&lt; &#8220;\t&#8221; &lt;<curr->second &lt;&lt; endl;
+      &lt;/div&gt;
+      
+      <div>
+        }
+      </div>
+      
+      <div>
+      </div>
+      
+      <div>
+        转自：http://blog.csdn.net/glp_hit/article/details/8109594
+      </div>
+      
+      <div>
+      </div>
+    &lt;/div&gt;
+  &lt;/div&gt;
+</curr-></div></div></div></div>
+:ET

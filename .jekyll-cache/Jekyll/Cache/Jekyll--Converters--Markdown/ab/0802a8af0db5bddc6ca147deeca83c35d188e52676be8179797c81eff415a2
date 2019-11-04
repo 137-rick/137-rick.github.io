@@ -1,0 +1,4 @@
+I"<div id="sina_keyword_ad_area2" class="articalContent   ">
+  主索引保存在数据中<br />从索引保存在外置文件内<br />所以innodb有的时候检索，从索引会快一些<br />如查总共数据个数count(从索引)会快些&lt;/p&gt;
+</div>
+:ET

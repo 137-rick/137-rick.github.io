@@ -1,0 +1,16 @@
+I"�<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+  localtime是有一个大坑的。。。&lt;/p&gt; 
+  
+  <div>
+    当我们使用localtime(timestamp)的时候返回是一个指针。
+  </div>
+  
+  <div>
+    这个指针的指向是共用的，这时如果有其他线程执行了localtime。。。。会覆盖之前的值！！
+  </div>
+  
+  <div>
+    可以考虑localtime_r。。。。但是！！！他也有坑~~~
+  </div>
+</div>
+:ET

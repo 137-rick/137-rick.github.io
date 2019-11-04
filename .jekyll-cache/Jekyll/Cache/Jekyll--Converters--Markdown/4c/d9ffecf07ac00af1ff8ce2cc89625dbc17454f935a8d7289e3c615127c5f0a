@@ -1,0 +1,4 @@
+I"�<div id="sina_keyword_ad_area2" class="articalContent   ">
+  由于使用soap大部分都需要安装插件<br />最后用了一个很山寨的方法<br />想用$_REQUEST获取post过来的信息，结果什么都没获取到<br />后来晗晓大神告诉我如果发过来的数据没有指定key的话request是无法获取到的。。。<br />最后大家找了半天用了这个方法<br />$raw_post=file_get_contents(&#8220;php://input&#8221;);<br />终于获取到了post来的数据&lt;/p&gt;
+</div>
+:ET

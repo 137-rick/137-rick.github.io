@@ -1,0 +1,28 @@
+I"�<div id="sina_keyword_ad_area2" class="articalContent   ">
+  //在progresschange里面获取seekbar对象的thumb<br />RelativeLayout.LayoutParams paramsStrength = newRelativeLayout.LayoutParams(<br /> RelativeLayout.LayoutParams.WRAP_CONTENT,<br /> RelativeLayout.LayoutParams.WRAP_CONTENT);&lt;/p&gt; 
+  
+  <p>
+    leftmargin = ((MySeekBar)mProgress).getSeekBarThumb().getBounds()<br /> .centerX()<br /> &#8211; tvWeight.getWidth() / 2+10;<br /> if (leftmargin &lt; 0)<br /> leftmargin = 0;<br /> paramsStrength.leftMargin = leftmargin;<br /> tvWeight.setLayoutParams(paramsStrength);<br /> tvWeight.setText(stringForTime(mPlayer.getCurrentPosition()));
+  </p>
+  
+  <p>
+    //继承重写seekbar代码以获取thumb的对象<br />import android.content.Context;<br />import android.graphics.drawable.Drawable;<br />import android.util.AttributeSet;<br />import android.widget.SeekBar;
+  </p>
+  
+  <p>
+    public class MySeekBar extends SeekBar {<br /> DrawablemThumb;
+  </p>
+  
+  <p>
+    publicMySeekBar(Context context) {<br /> super(context);<br /> }<br /> publicMySeekBar(Context context, AttributeSet attrs) {<br /> super(context, attrs);<br /> }<br /> publicMySeekBar(Context context, AttributeSet attrs, int defStyle){<br /> super(context, attrs, defStyle);<br /> }
+  </p>
+  
+  <p>
+    @Override<br /> public voidsetThumb(Drawable thumb) {<br /> super.setThumb(thumb);<br /> mThumb =thumb;<br /> }<br /> publicDrawable getSeekBarThumb() {<br /> returnmThumb;<br /> }
+  </p>
+  
+  <p>
+    }
+  </p>
+</div>
+:ET

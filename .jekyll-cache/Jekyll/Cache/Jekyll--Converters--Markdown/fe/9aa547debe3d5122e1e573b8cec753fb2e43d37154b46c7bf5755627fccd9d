@@ -1,0 +1,6 @@
+I"*<div id="sina_keyword_ad_area2" class="articalContent   ">
+  <div style="">
+    今天用jwplayer写了个播放器可以实时切换播放器，用的swfobject做的flash适配层。<br />没有想到在总监那里碰到了特殊情况，切换切换就卡那里不播放了。奇怪中，后来发现IE6在系统里面内存不断增加，我才想起来原来是IE6溢出了啊，跟踪了一下竟然是swfobject实例对象没有释放，想了想还是手动写了个释放，问题解决了。。ie6老版本的bug真头痛。。
+  </div>
+</div>
+:ET

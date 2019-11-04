@@ -1,0 +1,11 @@
+I"<div id="sina_keyword_ad_area2" class="articalContent   ">
+  function print_r(o, depth) {<br /> var result = &#8221;;<br /> depth || (depth=1);<br /> var indent = newArray(4*depth+1).join(&#8216; &#8216;);<br /> var indentNext = newArray(4*(depth+1)+1).join(&#8216; &#8216;);<br /> var indentNextTwo = newArray(4*(depth+2)+1).join(&#8216; &#8216;);<br /> var tmp = &#8221;;<br /> var type = typeof o;<br /> switch(type) {<br /> case &#8216;string&#8217;:<br /> case &#8216;number&#8217;:<br /> case &#8216;boolean&#8217;:<br /> case &#8216;undefined&#8217;:<br /> case &#8216;function&#8217;:<br /> tmp += indent + indentNext + o+ &#8220;\n&#8221;;<br /> break;<br /> case &#8216;object&#8217;:<br /> default:<br /> for(var key in o) {<br /> tmp += indentNextTwo + &#8216;[&#8216; + key + &#8216;] = &#8216;;<br /> tmp += print_r(o[key], (depth+1));<br /> }<br /> }<br /> result += type + &#8220;\n&#8221;;<br /> result += indentNext + &#8216;(&#8216; +&#8221;\n&#8221;;<br /> result += tmp;<br /> result += indentNext + &#8216;)&#8217; +&#8221;\n&#8221;;<br /> return result;<br />};&lt;/p&gt; 
+  
+  <p>
+    使用这个函数可以遍历整个数组或对象内所有对象或数值，并且可以通过<br />alert(print_r(xxxx));<br />输出所有内容
+  </p>
+  
+  <p>
+  </p>
+</div>
+:ET

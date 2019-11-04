@@ -1,0 +1,140 @@
+---
+id: 256
+title: '使用C开发PHP扩展全过程及相关细节（1）&#8211; 环境搭建'
+date: 2018-10-10T14:14:43+08:00
+author: 徐艺洲
+layout: revision
+guid: http://www.fireidea.com/archives/256
+permalink: /archives/256
+---
+<div id="sina_keyword_ad_area2" class="articalContent   ">
+  <div STYLE="">
+    <b>前言</b></p> 
+    
+    <p>
+      两星期前，凯胖子找我说要开发一个用C写的加密cookie的PHP扩展插件<br />在此之前我也没做过PHP扩展类开发……<br />不过看需求感觉很爽……<br />于是一激动就接了……<br />学习开发大概花了两个星期时间，期间穿插其他工作以及算法测试……<br />其中的一些经验和弯路将会在这里写一下，但是太远的弯路我就不在这里说了……<br />如果有不对的地方望大家见谅并提出宝贵意见
+    </p>
+    
+    <p>
+      <b>鸣谢</b>
+    </p>
+    
+    <ul>
+      <li>
+        百度：顾伟刚，提供PHP扩展示例以及一些工具介绍
+      </li>
+      <li>
+        博升：郝晓凯，传说中的凯胖子，提需求开发这个东东
+      </li>
+    </ul>
+    
+    <p>
+      <b>开发前思考</b><br />阅读了网上的资料后决定直接把代码放到PHP扩展内，并没有开发SO文件，因为当时觉得部署太麻烦……<br />如果把核心代码编译成SO文件也有好处，主要为PHP不同版本的扩展的版本号不同，不同版本号的话不会被加载使用，所以当你在PHP5.3做的扩展，在PHP5.4使用的时候需要重新弄下扩展。如果扩展内只是引用SO那么工作量小点。<br /><b><br />开发环境准备</b>
+    </p>
+    
+    <ul>
+      <li>
+        Linux下开发
+      </li>
+      <li>
+        需要安装PHP以及相关服务
+      </li>
+      <li>
+        需要安装gcc
+      </li>
+      <li>
+        需要安装PHP-devel包（必须和你的PHP同版本）
+      </li>
+    </ul>
+    
+    <p>
+      这里我将按开发的每个阶段进行逐步介绍，如果有不明白不清晰的地方，可以留言我再补充，步入正题
+    </p>
+    
+    <p>
+      <b>PHP扩展文件结构初始化</b><br />执行ext_skel初始化PHP扩展项目文件夹<br />ext这个命令在php-devel包内，我这次命令里面表示了下他所在目录
+    </p>
+    
+    <p>
+      命令如下：<br />/php-5.4.0/ext/ext_skel &#8211;extname=项目名
+    </p>
+    
+    <p>
+      执行这个命令后会在当前目录下建立一个 项目名 文件夹，这个文件夹内会生成几个文件<br />项目名必须是没有空格特殊符号的英文开头的字符串（同时这个也代表了在php内加载后显示的模块名）
+    </p>
+    
+    <p>
+      <b>注意</b>：这个命令执行完毕后发现这个目录下并没有php_项目名.h这个文件，主要因为skel找不到框架模板文件夹导致的，如果出现这个情况，删除掉项目文件夹，在之前命令后加上&#8211;skel=/php-5.4.0/ext/skeleton/ 类似路径即可（请将它改成你的实际路径）
+    </p>
+    
+    <p>
+      <b>PHP扩展常规配置</b><br /><b>第一步：修改config.m4文件，设定插件类型</b><br />进入项目文件夹<br />修改config.m4会看到以下内容，其中dnl在这个配置内代表注释
+    </p>
+    
+    <pre><code>&lt;font COLOR="#FC6919">dnl &lt;/font>PHP_ARG_ENABLE(hello, whether to enable hello support,&lt;br />dnl Make sure that the comment is aligned:&lt;br />&lt;font COLOR="#FC6919">dnl &lt;/font>[  --enable-hello           Enable hello support])</code></pre>
+    
+    <p>
+      将这个内容改成以下形式
+    </p>
+    
+    <pre><code>PHP_ARG_ENABLE(hello, whether to enable hello support,&lt;br />dnl Make sure that the comment is aligned:&lt;br />[  --enable-hello           Enable hello support])</code></pre>
+    
+    <p>
+      保存退出即可
+    </p>
+    
+    <p>
+      <b>第二步:配置configure脚本</b><br />完成以上步骤后在项目目录内执行以下命令
+    </p>
+    
+    <p>
+      phpize
+    </p>
+    
+    <p>
+      这时会生成几个文件在这个目录，主要生成执行./configue时所需的相关文件，如果后面./configure执行不正常，很有可能是这里执行有问题。好，先不惦记configue的事情，我们继续搭php插件结构
+    </p>
+    
+    <p>
+      <b>第三步：</b><b>计划具体功能，开始定义函数声明</b><br />我们主要是开发两个函数
+    </p>
+    
+    <ul>
+      <li>
+        加密函数<font COLOR="#550DFF">encrycookie</font>，传入一个数组，返回一个加密的字符串，
+      </li>
+      <li>
+        解密函数<font COLOR="#570FFF">decrycookie</font>，传入一个字符串，返回一个解密后数组
+      </li>
+    </ul>
+    
+    <p>
+      修改php_项目名.h<br />在<code>PHP_FUNCTION(confirm_项目名_compiled);下面加入我们的两个函数声明&lt;br /></code>
+    </p>
+    
+    <pre><code>PHP_FUNCTION(</code><font COLOR="#0F03FE">encrycookie</font><code>);&lt;br /></code><code>PHP_FUNCTION(</code><font COLOR="#0D00FE">decrycookie</font><code>);</code><br /><br />然后再修改  项目名.c这个文件,这个文件时主文件，基本php的扩展的c实现都在这里<br /><code>找到以下结构，&lt;br />&lt;br />zend_function_entry 项目名_functions[] = &lt;br />{    &lt;br />   PHP_FE(confirm_hello_compiled,  NULL) &lt;br />   PHP_FE(</code><font COLOR="#1D03FB">encrycookie</font><code>,   NULL)       //刚加的&lt;br />   </code><code>PHP_FE(</code><font COLOR="#1B09FF">decrycookie</font><code>,   NULL)       //刚加的</code><br /><code>   {NULL, NULL, NULL} &lt;br />};&lt;br />&lt;br />只要在这里声明后在php内调用就可以找到并执行了，在这个文件内还有其他的几个函数，如我们在phpinfo内看到的内容也可以在这个文件下PHP_MINFO_FUNCTION这节修改。&lt;br />&lt;br />在给大家看具体代码之前，介绍一堆经验知识给大家&lt;br />&lt;br />&lt;b>在此之前分享一点开发过程中总结的心得&lt;/b>&lt;br /></code></pre>
+    
+    <ul>
+      <li>
+        <code>开发过程中建议先单独创建个c文件，加个main函数</code>
+      </li>
+      <li>
+        <code>脱离PHP扩展开发环境进行测试，完全测试没有问题后再集成到php扩展内</code>
+      </li>
+      <li>
+        <code>期间如果出现core dump（程序异常非法操作导致程序挂掉）</code>
+      </li>
+      <li>
+        <code>用ulimit -c 1000打开输出，要不不会生成core错误调试文件</code>
+      </li>
+      <li>
+        <code>core文件可以使用gdb这个神器的bt进行调试，另外他的单步断点调试及p命令很有用</code>
+      </li>
+      <li>
+        <code>c开发尽量不要用malloc一类动态内存分配，直接声明出charxxx[5000]一类的变量使用比用的时候用malloc好的多，主要原因是因为内存泄漏问题，如果我们手动释放麻烦且容易出错。</code>
+      </li>
+    </ul>
+    
+    <pre><code>&lt;br />&lt;b>开发辅助脚本&lt;/b>&lt;br />我开发过程中总喜欢边测试边写，老重复动作很麻烦，后来写了一个shell脚本，内容如下&lt;br />&lt;font COLOR="#430DFE">#!/bin/bash &lt;br />make&lt;br />cp modules/项目名.so  /usr/local/xxxx/php/lib/php/extensions/no-debug-non-zts-20100525/&lt;br />php dotest.php&lt;br />&lt;br />&lt;/font>这样我执行这个脚本就可以直接把so更新过去，然后测试，这里注意一下，我已经把这个so文件在php.ini内设置加载了，而我使用的测试方式是php cli执行，所以要注意一下php cli命令行使用的是哪个php.ini，这个其实可以用php -r "phpinfo();"看一下或者php -i命令查看这个扩展是否成功加载。&lt;br /></code><code>&lt;br />&lt;b>c变量和php变量的转换交互&lt;br />&lt;/b>PHP内的变量都是存储在c语言声明的一个叫zval结构内，由参数传递进来的PHP变量和返回的PHP变量必须经过PHP自己的函数转换一下才可以给PHP使用。所以在取参数和返回结果的时候都需要用对应的函数或宏来实现，另外说一句数组返回用RETURN_ZVAL返回。&lt;br />&lt;b>&lt;br />C指针数据类型转换&lt;br />&lt;/b>众所周知，c的字符串和数组都是在一个首地址指针存放，指针数据类型不同，每次挪动指针时的步进长度不同，而我在开发过程中RSA返回的是INT类型，经过思考使用另外一个指针char类型指向RSA结果，然后进行base64，经测试这里通过，木有问题……&lt;br />&lt;b>&lt;br />加密算法：&lt;br />&lt;/b>加密算法目前主要分为两大类，对称加密和非对称加密，对称加密往往输入数据长度多长，输出就多长，有加密速度快运算量小的优点。而非对称加密相对复杂了一些并且输出长度和输出长度不一定，往往加密解密花费时间更长一些。&lt;br />下面简单介绍几个我曾经测试过的几个算法&lt;br /></code><b>ROT13</b>最简单的密文加密，之前我使用这个做加密后来因为ascii覆盖不全所以换了其他算法<br /><b>XXTEA</b>这个算法属于对称加密是tea算法的增强版，短小精悍。后来是因为个别数据乱码被我放弃了<br /><br />目
+前我采用以下两个算法对传入数据进行加密<br /><b>RSA</b>非对称加密算法，加密时使用私钥，解密时使用公钥，而网上的的https通讯就是基础这个算法做的<br /><b>BASE64</b>一种编码方式，可以将二进制编码成文本可见字符串目前多用于web数据传输，RSA加密后的结果是二进制的所以这里我们也需要这个算法进行转换以利于纯文本传输。<br /><br /><code>&lt;b>已知内存泄露问题&lt;br />&lt;/b>为了方便开发我写了一些辅助PHP脚本用来测试加密解密情况，不过这个过程中我测试发现内存有泄露，于是加了个循环写了如下脚本测试内存泄露情况&lt;br />&lt;font COLOR="#570FFF">&lt;?php&lt;br />$org=array(&lt;br />        'uid'=&gt;123213,&lt;br />        'uname'=&gt;'xcl_rockman@qq.com',&lt;br />        'ip'=&gt;'192.168.1.1',&lt;br />        9=&gt;10,&lt;br />        '中文'=&gt;'测试',&lt;br />);&lt;br />for($i=0;$i&lt;100000;$i++)&lt;br />{&lt;br />        $result = encrycookie($org);&lt;br />        $result= decrycookie($result);&lt;br />        echo "mem:".memory_get_usage()."\n";&lt;br />}&lt;br />        var_dump($result);&lt;br />&lt;/font>测试php代码完毕&lt;br />如果执行过程中，输出的数值一直在涨，那就证明了有内存泄露……&lt;br />&lt;br />经过单步调试确认内存泄露在解密函数内&lt;br />    &lt;font COLOR="#540CFE">zval *return_data;&lt;br />    .....&lt;br />    MAKE_STD_ZVAL(return_data);&lt;br />    array_init(return_data);&lt;br />    .....&lt;br />    RETURN_ZVAL(return_data,1,&lt;/font>&lt;font COLOR="#FF0000">1&lt;/font>&lt;font COLOR="#690EFC">);&lt;/font>//红色部分是我修改后的值之前是0，改后内存泄露问题解决&lt;br />&lt;br />而其他内存泄露比较好理解，类似malloc后给一个指针然后不执行free的样式&lt;br />PHP已经提供emalloc函数等功能建议使用PHP封装的内存管理&lt;br />&lt;br />（待续）&lt;br /></code></pre>
+  </div>

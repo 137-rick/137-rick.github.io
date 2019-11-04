@@ -1,0 +1,4 @@
+I"�<div id="sina_keyword_ad_area2" class="articalContent   ">
+  今天很有意思，我用flash player播放某网址的视频时候发现&amp;符号后面的都不见了<br />抓包发现请求也是如此<br />后来发现原来是因为flash传变量的时候使用&amp;作分隔符，如果直接把url传进去的话容易被误会（火狐下如此）<br />于是使用escape转换了下，现在工作正常～<img type="face" src="http://simg.sinajs.cn/blog7style/images/common/sg_trans.gif" real_src="http://www.sinaimg.cn/uc/myshow/blog/misc/gif/E___6725EN00SIGG.gif" alt="Flash播放器播放url被去掉&amp;符号问题" title="Flash播放器播放url被去掉&amp;符号问题" />&lt;/p&gt;
+</div>
+:ET

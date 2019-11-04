@@ -1,0 +1,16 @@
+I"W<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+  composer隐规则。。。&lt;/p&gt; 
+  
+  <div>
+    如果 composer.json的项目name里面的名字和require内package的一样。。
+  </div>
+  
+  <div>
+    那么require内的列出同名packege将不会下载
+  </div>
+  
+  <div>
+    又踩坑了
+  </div>
+</div>
+:ET

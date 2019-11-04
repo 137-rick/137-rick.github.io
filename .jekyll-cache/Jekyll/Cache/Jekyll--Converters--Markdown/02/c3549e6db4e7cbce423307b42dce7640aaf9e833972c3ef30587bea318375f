@@ -1,0 +1,60 @@
+I"<div id="sina_keyword_ad_area2" class="articalContent   ">
+  <table>
+    <tr>
+      <td width="100%">
+        <h1>
+          How to fix PHP Fatal error: Class&#8217;DOMDocument&#8217; not found in<br />
+        </h1>
+      </td>
+      
+      <td align="right" width="100%">
+        <a href="http://www.techportal.co.za/linux/202-how-to-fix-php-fatal-error-class-domdocument-not-found-in-varwwwhtmlindexphp-on-line-171-or-similar-error?format=pdf" title="PDF" rel="nofollow"><img src="http://simg.sinajs.cn/blog7style/images/common/sg_trans.gif" real_src="http://www.techportal.co.za/images/M_images/pdf_button.png" alt="PDF" title="PHP提示 Fatal error: Class 'DOMDocument' not found in" /></a>
+      </td>
+      
+      <td align="right" width="100%">
+        <a href="http://www.techportal.co.za/linux/202-how-to-fix-php-fatal-error-class-domdocument-not-found-in-varwwwhtmlindexphp-on-line-171-or-similar-error?tmpl=component&amp;print=1&amp;page=" title="Print" rel="nofollow"><img src="http://simg.sinajs.cn/blog7style/images/common/sg_trans.gif" real_src="http://www.techportal.co.za/images/M_images/printButton.png" alt="Print" title="PHP提示 Fatal error: Class 'DOMDocument' not found in" /></a>
+      </td>
+      
+      <td align="right" width="100%">
+        <a href="http://www.techportal.co.za/component/mailto/?tmpl=component&amp;link=aHR0cDovL3d3dy50ZWNocG9ydGFsLmNvLnphL2xpbnV4LzIwMi1ob3ctdG8tZml4LXBocC1mYXRhbC1lcnJvci1jbGFzcy1kb21kb2N1bWVudC1ub3QtZm91bmQtaW4tdmFyd3d3aHRtbGluZGV4cGhwLW9uLWxpbmUtMTcxLW9yLXNpbWlsYXItZXJyb3I=" title="E-mail"><img src="http://simg.sinajs.cn/blog7style/images/common/sg_trans.gif" real_src="http://www.techportal.co.za/images/M_images/emailButton.png" alt="E-mail" title="PHP提示 Fatal error: Class 'DOMDocument' not found in" /></a>
+      </td>
+    </tr>
+  </table>
+  
+  <p>
+    <u><strong>Question</strong></u>: How to fix <strong>PHP Fatalerror: Class &#8216;DOMDocument&#8217; not found in/var/www/html/index.php on line 171</strong> or similar error?
+  </p>
+  
+  <p>
+    <strong>NOTE</strong>: Received this error on a <strong>Centos5</strong> environment while trying to run a <strong>PHP</strong>script that makes use of the <strong>DOMDocument</strong> class
+  </p>&lt;/p&gt; 
+  
+  <p>
+    <u><strong>Answer</strong></u>:
+  </p>
+  
+  <p>
+    In the <strong>CLI</strong> <font COLOR="#999999"><em>(CommandLine Interface)</em></font> run the following command
+  </p>&lt;/p&gt; 
+  
+  <div style="overflow: hidden; display: block; height: auto; width: inherit;">
+    <div>
+      <div>
+        <div>
+          <a style="width: 16px; height: 16px;" title="view source" href="http://www.techportal.co.za/linux/202-how-to-fix-php-fatal-error-class-domdocument-not-found-in-varwwwhtmlindexphp-on-line-171-or-similar-error#viewSource">view source</a><a style="width: 16px; height: 16px;" title="print" href="http://www.techportal.co.za/linux/202-how-to-fix-php-fatal-error-class-domdocument-not-found-in-varwwwhtmlindexphp-on-line-171-or-similar-error#printSource">print</a><a style="width: 16px; height: 16px;" title="?" href="http://www.techportal.co.za/linux/202-how-to-fix-php-fatal-error-class-domdocument-not-found-in-varwwwhtmlindexphp-on-line-171-or-similar-error#about">?</a>
+        </div>
+      </div>
+      
+      <div>
+        <div>
+          <code>1.</code><span><span style="margin-left: 0px ! important;"><code>yum</code><code>install</code> <code>php-xml</code></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <p>
+    This will install XML support and will solve the<strong>DOMDocument</strong> issue
+  </p>
+</div>
+:ET

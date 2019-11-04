@@ -1,0 +1,11 @@
+I"�<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+  弄了半天才搞定。。光靠baidu是不靠谱的&lt;/p&gt; 
+  
+  <div>
+  </div>
+  
+  <div>
+    <pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'Menlo';font-size:12.0pt;"><span style="color:#cc7832;font-weight:bold;">struct </span>tm *p<span style="color:#cc7832;">;<br /></span>timestamp += <span style="color:#6897bb;">7 </span>* <span style="color:#6897bb;">60 </span>* <span style="color:#6897bb;">60</span><span style="color:#cc7832;">;<br /></span><span style="color:#cc7832;"><br /></span>p = localtime(&amp;timestamp)<span style="color:#cc7832;">;<br /></span><span style="color:#808080;">//LOG_INFO &lt;&lt; "date:" &lt;&lt; p-&gt;tm_mday &lt;&lt; " " &lt;&lt; p-&gt;tm_hour &lt;&lt; ":" &lt;&lt; p-&gt;tm_min &lt;&lt; ":" &lt;&lt; p-&gt;tm_sec;<br /></span>p-&gt;tm_hour = <span style="color:#6897bb;"></span><span style="color:#cc7832;">;<br /></span>p-&gt;tm_min = <span style="color:#6897bb;"></span><span style="color:#cc7832;">;<br /></span>p-&gt;tm_sec = <span style="color:#6897bb;"></span><span style="color:#cc7832;">;<br /></span><span style="color:#cc7832;"><br /></span>uint32_t num = mktime(p)<span style="color:#cc7832;">;<br /></span>num -= <span style="color:#6897bb;">7 </span>* <span style="color:#6897bb;">60 </span>* <span style="color:#6897bb;">60</span><span style="color:#cc7832;">;</span></pre>
+  </div>
+</div>
+:ET

@@ -1,0 +1,22 @@
+I"�<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+  <p>
+    <a href="http://photo.blog.sina.com.cn/showpic.html#blogid=54ef39890101hz01&#038;url=http://album.sina.com.cn/pic/001yr0dXzy6JNd8AMb2ec" target="_blank"><img src="http://simg.sinajs.cn/blog7style/images/common/sg_trans.gif" real_src="http://s13.sinaimg.cn/mw690/001yr0dXzy6JNd8AMb2ec&amp;690" height="609" width="661" name="image_operate_24301403149285917" alt="基础mysql binlog监视器的数据缓冲平台的架构设计-支持各种结果缓冲" title="基础mysql binlog监视器的数据缓冲平台的架构设计-支持各种结果缓冲" /></a>
+  </p>
+  
+  <p>
+    这个是mysql关系查询结果缓冲中间件，当mysql更新的时候，自动清理所有被更新数据的关联数据，比如有个查询是个列表，里面有10个数据，当其中某个数据更新了，能够定位到这个数据在哪些缓冲中出现过，对指定的缓冲进行更新或者清空。有了这个后我们查询的时候cache里面总是最新的
+  </p>
+  
+  <p>
+    更高级的功能，自动分析sql，对简单的增删改操作进行分析，判断当前数据是否还适合在当前查询条件下的缓冲。比如select * fromxxx wherea=1;当某条数据不符合a=1的时候可以清理，当然基础上面的逻辑的话更简单只要清空cache，重新查询一次即可
+  </p>
+  
+  <p>
+    其中有个细节，每次查询结果后，我们要记录当前查询到cache并且记录当前查询所关联的所有数据id，当我们做批量更新如updatexxx set xxx =xxxx where status =2我们可以转译为 select id from xxxx wherestatus=2然后执行操作
+  </p>
+  
+  <p>
+    目前这个只是个设计，还没时间实施
+  </p>
+</div>
+:ET

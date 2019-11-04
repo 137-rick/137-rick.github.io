@@ -1,0 +1,126 @@
+I"E<div id="sina_keyword_ad_area2" class="articalContent   ">
+  <p>
+    转载的，感觉不错，所以留下备份
+  </p>
+  
+  <p>
+    来自于：http://m.cnblogs.com/62707/1681172.html
+  </p>
+  
+  <p>
+  </p>
+  
+  <p>
+    epoll是Kernel 2.6后新加入的事件机制，在高并发条件下，远优于select.
+  </p>
+  
+  <p>
+    用个硬件中的例子吧，可能不太恰当：epoll相当于I／O中断（有的时候才相应），而select相当于轮询（总要反复查询）。
+  </p>
+  
+  <p>
+    其实epoll比slect好用很多， 主要一下几个用法。
+  </p>
+  
+  <p>
+    struct epoll_event ;epoll事件体，事件发生时候你可以得到一个它。其中epoll_event.data.fd可以存储关联的句柄，epoll_event.event是监听标志，常用的有EPOLLIN （有数据，可以读）、EPOLLOUT（有数据，可以写）EPOLLET（有事件，通用）;
+  </p>
+  
+  <p>
+    （1） 创建epoll句柄
+  </p>
+  
+  <p>
+    int epFd = epoll_create(EPOLL_SIZE);
+  </p>
+  
+  <p>
+    （2）加入一个句柄到 epoll的监听队列
+  </p>
+  
+  <p>
+    ev.data.fd = serverFd;<br />ev.events = EPOLLIN | EPOLLET;<br />epoll_ctl(epFd, EPOLL_CTL_ADD, serverFd, &amp;ev);
+  </p>
+  
+  <p>
+    上 面的fd是你要绑定给事件发生时候使用的fd,到时候只能操作这个，下面是事件类型。
+  </p>
+  
+  <p>
+    使用epoll_ctl添加到之中，EPOLL_CTL_ADD是epoll控制类型，这里监听的fd和给event的fd一般相同。
+  </p>
+  
+  <p>
+    (3)等待event返回
+  </p>
+  
+  <p>
+    int nfds = epoll_wait(epFd, evs, EVENT_ARR, -1);
+  </p>
+  
+  <p>
+    传入的evs是epoll_event的数组，EVENT_ARR应当是不超过这个数组的长度。返回nfds的是不超过EVENT_ARR的数值，表示本次等待到了几个事件。
+  </p>
+  
+  <p>
+    (4)遍历事件
+  </p>
+  
+  <p>
+    注意，这里遍历的事件是肯定已经发生了的，而select中遍历的是每个fd，而fd不一定在FDSET中（即不一定有读事件发生）！这是效率最大的差别所在！
+  </p>
+  
+  <p>
+    for (int i = 0; i &lt; nfds; i++)
+  </p>
+  
+  <p>
+    {
+  </p>
+  
+  <p>
+    //do something
+  </p>
+  
+  <p>
+    }
+  </p>
+  
+  <p>
+    (5)其他技巧
+  </p>
+  
+  <p>
+    对事件是否是 serverFd判断，如果是，进行accept并加入epoll监听队列，要设置异步读取。
+  </p>
+  
+  <p>
+    如果evts[i]&amp;EPOLLIN，表示可读，使用read进行试探，如果&gt;0表示连接没有关闭，否则连接已经关闭（出发事件又读取不到东西，表示socket关闭！）。如果&lt;0出错。如果&gt;0，需要继续读取直到为0，但是注意这里的为0是在第一次read不为0的前提下，毕竟我们设置了异步读取，暂时没有数据可以读就返回0了！而如果第一次返回0，那么就是关闭吧！
+  </p>
+  
+  <p>
+    注意关闭要移出出epoll并且 close(clientFd)
+  </p>
+  
+  <p>
+    罗嗦了好多，看代码！
+  </p>
+  
+  <div>
+    <div>
+    </div>
+  </div><div alt1=""> 
+  
+  <table>
+    <tr>
+      <td>
+        <code>1</code>
+      </td>
+      
+      <td>
+      </td>
+    </tr>
+  </table>
+</div><div alt1=""> 
+</div></div>
+:ET

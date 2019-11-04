@@ -1,0 +1,40 @@
+---
+id: 222
+title: vagrant的镜像备份和恢复
+date: 2018-10-10T14:07:05+08:00
+author: 徐艺洲
+layout: revision
+guid: http://www.fireidea.com/archives/222
+permalink: /archives/222
+---
+<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+  最近Mac下的vagrant虚拟机又挂了，只记得我在虚拟机内装了redis和xhprof就挂了。。</p> 
+  
+  <div>
+    无法挂载共享目录，无法vagrant ssh登陆（只能手动输入用户名密码才能进入）
+  </div>
+  
+  <div>
+  </div>
+  
+  <div>
+    于是重新做了下虚拟机，搜索网络发现有vagrant pluginsnapshoot插件，结果安装报错。好像不能访问网站
+  </div>
+  
+  <div>
+  </div>
+  
+  <div>
+    后来找了一圈发现vagrant自带备份，vagrant package即可导出一个box文件，把之前自己做好的环境也打进去了
+  </div>
+  
+  <div>
+    然后使用vagrant box add 把他导入进来即可。。备份恢复就这么简单
+  </div>
+  
+  <div>
+  </div>
+  
+  <div>
+    snapshoot为啥不能用了。。。额
+  </div>
