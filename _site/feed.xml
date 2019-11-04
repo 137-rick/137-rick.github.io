@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-11-04T12:24:49+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">徐艺洲</title><subtitle>知止定静安虑得</subtitle><entry><title type="html">The HOME or COMPOSER_HOME environment variable must be set for composer to run</title><link href="http://localhost:4000/archives/329" rel="alternate" type="text/html" title="The HOME or COMPOSER_HOME environment variable must be set for composer to run" /><published>2019-10-15T17:45:49+08:00</published><updated>2019-10-15T17:45:49+08:00</updated><id>http://localhost:4000/archives/the-home-or-composer_home-environment-variable-must-be-set-for-composer-to-run</id><content type="html" xml:base="http://localhost:4000/archives/329">&lt;p&gt;在saltstack远程将项目composer 做dump优化的时候碰到如下错误提示&lt;/p&gt;
+
+&lt;p&gt;17:17:23 [SSH] executing…&lt;br /&gt;
+17:17:26 ERROR: Minions returned with non-zero exit code&lt;br /&gt;
+17:17:26 xxxxxxxxxxxxxxxx:&lt;br /&gt;
+17:17:26&lt;br /&gt;
+17:17:26&lt;br /&gt;
+17:17:26 [RuntimeException]&lt;br /&gt;
+17:17:26 The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly&lt;br /&gt;
+17:17:26&lt;br /&gt;
+17:17:26 [SSH] completed&lt;br /&gt;
+17:17:26 [SSH] exit-status: 11&lt;br /&gt;
+17:17:26&lt;br /&gt;
+17:17:26 Build step ‘Execute shell script on remote host using ssh’ marked build as failure&lt;/p&gt;
+
+&lt;p&gt;原来命令:&lt;/p&gt;
+
+&lt;p&gt;cd /home/xxx/xxxx/ &amp;amp;&amp;amp; /usr/local/php/bin/php ./Bin/composer dump-autoload -o -a –no-dev&lt;/p&gt;
+
+&lt;p&gt;经过检测发现是HOME和COMPOSER_HOME没有设置，改为&lt;/p&gt;
+
+&lt;p&gt;cd /home/xxxx/xxx/ &amp;amp;&amp;amp; HOME=”/home/xxxx” COMPOSER_HOME=”/home/xxxx/.config/composer” /usr/local/php/bin/php ./Bin/composer dump-autoload -o -a –no-dev&lt;/p&gt;
+
+&lt;p&gt;即可解决，composer需要这个目录写cache而很多环境变量在saltstack这里没有设置，导致此问题&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">在saltstack远程将项目composer 做dump优化的时候碰到如下错误提示</summary></entry><entry><title type="html">良好的分层和规范比微服务更好</title><link href="http://localhost:4000/archives/319" rel="alternate" type="text/html" title="良好的分层和规范比微服务更好" /><published>2019-09-18T10:23:34+08:00</published><updated>2019-09-18T10:23:34+08:00</updated><id>http://localhost:4000/archives/e889afe5a5bde79a84e58886e5b182e5928ce8a784e88c83e6af94e5beaee69c8de58aa1e69bb4e5a5bd</id><content type="html" xml:base="http://localhost:4000/archives/319">&lt;p&gt;微服务真的好吗？&lt;/p&gt;
+
+&lt;p&gt;一个完善的微服务对基础建设要求十分高，持续集成、自动化部署、全程监控、容器管理、运维自动化。&lt;/p&gt;
+
+&lt;p&gt;而拥有了这些才刚刚开始，多个项目的依赖关系需要链路跟踪整理。项目十分复杂后每次上线的时候很难快速上线。&lt;/p&gt;
+
+&lt;p&gt;多次系统之间引用调用性能极差&lt;/p&gt;
+
+&lt;p&gt;这不理智，也不现实&lt;/p&gt;
+
+&lt;p&gt;下面简单介绍下分层，我去年也讲过，批判过微服务，只是当时会场有些仓促，没有很深入的去分享。&lt;/p&gt;
+
+&lt;p&gt;一个好的代码分层，每层职责是单一的，隔离的，每一层都会把下面一层的所有细节屏蔽掉，类似tcp/ip协议栈。&lt;/p&gt;
+
+&lt;p&gt;只有这样越高层级别的分层才能够更专注，好的分层一个api所有依赖整理出来后是一个树形依赖关系，一个坏的分层整理出来的是一个多根的B+tree（笑）。&lt;/p&gt;
+
+&lt;p&gt;只有简洁的树形结构，才十分容易的做横向纵向拆分&lt;/p&gt;
+
+&lt;p&gt;代码内做分层很容易，而使用微服务做分层代价就会变得很大，因为层级越低性能要求越高，调用越频繁，RPC并不代表性能好反倒会导致性能下降&lt;/p&gt;
+
+&lt;p&gt;下面分享一些分层思路：&lt;/p&gt;
+
+&lt;p&gt;相信大家都知道，最常见的分层思想就是MVC了，而复杂的项目建议将项目从三层拆分出更多层级，由于后续PHP很少写View层了，这里分层思路特指API服务。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;不同层职责单一同层不能相互调用，只能上层调用下层。若必须同层互调业务相关逻辑压到下一层，再在上层封装调用。&lt;/p&gt;
+
+&lt;p&gt;此方式设计后的业务各层能够够更好的隔离业务代码变更，保证每层输入输出格式来降低代码改版导致的风险，方便测试改版横向、纵向拆分。&lt;/p&gt;
+
+&lt;p&gt;分层样例：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Controller外部请求的参数校验及内部业务服务逻辑拼装
+    &lt;ul&gt;
+      &lt;li&gt;Service内部标准服务API，是业务提供的标准最大粒度的业务服务，如下订单服务（扣库存，计算优惠，创建订单，设置价格，返回订单号）&lt;/li&gt;
+      &lt;li&gt;Module整合统一管理多数据源数据，实现数据对象化，并对多Model组合数据提供cache，联动更改&lt;/li&gt;
+      &lt;li&gt;Model封装数据源含第三方API，隔离数据层变化差异&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;为了方便理解分层，举例如下：&lt;figure class=&quot;wp-block-image size-large&quot;&gt;&lt;/figure&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.fireidea.com/wp-content/uploads/2019/09/image.png&quot; alt=&quot;&quot; class=&quot;wp-image-320&quot; srcset=&quot;http://www.fireidea.com/wp-content/uploads/2019/09/image.png 660w, http://www.fireidea.com/wp-content/uploads/2019/09/image-300x241.png 300w&quot; sizes=&quot;(max-width: 660px) 100vw, 660px&quot; /&gt; &amp;lt;/figure&amp;gt;&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">微服务真的好吗？</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/wp-content/uploads/2019/09/image-2.png" /></entry><entry><title type="html">如何使PHP IDE 识别__CALL魔法函数引用</title><link href="http://localhost:4000/archives/308" rel="alternate" type="text/html" title="如何使PHP IDE 识别__CALL魔法函数引用" /><published>2019-03-22T16:37:06+08:00</published><updated>2019-03-22T16:37:06+08:00</updated><id>http://localhost:4000/archives/e5a682e4bd95e4bdbfphp-ide-e8af86e588ab__calle9ad94e6b395e587bde695b0e5bc95e794a8</id><content type="html" xml:base="http://localhost:4000/archives/308">&lt;p&gt;在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。&lt;/p&gt;
+
+&lt;p&gt;具体模拟效果如下图：&lt;/p&gt;
+
+&lt;pre class=&quot;wp-block-code&quot;&gt;&lt;code&gt;class ServiceHelper
+{
+
+    public static function invoke($service = '', $serviceFunction = '', $params = array())
+    {
+        try {
+            $result = {$serviceFunction}(...$params);
+            return new Service_Result($result);
+        } catch ( Exception $e ) {
+            $code = $e-&amp;gt;getCode();
+            if ( $code == 1 ) {
+                $code = -1;
+            }
+            return new Service_Result(array(&quot;stat&quot; =&amp;gt; $code, &quot;msg&quot; =&amp;gt; $e-&amp;gt;getMessage(), &quot;data&quot; =&amp;gt; array(), &quot;backtrace&quot; =&amp;gt; $e-&amp;gt;getTraceAsString()));
+        }
+    }
+
+    public static function isOk($result)
+    {
+        return isset($result[&quot;stat&quot;]) &amp;amp;&amp;amp; $result[&quot;stat&quot;] == 1 ? true : false;
+    }
+
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是这样的封装会有其他问题，在IDE下我们如果使用一个代理类去调用Service，按住CTRL或CMD点击是无法直接跳转对应函数。如下图：Services_xxxx_xxx是可以点击跳转到对应类，但是submitXXXX点击无法跳转&lt;/p&gt;
+
+&lt;p&gt;调用效果代码如下：&lt;/p&gt;
+
+&lt;pre class=&quot;wp-block-code&quot;&gt;&lt;code&gt;$Ret = ServiceHelper::invoke('Services_xxxx_xxx', 'submitXXXX', [“param1”,&quot;param2&quot;);
+
+if ( !$Ret-&amp;gt;isOk() ) {
+    return xxxxx error;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;行业常见办法是在ServiceHelper类的注释中加入@Method \xxxxpkg\xxxxclass&lt;/p&gt;
+
+&lt;p&gt;今天发现call_user_function这个函数的参数类名和method都可以点&lt;/p&gt;
+
+&lt;p&gt;追过去后发现有@param callback $xxxx注释，这个注释可以让IDE主动识别Array(“classname”,”methodname”);&lt;/p&gt;
+
+&lt;p&gt;设置这个参数给ServiceHelper后传入的Services_xxxx_xxx和submitXXXX都可以被点击跳转了&lt;/p&gt;
+
+&lt;p&gt;考虑到之前这个问题我也被困扰过很久，但是相关资料网上没有，特在这里记录一下，分享给有缘人。&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。</summary></entry><entry><title type="html">swoole 4.x 连接池协程版本细节坑</title><link href="http://localhost:4000/archives/292" rel="alternate" type="text/html" title="swoole 4.x 连接池协程版本细节坑" /><published>2019-02-14T16:30:58+08:00</published><updated>2019-02-14T16:30:58+08:00</updated><id>http://localhost:4000/archives/swoole-4-x-e8bf9ee68ea5e6b1a0e58d8fe7a88be78988e69cace7bb86e88a82e59d91</id><content type="html" xml:base="http://localhost:4000/archives/292">&lt;p&gt;使用swoole 4.x协程版本后，系统资源利用率提高很多，与此同时发现很多开发习惯已经不同&lt;/p&gt;
+
+&lt;p&gt;自从看了王晶老师（半桶水）在微信公众号php饭米粒 里发表的文章后忍不住手痒跟随教程认真轮了一个php框架 磨刀石项目，旨在深入了解协程，在试玩过程中碰到很多有意思的事情。今天感觉很经典分享一例&lt;/p&gt;
+
+&lt;p&gt;设计如下：&lt;/p&gt;
+
+&lt;pre class=&quot;wp-block-code&quot;&gt;&lt;code&gt;&amp;lt;?php
+
+namespace WhetStone\Stone\Driver;
+
+/**
+ * 触发式连接池
+ * 空余连接数不够才会增长连接数
+ * 连接到达上限会阻塞等待指定秒数后抛异常
+ */
+abstract class Pool
+{
+
+    private $_pool = NULL;
+
+    protected $_config = NULL;
+
+    //整体最多连接数
+    private $_maxObjCount = 50;
+
+    //正在被调用个数
+    private $_invokeObjCount = 0;
+
+    /////////////////////////////////////////////////////
+    //获取对象，对象必须自带重连
+
+    /**
+     * Fend_Pool constructor.
+     * @param int $maxObjCount 最大连接数
+     * @param float $waitTimeout 连接池满等待超时时间
+     * @param array $config 数据连接配置
+     */
+    public function __construct($maxObjCount = 50, $waitTimeout = 3.0, $config = array())
+    {
+        $this-&amp;gt;_maxObjCount = $maxObjCount;
+        $this-&amp;gt;_waitDelay   = $waitTimeout;
+        $this-&amp;gt;_config      = $config;
+        $this-&amp;gt;_pool        = new \Swoole\Coroutine\Channel($maxObjCount);
+
+        //一次性创建好所有连接
+        //失败一个会异常抛出
+        //桶哥建议，好处是请求响应时间稳定
+        for ($count = 0; $count &amp;lt; $maxObjCount; $count++) {
+            $obj = $this-&amp;gt;getDriverObj();
+            $this-&amp;gt;_pool-&amp;gt;push($obj);
+        }
+    }
+
+    //对象报错时会调用这个函数整理错误
+
+    /**
+     * 对象调用操作
+     * @param string $name 动作名称
+     * @param array $arguments 参数
+     * @return mixed
+     * @throws
+     */
+    public function __call($name, $arguments)
+    {
+        $obj = null;
+
+        try {
+            $obj = $this-&amp;gt;fetchObj();
+
+            $result = call_user_func_array(array(
+                $obj,
+                $name
+            ), $arguments);
+
+            $this-&amp;gt;recycleObj($obj);
+
+            return $result;
+        } catch (\Exception $e) {
+            $this-&amp;gt;onError($obj, $e);
+            throw $e;
+        }
+    }
+
+    /////////////////////////////////////////////////////
+
+    private function fetchObj()
+    {
+        //pool is empty and have idle space
+        if ($this-&amp;gt;_pool-&amp;gt;isEmpty() &amp;amp;&amp;amp; ($this-&amp;gt;_invokeObjCount + $this-&amp;gt;_pool-&amp;gt;length() &amp;lt; $this-&amp;gt;_maxObjCount)) {
+            
+            $obj = $this-&amp;gt;getDriverObj(); //这里有坑！！！！！后续讲解
+            $this-&amp;gt;_invokeObjCount++;
+           
+            return $obj;
+        }
+
+        //channel have obj
+        //fetch obj by 3 second wait
+        $obj = $this-&amp;gt;_pool-&amp;gt;pop(3.0);
+
+        if ($obj !== FALSE) {
+            //increase count
+            $this-&amp;gt;_invokeObjCount++;
+            return $obj;
+        }
+
+        //fetch fail max arrive
+        throw new \Exception(&quot;fetch pool obj fail... please increase the connection pool size.&quot;, -123);
+    }
+    
+    /**
+     * 获取数据对象，return对象即可
+     * @return mixed
+     */
+    abstract public function getDriverObj();
+
+    private function recycleObj($obj)
+    {
+        if (empty($obj)) {
+            return;
+        }
+
+        //decrease count
+        $this-&amp;gt;_invokeObjCount--;
+
+        return $this-&amp;gt;_pool-&amp;gt;push($obj);
+    }
+
+    abstract public function onError($obj, $e);
+
+
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从上图可以看到我做了一个父类，给各种驱动继承后回调方式传回不同对象，以此实现一个池管理，当有命令调用的时候直接通过__call方法将请求传递到obj内。&lt;/p&gt;
+
+&lt;p&gt;子类如果使用可以用如下方式使用&lt;/p&gt;
+
+&lt;pre class=&quot;wp-block-code&quot;&gt;&lt;code&gt;&amp;lt;?php
+
+namespace WhetStone\Stone\Driver\Redis;
+
+/**
+ * 基础新版Redis驱动做的
+ * 新版本明确服务器不可回应时抛出异常
+ *
+ * Class Redis
+ * @package WhetStone\Stone\Driver\Redis
+ */
+class Redis
+{
+    private $config = null;
+
+    private $dbName = &quot;&quot;;
+
+    private $redis = null;
+
+    public function __construct($dbname, $config)
+    {
+        $this-&amp;gt;dbName = $dbname;
+        $this-&amp;gt;config = $config;
+
+        //do connect
+        $this-&amp;gt;reconnect();
+    }
+
+    //if connection is broken reconnect
+    public function checkConnection()
+    {
+        try {
+            if ($this-&amp;gt;redis-&amp;gt;ping() != &quot;+PONG&quot;) {
+                $this-&amp;gt;reconnect();
+            }
+        } catch (\Exception $e) {
+            $this-&amp;gt;reconnect();
+        }
+    }
+
+    public function reconnect()
+    {
+        $this-&amp;gt;redis = new \Redis();
+        
+        //connect the server
+        $ret = $this-&amp;gt;redis-&amp;gt;connect($this-&amp;gt;config[&quot;host&quot;], $this-&amp;gt;config[&quot;port&quot;], $this-&amp;gt;config[&quot;timeout&quot;] ?? 0);
+        if (!$ret) {
+            throw new \Exception(&quot;connect Redis Server fail:&quot; . $this-&amp;gt;redis-&amp;gt;getLastError(), -24);
+        }
+
+        $this-&amp;gt;redis-&amp;gt;setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
+        $this-&amp;gt;redis-&amp;gt;setOption(\Redis::OPT_READ_TIMEOUT, -1);
+
+        //prefix
+        if (isset($this-&amp;gt;config[&quot;prefix&quot;]) &amp;amp;&amp;amp; !empty($this-&amp;gt;config[&quot;prefix&quot;])) {
+            $this-&amp;gt;redis-&amp;gt;setOption(\Redis::OPT_PREFIX, $this-&amp;gt;config[&quot;prefix&quot;]);
+        }
+
+        //auth
+        if (isset($this-&amp;gt;config[&quot;auth&quot;]) &amp;amp;&amp;amp; !empty($this-&amp;gt;config[&quot;auth&quot;])) {
+            if ($this-&amp;gt;redis-&amp;gt;auth($this-&amp;gt;config[&quot;auth&quot;]) == FALSE) {
+                throw new \Exception(&quot;Redis auth fail.dbname:&quot; . $this-&amp;gt;dbName, -23);
+            }
+        }
+
+        //db
+        if (isset($this-&amp;gt;config[&quot;db&quot;]) &amp;amp;&amp;amp; !empty($this-&amp;gt;config[&quot;db&quot;])) {
+            $this-&amp;gt;redis-&amp;gt;select($this-&amp;gt;config[&quot;db&quot;]);
+        }
+
+
+    }
+
+    public function __call($name, $arguments)
+    {
+        //check is work well
+        $this-&amp;gt;checkConnection();
+
+        //do the cmd，如果刚检测完还报错，那。。。
+        return call_user_func_array(array($this-&amp;gt;redis, $name), $arguments);
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;实际运行当中却碰到了一个奇怪的问题，我在pool中规定连接池对象只能有50个，但是使用ab压测-c 1000的时候发现实际会超过我规定的数量，并且请求出现卡死现象。&lt;/p&gt;
+
+&lt;p&gt;经过深入及swoole作者之一twose帮助，通过gdb发现代码卡在channel-&amp;gt;push上&lt;/p&gt;
+
+&lt;pre class=&quot;wp-block-code&quot;&gt;&lt;code&gt;invoke count:236 pool len:0
+invoke count:237 pool len:0
+invoke count:238 pool len:0
+invoke count:239 pool len:0
+invoke count:240 pool len:0
+invoke count:241 pool len:0
+invoke count:242 pool len:0
+invoke count:243 pool len:0
+invoke count:244 pool len:0
+invoke count:245 pool len:0
+invoke count:246 pool len:0
+invoke count:247 pool len:0
+invoke count:248 pool len:0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;反向推理后发现关键问题在这里：&lt;/p&gt;
+
+&lt;pre class=&quot;wp-block-code&quot;&gt;&lt;code&gt;private function fetchObj()
+    {
+        //pool is empty and have idle space
+        if ($this-&amp;gt;_pool-&amp;gt;isEmpty() &amp;amp;&amp;amp; ($this-&amp;gt;_invokeObjCount + $this-&amp;gt;_pool-&amp;gt;length() &amp;lt; $this-&amp;gt;_maxObjCount)) {
+            try {
+                $this-&amp;gt;_invokeObjCount++; //此处是关键，一定要放在getDriverObj前面
+                $obj = $this-&amp;gt;getDriverObj();
+            } catch (\Exception $e) {
+                $this-&amp;gt;_invokeObjCount--;
+                throw $e;
+            }
+
+            return $obj;
+        }
+
+        //channel have obj
+        //fetch obj by 3 second wait
+        $obj = $this-&amp;gt;_pool-&amp;gt;pop(3.0);
+
+        if ($obj !== FALSE) {
+            //increase count
+            $this-&amp;gt;_invokeObjCount++;
+            return $obj;
+        }
+
+        //fetch fail max arrive
+        throw new \Exception(&quot;fetch pool obj fail... please increase the connection pool size.&quot;, -123);
+    }&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;故障原因为：并发请求1000时，1000个请求会同时调用池获取对象，这时new redis及connect会自动进入协程，由于计数没有先添加，其他并发的请求拿到的已经分配的_invokeObjCount个数没有超过指定数量，所以导致了1000个redis对象被new及connect，最终导致channel超过了之前规定的50…&lt;/p&gt;
+
+&lt;p&gt;虽然swoole4.x的协程底层只有一个线程，但是一定要识别出哪里会自动协程……&lt;/p&gt;
+
+&lt;p&gt;这个连接池有很大缺点，刚才讨论后发现还需要改进，如pipline，事务会有问题，稍晚会继续介绍新版本&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">使用swoole 4.x协程版本后，系统资源利用率提高很多，与此同时发现很多开发习惯已经不同</summary></entry><entry><title type="html">开源Http协议Kafka消费生产网关</title><link href="http://localhost:4000/archives/283" rel="alternate" type="text/html" title="开源Http协议Kafka消费生产网关" /><published>2018-11-27T11:19:23+08:00</published><updated>2018-11-27T11:19:23+08:00</updated><id>http://localhost:4000/archives/e5bc80e6ba90httpe58d8fe8aeaekafkae6b688e8b4b9e7949fe4baa7e7bd91e585b3</id><content type="html" xml:base="http://localhost:4000/archives/283">&lt;pre class=&quot;wp-block-preformatted&quot;&gt;https://github.com/xcl3721/http-kafka-gateway&lt;/pre&gt;
+
+&lt;p&gt;使用http接口请求消费，生产数据到kafka&lt;/p&gt;
+
+&lt;p&gt;要求 kafka 0.9+ 版本，jdk8&lt;/p&gt;
+
+&lt;p&gt;目前仅支持JAAS安全验证的kafka&lt;/p&gt;
+
+&lt;p&gt;QPS 1w&lt;/p&gt;
+
+&lt;p&gt;主要是方便PHP的同志们&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">https://github.com/xcl3721/http-kafka-gateway</summary></entry><entry><title type="html">PHP微服务使用Redis实现事务协调</title><link href="http://localhost:4000/archives/280" rel="alternate" type="text/html" title="PHP微服务使用Redis实现事务协调" /><published>2018-11-27T11:12:52+08:00</published><updated>2018-11-27T11:12:52+08:00</updated><id>http://localhost:4000/archives/phpe5beaee69c8de58aa1e4bdbfe794a8redise5ae9ee78eb0e4ba8be58aa1e58d8fe8b083</id><content type="html" xml:base="http://localhost:4000/archives/280">&lt;p&gt;微服务如何简单的实现一致性事务，使用redis，多个进程一起刷redis,隔一秒获取一次某个list，如果list内的数据个数达到预期个数那么就一起提交完成了。&lt;/p&gt;
+
+&lt;p&gt;成功：如一个事情六个步骤，list内出现不同的key六个，那么就是完成了。&lt;/p&gt;
+
+&lt;p&gt;失败：如果其中有一个fail字符的key那么就是有人失败了，回滚&lt;/p&gt;
+
+&lt;p&gt;二次提交确认：如果第一步六个都成了，那么执行一起提交，提交后再获取一次出现fail就代表有接口提交失败了，一起回滚。&lt;/p&gt;
+
+&lt;p&gt;超时：如果某个步骤从开始到结束超过五秒就一起回滚&lt;/p&gt;
+
+&lt;p&gt;失效:list设置一个ttl，至于怎么通知多个进程一起并行工作multi curl哦&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">微服务如何简单的实现一致性事务，使用redis，多个进程一起刷redis,隔一秒获取一次某个list，如果list内的数据个数达到预期个数那么就一起提交完成了。</summary></entry><entry><title type="html">PHP Notice: Redis::set(): send of 36 bytes failed with errno=32 Broken pipe in</title><link href="http://localhost:4000/archives/277" rel="alternate" type="text/html" title="PHP Notice: Redis::set(): send of 36 bytes failed with errno=32 Broken pipe in" /><published>2018-11-06T20:39:42+08:00</published><updated>2018-11-06T20:39:42+08:00</updated><id>http://localhost:4000/archives/php-notice-redisset-send-of-36-bytes-failed-with-errno32-broken-pipe-in</id><content type="html" xml:base="http://localhost:4000/archives/277">&lt;p&gt;发现phpredis 如果已经链接，但是底层链接异常的情况下，所有命令都会执行失败，只返回false，不会抛出异常。&lt;/p&gt;
+
+&lt;p&gt;如果想修复需要每次执行都ping一下，这样会降低qps&lt;/p&gt;
+
+&lt;p&gt;还在和官方沟通。&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">发现phpredis 如果已经链接，但是底层链接异常的情况下，所有命令都会执行失败，只返回false，不会抛出异常。</summary></entry><entry><title type="html">推荐一本微服务的书</title><link href="http://localhost:4000/archives/272" rel="alternate" type="text/html" title="推荐一本微服务的书" /><published>2018-10-10T14:50:01+08:00</published><updated>2018-10-10T14:50:01+08:00</updated><id>http://localhost:4000/archives/e68ea8e88d90e4b880e69cace5beaee69c8de58aa1e79a84e4b9a6</id><content type="html" xml:base="http://localhost:4000/archives/272">&lt;p&gt;Microservices from Design to Deployment 中文版 《微服务：从设计到部署》&lt;/p&gt;
+
+&lt;h2 id=&quot;httpsgithubcomdocshomemicroservices&quot;&gt;&lt;a href=&quot;https://github.com/DocsHome/microservices&quot;&gt;https://github.com/DocsHome/microservices&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;对于RPC以及RPC类型介绍的很清楚,同时说明了优缺点&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">Microservices from Design to Deployment 中文版 《微服务：从设计到部署》</summary></entry><entry><title type="html">PHP 分布式链路跟踪 Fiery</title><link href="http://localhost:4000/archives/268" rel="alternate" type="text/html" title="PHP 分布式链路跟踪 Fiery" /><published>2018-10-10T14:20:16+08:00</published><updated>2018-10-10T14:20:16+08:00</updated><id>http://localhost:4000/archives/php-e58886e5b883e5bc8fe993bee8b7afe8b79fe8b8aa-fiery</id><content type="html" xml:base="http://localhost:4000/archives/268">&lt;p&gt;Fiery 是一款为PHP提供服务的性能跟踪监控系统，能够提高线上业务排查故障效率，帮助开发人员改善系统性能及完善系统。方便的查看线上多依赖服务接口的调用关系，响应性能，回放请求过程，参数，系统异常、性能统计，部署简单方便，开箱即用。&lt;/p&gt;
+
+&lt;h2 id=&quot;模块及功能&quot;&gt;模块及功能&lt;figure class=&quot;wp-block-image&quot;&gt;&lt;/figure&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wx4.sinaimg.cn/large/54ef3989ly1ffyjeni9p7j20c30gugmb.jpg&quot; alt=&quot;&quot; /&gt; &amp;lt;/figure&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;​&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;埋点库: RagnarSDK提供PHP侵入式性能埋点库，集成到 项目入口、Curl类及Mysql基础类即可&lt;/li&gt;
+  &lt;li&gt;日志收集: LogPusher服务负责监控收集埋点库产生的日志更新，并推送到服务端&lt;/li&gt;
+  &lt;li&gt;统计存储服务: Server接收日志，并对日志进行整理、存储、汇总、索引、统计分析功能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;最低配置要求&quot;&gt;最低配置要求&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PHP 5.3 or later with bcmath&lt;/li&gt;
+  &lt;li&gt;目前仅支持64位 UTF8编码PHP项目&lt;/li&gt;
+  &lt;li&gt;Linux, OS X 、Windows&lt;/li&gt;
+  &lt;li&gt;内存: 2G+&lt;/li&gt;
+  &lt;li&gt;Java 8 Runtime&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;服务端安装步骤&quot;&gt;服务端安装步骤&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;下载并安装 &lt;a href=&quot;http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;Java 8 Runtime&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;下载Fiery最新的 Fiery &lt;a target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;Release page&lt;/a&gt; jar包&lt;/li&gt;
+  &lt;li&gt;在jar所在目录创建文件夹 mkdir logs index db&lt;/li&gt;
+  &lt;li&gt;通过以下命令启动主服务:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;nohup java -XX:-MaxFDLimit -Xms3750m -Xmx3750m -XX:ReservedCodeCacheSize=240m -XX:+UseCompressedOops -jar ragnarserver-0.5.1-SNAPSHOT.jar -type server –server.port=9090 &amp;amp;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;服务启动后 浏览器访问地址： &lt;a href=&quot;http://127.0.0.1:9090/ragnar/&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;http://127.0.0.1:9090/ragnar/&lt;/a&gt; 即可&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;php项目埋点库埋点介绍&quot;&gt;PHP项目埋点库埋点介绍&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/weiboad/fiery/blob/master/README_CN.md&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;埋点库相关介绍&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;logpusher-日志收集及推送服务&quot;&gt;LogPusher 日志收集及推送服务&lt;/h2&gt;
+
+&lt;p&gt;日志推送服务，可以监控一个目录下所有日志是否有更新，并将内容推送到主服务&lt;/p&gt;
+
+&lt;p&gt;nohup java -XX:-MaxFDLimit -Xms128m -Xmx450m -XX:ReservedCodeCacheSize=240m -XX:+UseCompressedOops -jar ragnarserver-0.5.1-SNAPSHOT.jar -type logpush -path [要监控的日志目录] -host 服务器ip及端口[ip:port] -outtime 7 &amp;amp;&lt;/p&gt;
+
+&lt;hr class=&quot;wp-block-separator&quot; /&gt;
+
+&lt;h2 id=&quot;功能界面介绍&quot;&gt;功能界面介绍&lt;/h2&gt;
+
+&lt;h2 id=&quot;调用回放&quot;&gt;调用回放&lt;figure class=&quot;wp-block-image&quot;&gt;&lt;/figure&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wx2.sinaimg.cn/large/54ef3989ly1ffyjf3xjcij219u0qtn32.jpg&quot; alt=&quot;&quot; /&gt; &amp;lt;/figure&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;​&lt;/p&gt;
+
+&lt;blockquote class=&quot;wp-block-quote&quot;&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;最近请求&quot;&gt;最近请求&lt;figure class=&quot;wp-block-image&quot;&gt;&lt;/figure&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wx4.sinaimg.cn/large/54ef3989ly1ffyjfacih6j21050ob434.jpg&quot; alt=&quot;&quot; /&gt; &amp;lt;/figure&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;​&lt;/p&gt;
+
+&lt;blockquote class=&quot;wp-block-quote&quot;&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;性能排行&quot;&gt;性能排行&lt;figure class=&quot;wp-block-image&quot;&gt;&lt;/figure&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://wx2.sinaimg.cn/large/54ef3989ly1ffyjfh4bh8j21010oite8.jpg&quot; alt=&quot;&quot; /&gt; &amp;lt;/figure&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;​&lt;/p&gt;
+
+&lt;blockquote class=&quot;wp-block-quote&quot;&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;依赖服务排行&quot;&gt;依赖服务排行&lt;/h2&gt;
+
+&lt;blockquote class=&quot;wp-block-quote&quot;&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;sql性能统计&quot;&gt;SQL性能统计&lt;/h2&gt;
+
+&lt;blockquote class=&quot;wp-block-quote&quot;&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;线上故障去重&quot;&gt;线上故障去重&lt;/h2&gt;
+
+&lt;blockquote class=&quot;wp-block-quote&quot;&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;​项目地址：https://github.com/weiboad/fiery/wiki​​​​&lt;/p&gt;</content><author><name>徐艺洲</name></author><summary type="html">Fiery 是一款为PHP提供服务的性能跟踪监控系统，能够提高线上业务排查故障效率，帮助开发人员改善系统性能及完善系统。方便的查看线上多依赖服务接口的调用关系，响应性能，回放请求过程，参数，系统异常、性能统计，部署简单方便，开箱即用。</summary></entry><entry><title type="html">新绘制了两个架构图</title><link href="http://localhost:4000/archives/52" rel="alternate" type="text/html" title="新绘制了两个架构图" /><published>2018-10-10T10:59:20+08:00</published><updated>2018-10-10T10:59:20+08:00</updated><id>http://localhost:4000/archives/e696b0e7bb98e588b6e4ba86e4b8a4e4b8aae69eb6e69e84e59bbe</id><content type="html" xml:base="http://localhost:4000/archives/52">&lt;p&gt;能看得懂的真懂:)&lt;figure class=&quot;wp-block-image&quot;&gt;&lt;/figure&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.fireidea.com/wp-content/uploads/2018/10/aliyunlog_consumer.png&quot; alt=&quot;&quot; class=&quot;wp-image-53&quot; srcset=&quot;http://www.fireidea.com/wp-content/uploads/2018/10/aliyunlog_consumer.png 1094w, http://www.fireidea.com/wp-content/uploads/2018/10/aliyunlog_consumer-300x184.png 300w, http://www.fireidea.com/wp-content/uploads/2018/10/aliyunlog_consumer-768x470.png 768w, http://www.fireidea.com/wp-content/uploads/2018/10/aliyunlog_consumer-1024x627.png 1024w&quot; sizes=&quot;(max-width: 1094px) 100vw, 1094px&quot; /&gt; &amp;lt;figcaption&amp;gt;Swoole 阿里云日志消费&amp;lt;/figcaption&amp;gt;&amp;lt;/figure&amp;gt;&lt;/p&gt;
+
+&lt;div class=&quot;wp-block-image&quot;&gt;
+  &lt;figure class=&quot;aligncenter&quot;&gt;&lt;img src=&quot;http://www.fireidea.com/wp-content/uploads/2018/10/servicemesh.png&quot; alt=&quot;&quot; class=&quot;wp-image-54&quot; srcset=&quot;http://www.fireidea.com/wp-content/uploads/2018/10/servicemesh.png 1063w, http://www.fireidea.com/wp-content/uploads/2018/10/servicemesh-300x221.png 300w, http://www.fireidea.com/wp-content/uploads/2018/10/servicemesh-768x566.png 768w, http://www.fireidea.com/wp-content/uploads/2018/10/servicemesh-1024x755.png 1024w&quot; sizes=&quot;(max-width: 1063px) 100vw, 1063px&quot; /&gt;&lt;figcaption&gt;Swoole PHP service mesh&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;/div&gt;</content><author><name>徐艺洲</name></author><summary type="html">能看得懂的真懂:)</summary></entry></feed>

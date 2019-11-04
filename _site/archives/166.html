@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Android下播放用加密视频流服务器 | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Android下播放用加密视频流服务器" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="最近写了一个android下的http服务器，支持文件及加密视频文件按流输出并解密，可以视频直连然后播放&lt;/p&gt; 我写了两个版本：我开源的这个版本，这个版本有点问题……虽然支持视频http 206range的Seek，但是个别播放器异常，videoview可以正常放但是ffplayerseek会死掉。并且没有太多并发能力第二个版本修复了以上问题并且工作正常，因为商用可能所以不公布……见谅 public class StreamProxy implements Runnable { privatestatic final String LOG_TAG = StreamProxy.class.getName(); private intport = 0; privateboolean isRunning = true; privateServerSocket socket; privateThread thread; public intgetPort() { returnport; } public voidinit() { try { socket = newServerSocket(0, 0, InetAddress.getByAddress(new byte[] { 127, 0, 0, 1 })); socket.setSoTimeout(5000); port =socket.getLocalPort(); Log.d(LOG_TAG, &#8220;port &#8221; + port + &#8221; obtained&#8221;); } catch(UnknownHostException e) { Log.e(LOG_TAG, &#8220;Error initializing server&#8221;, e); } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error initializing server&#8221;, e); } } public voidstart() { if (socket== null) { throw newIllegalStateException( &#8220;Cannotstart proxy; it has not been initialized.&#8221;); } thread = newThread(this); thread.start(); } public voidstop() { isRunning =false; if (thread== null) { throw newIllegalStateException( &#8220;Cannot stopproxy; it has not been started.&#8221;); } thread.interrupt(); try { thread.join(5000); } catch(InterruptedException e) { e.printStackTrace(); } } @Override public voidrun() { Log.d(LOG_TAG, &#8220;running&#8221;); while(isRunning) { try { Socketclient = socket.accept(); if (client== null) { continue; } Log.d(LOG_TAG, &#8220;client connected&#8221;); HttpRequestrequest = readRequest(client); processRequest(request, client); } catch(SocketTimeoutException e) { // Donothing } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error connecting to client&#8221;, e); } } Log.d(LOG_TAG, &#8220;Proxy interrupted. Shutting down.&#8221;); } privateHttpRequest readRequest(Socket client) { HttpRequestrequest = null; InputStreamis; StringfirstLine; BufferedReader reader; Log.e(LOG_TAG, &#8220;ThreadName:&#8221; +Thread.currentThread().getName()); try { is =client.getInputStream(); reader = newBufferedReader(new InputStreamReader(is), 8192); firstLine =reader.readLine(); } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error parsing request&#8221;, e); returnnull; } if(firstLine == null) { Log.i(LOG_TAG, &#8220;Proxy client closed connection without arequest.&#8221;); returnnull; } // decidemethod and uri StringTokenizer st = new StringTokenizer(firstLine); Stringmethod = st.nextToken(); String uri =st.nextToken().substring(1); // createresult request =new BasicHttpRequest(method, uri); //rest while (true){ try { firstLine =reader.readLine(); if(firstLine == null || firstLine.trim().compareTo(&#8220;&#8221;) == 0) break; int p =firstLine.indexOf(&#8216;:&#8217;); if (p&lt; 0) continue; final Stringatr = firstLine.substring(0, p).trim() .toLowerCase(); final Stringval = firstLine.substring(p + 1).trim(); Log.d(LOG_TAG, &#8220;header:&#8221; + atr + &#8220;:&#8221; + val); request.setHeader(atr, val); } catch(IOException e) { e.printStackTrace(); break; } } returnrequest; } private voidprocessRequest(HttpRequest request, Socket client) throwsIllegalStateException, IOException { EncryptFileinputfile; if (request== null) { Log.d(LOG_TAG, &#8220;request load fail&#8221;); return; } Log.d(LOG_TAG, &#8220;processing&#8221;); // openfile Stringfilepath = Environment.getExternalStorageDirectory() + &#8220;/&#8221; +request.getRequestLine().getUri(); // s try { inputfile =new EncryptFile(filepath); } catch(Exception e1) { Log.d(LOG_TAG, &#8220;EncryptFile load fail&#8221;); e1.printStackTrace(); return; } Stringmimetype = inputfile.getMimeType(); longfilesize = inputfile.getFileSize(); Log.d(LOG_TAG, &#8220;filepath:&#8221; + filepath); Log.d(LOG_TAG, &#8220;mimetype:&#8221; + mimetype); Log.d(LOG_TAG, &#8220;filesize:&#8221; + filesize); Stringheaders; //跳转播放哦 if(request.getHeaders(&#8220;range&#8221;).length != 0 &amp;&amp;request.getHeaders(&#8220;range&#8221;)[0].getValue().startsWith( &#8220;bytes=&#8221;)){ String range= request.getHeaders(&#8220;range&#8221;)[0].getValue().substring( 6); longstartFrom = 0, endAt = -1; int minus =range.indexOf(&#8216;-&#8216;); if (minus&gt; 0) { try { StringstartR = range.substring(0, minus); startFrom =Long.parseLong(startR); String endR= range.substring(minus + 1); endAt =Long.parseLong(endR); } catch(NumberFormatException nfe) { } } if (endAt&lt;= 0) endAt =filesize; // seekfile try { inputfile.seekTo(startFrom); } catch(Exception e) { e.printStackTrace(); Log.d(LOG_TAG, &#8220;EncryptFile seek fail&#8221;); return; } //header headers =&#8221;HTTP/1.1 206 OK\r\n&#8221;; headers +=&#8221;Content-Type: &#8221; + mimetype + &#8220;\r\n&#8221;; headers +=&#8221;Accept-Ranges: bytes\r\n&#8221;; headers +=&#8221;Content-Length: &#8221; + (filesize &#8211; startFrom) + &#8220;\r\n&#8221;; headers +=&#8221;Content-Range: bytes &#8221; + startFrom + &#8220;-&#8221; + endAt + &#8220;/&#8221; + filesize +&#8221;\r\n&#8221;; headers +=&#8221;\r\n&#8221;; Log.d(LOG_TAG, &#8220;accept:range 206 request&#8221;); } else{ //从头播放哦 //header headers =&#8221;HTTP/1.1 200 OK\r\n&#8221;; headers +=&#8221;Content-Type: &#8221; + mimetype + &#8220;\r\n&#8221;; headers +=&#8221;Accept-Ranges: bytes\r\n&#8221;; headers +=&#8221;Content-Length: &#8221; + filesize + &#8220;\r\n&#8221;; headers +=&#8221;\r\n&#8221;; Log.d(LOG_TAG, &#8220;accept:start 200 request&#8221;); } Log.d(LOG_TAG, &#8220;respone_headers:&#8221; + headers); //这里应该输出视频内容，略 } catch(Exception e) { Log.e(LOG_TAG, e.getMessage(), e); } finally{ if(inputfile != null) { inputfile.close(); inputfile =null; } client.close(); } }" />
+<meta property="og:description" content="最近写了一个android下的http服务器，支持文件及加密视频文件按流输出并解密，可以视频直连然后播放&lt;/p&gt; 我写了两个版本：我开源的这个版本，这个版本有点问题……虽然支持视频http 206range的Seek，但是个别播放器异常，videoview可以正常放但是ffplayerseek会死掉。并且没有太多并发能力第二个版本修复了以上问题并且工作正常，因为商用可能所以不公布……见谅 public class StreamProxy implements Runnable { privatestatic final String LOG_TAG = StreamProxy.class.getName(); private intport = 0; privateboolean isRunning = true; privateServerSocket socket; privateThread thread; public intgetPort() { returnport; } public voidinit() { try { socket = newServerSocket(0, 0, InetAddress.getByAddress(new byte[] { 127, 0, 0, 1 })); socket.setSoTimeout(5000); port =socket.getLocalPort(); Log.d(LOG_TAG, &#8220;port &#8221; + port + &#8221; obtained&#8221;); } catch(UnknownHostException e) { Log.e(LOG_TAG, &#8220;Error initializing server&#8221;, e); } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error initializing server&#8221;, e); } } public voidstart() { if (socket== null) { throw newIllegalStateException( &#8220;Cannotstart proxy; it has not been initialized.&#8221;); } thread = newThread(this); thread.start(); } public voidstop() { isRunning =false; if (thread== null) { throw newIllegalStateException( &#8220;Cannot stopproxy; it has not been started.&#8221;); } thread.interrupt(); try { thread.join(5000); } catch(InterruptedException e) { e.printStackTrace(); } } @Override public voidrun() { Log.d(LOG_TAG, &#8220;running&#8221;); while(isRunning) { try { Socketclient = socket.accept(); if (client== null) { continue; } Log.d(LOG_TAG, &#8220;client connected&#8221;); HttpRequestrequest = readRequest(client); processRequest(request, client); } catch(SocketTimeoutException e) { // Donothing } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error connecting to client&#8221;, e); } } Log.d(LOG_TAG, &#8220;Proxy interrupted. Shutting down.&#8221;); } privateHttpRequest readRequest(Socket client) { HttpRequestrequest = null; InputStreamis; StringfirstLine; BufferedReader reader; Log.e(LOG_TAG, &#8220;ThreadName:&#8221; +Thread.currentThread().getName()); try { is =client.getInputStream(); reader = newBufferedReader(new InputStreamReader(is), 8192); firstLine =reader.readLine(); } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error parsing request&#8221;, e); returnnull; } if(firstLine == null) { Log.i(LOG_TAG, &#8220;Proxy client closed connection without arequest.&#8221;); returnnull; } // decidemethod and uri StringTokenizer st = new StringTokenizer(firstLine); Stringmethod = st.nextToken(); String uri =st.nextToken().substring(1); // createresult request =new BasicHttpRequest(method, uri); //rest while (true){ try { firstLine =reader.readLine(); if(firstLine == null || firstLine.trim().compareTo(&#8220;&#8221;) == 0) break; int p =firstLine.indexOf(&#8216;:&#8217;); if (p&lt; 0) continue; final Stringatr = firstLine.substring(0, p).trim() .toLowerCase(); final Stringval = firstLine.substring(p + 1).trim(); Log.d(LOG_TAG, &#8220;header:&#8221; + atr + &#8220;:&#8221; + val); request.setHeader(atr, val); } catch(IOException e) { e.printStackTrace(); break; } } returnrequest; } private voidprocessRequest(HttpRequest request, Socket client) throwsIllegalStateException, IOException { EncryptFileinputfile; if (request== null) { Log.d(LOG_TAG, &#8220;request load fail&#8221;); return; } Log.d(LOG_TAG, &#8220;processing&#8221;); // openfile Stringfilepath = Environment.getExternalStorageDirectory() + &#8220;/&#8221; +request.getRequestLine().getUri(); // s try { inputfile =new EncryptFile(filepath); } catch(Exception e1) { Log.d(LOG_TAG, &#8220;EncryptFile load fail&#8221;); e1.printStackTrace(); return; } Stringmimetype = inputfile.getMimeType(); longfilesize = inputfile.getFileSize(); Log.d(LOG_TAG, &#8220;filepath:&#8221; + filepath); Log.d(LOG_TAG, &#8220;mimetype:&#8221; + mimetype); Log.d(LOG_TAG, &#8220;filesize:&#8221; + filesize); Stringheaders; //跳转播放哦 if(request.getHeaders(&#8220;range&#8221;).length != 0 &amp;&amp;request.getHeaders(&#8220;range&#8221;)[0].getValue().startsWith( &#8220;bytes=&#8221;)){ String range= request.getHeaders(&#8220;range&#8221;)[0].getValue().substring( 6); longstartFrom = 0, endAt = -1; int minus =range.indexOf(&#8216;-&#8216;); if (minus&gt; 0) { try { StringstartR = range.substring(0, minus); startFrom =Long.parseLong(startR); String endR= range.substring(minus + 1); endAt =Long.parseLong(endR); } catch(NumberFormatException nfe) { } } if (endAt&lt;= 0) endAt =filesize; // seekfile try { inputfile.seekTo(startFrom); } catch(Exception e) { e.printStackTrace(); Log.d(LOG_TAG, &#8220;EncryptFile seek fail&#8221;); return; } //header headers =&#8221;HTTP/1.1 206 OK\r\n&#8221;; headers +=&#8221;Content-Type: &#8221; + mimetype + &#8220;\r\n&#8221;; headers +=&#8221;Accept-Ranges: bytes\r\n&#8221;; headers +=&#8221;Content-Length: &#8221; + (filesize &#8211; startFrom) + &#8220;\r\n&#8221;; headers +=&#8221;Content-Range: bytes &#8221; + startFrom + &#8220;-&#8221; + endAt + &#8220;/&#8221; + filesize +&#8221;\r\n&#8221;; headers +=&#8221;\r\n&#8221;; Log.d(LOG_TAG, &#8220;accept:range 206 request&#8221;); } else{ //从头播放哦 //header headers =&#8221;HTTP/1.1 200 OK\r\n&#8221;; headers +=&#8221;Content-Type: &#8221; + mimetype + &#8220;\r\n&#8221;; headers +=&#8221;Accept-Ranges: bytes\r\n&#8221;; headers +=&#8221;Content-Length: &#8221; + filesize + &#8220;\r\n&#8221;; headers +=&#8221;\r\n&#8221;; Log.d(LOG_TAG, &#8220;accept:start 200 request&#8221;); } Log.d(LOG_TAG, &#8220;respone_headers:&#8221; + headers); //这里应该输出视频内容，略 } catch(Exception e) { Log.e(LOG_TAG, e.getMessage(), e); } finally{ if(inputfile != null) { inputfile.close(); inputfile =null; } client.close(); } }" />
+<link rel="canonical" href="http://localhost:4000/archives/166" />
+<meta property="og:url" content="http://localhost:4000/archives/166" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-09-26T14:45:58+08:00" />
+<script type="application/ld+json">
+{"description":"最近写了一个android下的http服务器，支持文件及加密视频文件按流输出并解密，可以视频直连然后播放&lt;/p&gt; 我写了两个版本：我开源的这个版本，这个版本有点问题……虽然支持视频http 206range的Seek，但是个别播放器异常，videoview可以正常放但是ffplayerseek会死掉。并且没有太多并发能力第二个版本修复了以上问题并且工作正常，因为商用可能所以不公布……见谅 public class StreamProxy implements Runnable { privatestatic final String LOG_TAG = StreamProxy.class.getName(); private intport = 0; privateboolean isRunning = true; privateServerSocket socket; privateThread thread; public intgetPort() { returnport; } public voidinit() { try { socket = newServerSocket(0, 0, InetAddress.getByAddress(new byte[] { 127, 0, 0, 1 })); socket.setSoTimeout(5000); port =socket.getLocalPort(); Log.d(LOG_TAG, &#8220;port &#8221; + port + &#8221; obtained&#8221;); } catch(UnknownHostException e) { Log.e(LOG_TAG, &#8220;Error initializing server&#8221;, e); } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error initializing server&#8221;, e); } } public voidstart() { if (socket== null) { throw newIllegalStateException( &#8220;Cannotstart proxy; it has not been initialized.&#8221;); } thread = newThread(this); thread.start(); } public voidstop() { isRunning =false; if (thread== null) { throw newIllegalStateException( &#8220;Cannot stopproxy; it has not been started.&#8221;); } thread.interrupt(); try { thread.join(5000); } catch(InterruptedException e) { e.printStackTrace(); } } @Override public voidrun() { Log.d(LOG_TAG, &#8220;running&#8221;); while(isRunning) { try { Socketclient = socket.accept(); if (client== null) { continue; } Log.d(LOG_TAG, &#8220;client connected&#8221;); HttpRequestrequest = readRequest(client); processRequest(request, client); } catch(SocketTimeoutException e) { // Donothing } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error connecting to client&#8221;, e); } } Log.d(LOG_TAG, &#8220;Proxy interrupted. Shutting down.&#8221;); } privateHttpRequest readRequest(Socket client) { HttpRequestrequest = null; InputStreamis; StringfirstLine; BufferedReader reader; Log.e(LOG_TAG, &#8220;ThreadName:&#8221; +Thread.currentThread().getName()); try { is =client.getInputStream(); reader = newBufferedReader(new InputStreamReader(is), 8192); firstLine =reader.readLine(); } catch(IOException e) { Log.e(LOG_TAG, &#8220;Error parsing request&#8221;, e); returnnull; } if(firstLine == null) { Log.i(LOG_TAG, &#8220;Proxy client closed connection without arequest.&#8221;); returnnull; } // decidemethod and uri StringTokenizer st = new StringTokenizer(firstLine); Stringmethod = st.nextToken(); String uri =st.nextToken().substring(1); // createresult request =new BasicHttpRequest(method, uri); //rest while (true){ try { firstLine =reader.readLine(); if(firstLine == null || firstLine.trim().compareTo(&#8220;&#8221;) == 0) break; int p =firstLine.indexOf(&#8216;:&#8217;); if (p&lt; 0) continue; final Stringatr = firstLine.substring(0, p).trim() .toLowerCase(); final Stringval = firstLine.substring(p + 1).trim(); Log.d(LOG_TAG, &#8220;header:&#8221; + atr + &#8220;:&#8221; + val); request.setHeader(atr, val); } catch(IOException e) { e.printStackTrace(); break; } } returnrequest; } private voidprocessRequest(HttpRequest request, Socket client) throwsIllegalStateException, IOException { EncryptFileinputfile; if (request== null) { Log.d(LOG_TAG, &#8220;request load fail&#8221;); return; } Log.d(LOG_TAG, &#8220;processing&#8221;); // openfile Stringfilepath = Environment.getExternalStorageDirectory() + &#8220;/&#8221; +request.getRequestLine().getUri(); // s try { inputfile =new EncryptFile(filepath); } catch(Exception e1) { Log.d(LOG_TAG, &#8220;EncryptFile load fail&#8221;); e1.printStackTrace(); return; } Stringmimetype = inputfile.getMimeType(); longfilesize = inputfile.getFileSize(); Log.d(LOG_TAG, &#8220;filepath:&#8221; + filepath); Log.d(LOG_TAG, &#8220;mimetype:&#8221; + mimetype); Log.d(LOG_TAG, &#8220;filesize:&#8221; + filesize); Stringheaders; //跳转播放哦 if(request.getHeaders(&#8220;range&#8221;).length != 0 &amp;&amp;request.getHeaders(&#8220;range&#8221;)[0].getValue().startsWith( &#8220;bytes=&#8221;)){ String range= request.getHeaders(&#8220;range&#8221;)[0].getValue().substring( 6); longstartFrom = 0, endAt = -1; int minus =range.indexOf(&#8216;-&#8216;); if (minus&gt; 0) { try { StringstartR = range.substring(0, minus); startFrom =Long.parseLong(startR); String endR= range.substring(minus + 1); endAt =Long.parseLong(endR); } catch(NumberFormatException nfe) { } } if (endAt&lt;= 0) endAt =filesize; // seekfile try { inputfile.seekTo(startFrom); } catch(Exception e) { e.printStackTrace(); Log.d(LOG_TAG, &#8220;EncryptFile seek fail&#8221;); return; } //header headers =&#8221;HTTP/1.1 206 OK\\r\\n&#8221;; headers +=&#8221;Content-Type: &#8221; + mimetype + &#8220;\\r\\n&#8221;; headers +=&#8221;Accept-Ranges: bytes\\r\\n&#8221;; headers +=&#8221;Content-Length: &#8221; + (filesize &#8211; startFrom) + &#8220;\\r\\n&#8221;; headers +=&#8221;Content-Range: bytes &#8221; + startFrom + &#8220;-&#8221; + endAt + &#8220;/&#8221; + filesize +&#8221;\\r\\n&#8221;; headers +=&#8221;\\r\\n&#8221;; Log.d(LOG_TAG, &#8220;accept:range 206 request&#8221;); } else{ //从头播放哦 //header headers =&#8221;HTTP/1.1 200 OK\\r\\n&#8221;; headers +=&#8221;Content-Type: &#8221; + mimetype + &#8220;\\r\\n&#8221;; headers +=&#8221;Accept-Ranges: bytes\\r\\n&#8221;; headers +=&#8221;Content-Length: &#8221; + filesize + &#8220;\\r\\n&#8221;; headers +=&#8221;\\r\\n&#8221;; Log.d(LOG_TAG, &#8220;accept:start 200 request&#8221;); } Log.d(LOG_TAG, &#8220;respone_headers:&#8221; + headers); //这里应该输出视频内容，略 } catch(Exception e) { Log.e(LOG_TAG, e.getMessage(), e); } finally{ if(inputfile != null) { inputfile.close(); inputfile =null; } client.close(); } }","datePublished":"2013-09-26T14:45:58+08:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/166"},"url":"http://localhost:4000/archives/166","author":{"@type":"Person","name":"徐艺洲"},"headline":"Android下播放用加密视频流服务器","dateModified":"2013-09-26T14:45:58+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="徐艺洲" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">徐艺洲</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/aboutme.html">关于我</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Android下播放用加密视频流服务器</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2013-09-26T14:45:58+08:00" itemprop="datePublished">Sep 26, 2013
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">徐艺洲</span></span></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <div id="sina_keyword_ad_area2" class="articalContent   ">
+  最近写了一个android下的http服务器，支持文件及加密视频文件按流输出并解密，可以视频直连然后播放&lt;/p&gt; 
+  
+  <p>
+    我写了两个版本：<br />我开源的这个版本，这个版本有点问题……虽然支持视频http 206range的Seek，但是个别播放器异常，videoview可以正常放但是ffplayerseek会死掉。并且没有太多并发能力<br />第二个版本修复了以上问题并且工作正常，因为商用可能所以不公布……见谅
+  </p>
+  
+  <p>
+    public class StreamProxy implements Runnable {<br /> privatestatic final String LOG_TAG = StreamProxy.class.getName();
+  </p>
+  
+  <p>
+    private intport = 0;
+  </p>
+  
+  <p>
+    privateboolean isRunning = true;<br /> privateServerSocket socket;<br /> privateThread thread;
+  </p>
+  
+  <p>
+    public intgetPort() {<br /> returnport;<br /> }
+  </p>
+  
+  <p>
+    public voidinit() {<br /> try {<br /> socket = newServerSocket(0, 0,<br /> InetAddress.getByAddress(new byte[] { 127, 0, 0, 1 }));<br /> socket.setSoTimeout(5000);<br /> port =socket.getLocalPort();<br /> Log.d(LOG_TAG, &#8220;port &#8221; + port + &#8221; obtained&#8221;);<br /> } catch(UnknownHostException e) {<br /> Log.e(LOG_TAG, &#8220;Error initializing server&#8221;, e);<br /> } catch(IOException e) {<br /> Log.e(LOG_TAG, &#8220;Error initializing server&#8221;, e);<br /> }<br /> }
+  </p>
+  
+  <p>
+    public voidstart() {
+  </p>
+  
+  <p>
+    if (socket== null) {<br /> throw newIllegalStateException(<br /> &#8220;Cannotstart proxy; it has not been initialized.&#8221;);<br /> }
+  </p>
+  
+  <p>
+    thread = newThread(this);<br /> thread.start();<br /> }
+  </p>
+  
+  <p>
+    public voidstop() {<br /> isRunning =false;
+  </p>
+  
+  <p>
+    if (thread== null) {<br /> throw newIllegalStateException(<br /> &#8220;Cannot stopproxy; it has not been started.&#8221;);<br /> }
+  </p>
+  
+  <p>
+    thread.interrupt();<br /> try {<br /> thread.join(5000);<br /> } catch(InterruptedException e) {<br /> e.printStackTrace();<br /> }<br /> }
+  </p>
+  
+  <p>
+    @Override<br /> public voidrun() {<br /> Log.d(LOG_TAG, &#8220;running&#8221;);<br /> while(isRunning) {<br /> try {<br /> Socketclient = socket.accept();<br /> if (client== null) {<br /> continue;<br /> }<br /> Log.d(LOG_TAG, &#8220;client connected&#8221;);<br /> HttpRequestrequest = readRequest(client);<br /> processRequest(request, client);<br /> } catch(SocketTimeoutException e) {<br /> // Donothing<br /> } catch(IOException e) {<br /> Log.e(LOG_TAG, &#8220;Error connecting to client&#8221;, e);<br /> }<br /> }<br /> Log.d(LOG_TAG, &#8220;Proxy interrupted. Shutting down.&#8221;);<br /> }
+  </p>
+  
+  <p>
+    privateHttpRequest readRequest(Socket client) {<br /> HttpRequestrequest = null;
+  </p>
+  
+  <p>
+    InputStreamis;<br /> StringfirstLine;<br /> BufferedReader reader;
+  </p>
+  
+  <p>
+    Log.e(LOG_TAG, &#8220;ThreadName:&#8221; +Thread.currentThread().getName());<br /> try {<br /> is =client.getInputStream();<br /> reader = newBufferedReader(new InputStreamReader(is), 8192);<br /> firstLine =reader.readLine();<br /> } catch(IOException e) {<br /> Log.e(LOG_TAG, &#8220;Error parsing request&#8221;, e);<br /> returnnull;<br /> }
+  </p>
+  
+  <p>
+    if(firstLine == null) {<br /> Log.i(LOG_TAG, &#8220;Proxy client closed connection without arequest.&#8221;);<br /> returnnull;<br /> }
+  </p>
+  
+  <p>
+    // decidemethod and uri<br /> StringTokenizer st = new StringTokenizer(firstLine);<br /> Stringmethod = st.nextToken();<br /> String uri =st.nextToken().substring(1);<br /> // createresult<br /> request =new BasicHttpRequest(method, uri);<br /> //rest<br /> while (true){<br /> try {<br /> firstLine =reader.readLine();<br /> if(firstLine == null || firstLine.trim().compareTo(&#8220;&#8221;) == 0)<br /> break;
+  </p>
+  
+  <p>
+    int p =firstLine.indexOf(&#8216;:&#8217;);<br /> if (p&lt; 0)<br /> continue;<br /> final Stringatr = firstLine.substring(0, p).trim()<br /> .toLowerCase();<br /> final Stringval = firstLine.substring(p + 1).trim();<br /> Log.d(LOG_TAG, &#8220;header:&#8221; + atr + &#8220;:&#8221; + val);<br /> request.setHeader(atr, val);
+  </p>
+  
+  <p>
+    } catch(IOException e) {<br /> e.printStackTrace();<br /> break;<br /> }<br /> }
+  </p>
+  
+  <p>
+    returnrequest;<br /> }
+  </p>
+  
+  <p>
+    private voidprocessRequest(HttpRequest request, Socket client)<br /> throwsIllegalStateException, IOException {<br /> EncryptFileinputfile;<br /> if (request== null) {<br /> Log.d(LOG_TAG, &#8220;request load fail&#8221;);<br /> return;<br /> }<br /> Log.d(LOG_TAG, &#8220;processing&#8221;);<br /> // openfile<br /> Stringfilepath = Environment.getExternalStorageDirectory() + &#8220;/&#8221;<br /> +request.getRequestLine().getUri();<br /> // s
+  </p>
+  
+  <p>
+    try {<br /> inputfile =new EncryptFile(filepath);<br /> } catch(Exception e1) {<br /> Log.d(LOG_TAG, &#8220;EncryptFile load fail&#8221;);<br /> e1.printStackTrace();<br /> return;<br /> }<br /> Stringmimetype = inputfile.getMimeType();<br /> longfilesize = inputfile.getFileSize();
+  </p>
+  
+  <p>
+    Log.d(LOG_TAG, &#8220;filepath:&#8221; + filepath);<br /> Log.d(LOG_TAG, &#8220;mimetype:&#8221; + mimetype);<br /> Log.d(LOG_TAG, &#8220;filesize:&#8221; + filesize);
+  </p>
+  
+  <p>
+    Stringheaders;<br /> //跳转播放哦
+  </p>
+  
+  <p>
+    if(request.getHeaders(&#8220;range&#8221;).length != 0<br /> &amp;&amp;request.getHeaders(&#8220;range&#8221;)[0].getValue().startsWith(<br /> &#8220;bytes=&#8221;)){<br /> String range= request.getHeaders(&#8220;range&#8221;)[0].getValue().substring(<br /> 6);
+  </p>
+  
+  <p>
+    longstartFrom = 0, endAt = -1;<br /> int minus =range.indexOf(&#8216;-&#8216;);<br /> if (minus&gt; 0) {<br /> try {<br /> StringstartR = range.substring(0, minus);<br /> startFrom =Long.parseLong(startR);<br /> String endR= range.substring(minus + 1);<br /> endAt =Long.parseLong(endR);<br /> } catch(NumberFormatException nfe) {<br /> }<br /> }<br /> if (endAt&lt;= 0)<br /> endAt =filesize;<br /> // seekfile<br /> try {<br /> inputfile.seekTo(startFrom);<br /> } catch(Exception e) {<br /> e.printStackTrace();<br /> Log.d(LOG_TAG, &#8220;EncryptFile seek fail&#8221;);<br /> return;<br /> }<br /> //header
+  </p>
+  
+  <p>
+    headers =&#8221;HTTP/1.1 206 OK\r\n&#8221;;<br /> headers +=&#8221;Content-Type: &#8221; + mimetype + &#8220;\r\n&#8221;;<br /> headers +=&#8221;Accept-Ranges: bytes\r\n&#8221;;<br /> headers +=&#8221;Content-Length: &#8221; + (filesize &#8211; startFrom) + &#8220;\r\n&#8221;;<br /> headers +=&#8221;Content-Range: bytes &#8221; + startFrom + &#8220;-&#8221; + endAt + &#8220;/&#8221;<br /> + filesize +&#8221;\r\n&#8221;;<br /> headers +=&#8221;\r\n&#8221;;<br /> Log.d(LOG_TAG, &#8220;accept:range 206 request&#8221;);
+  </p>
+  
+  <p>
+    } else{<br /> //从头播放哦
+  </p>
+  
+  <p>
+    //header<br /> headers =&#8221;HTTP/1.1 200 OK\r\n&#8221;;<br /> headers +=&#8221;Content-Type: &#8221; + mimetype + &#8220;\r\n&#8221;;<br /> headers +=&#8221;Accept-Ranges: bytes\r\n&#8221;;<br /> headers +=&#8221;Content-Length: &#8221; + filesize + &#8220;\r\n&#8221;;<br /> headers +=&#8221;\r\n&#8221;;<br /> Log.d(LOG_TAG, &#8220;accept:start 200 request&#8221;);<br /> }<br /> Log.d(LOG_TAG, &#8220;respone_headers:&#8221; + headers);<br /> //这里应该输出视频内容，略<br /> } catch(Exception e) {<br /> Log.e(LOG_TAG, e.getMessage(), e);<br /> } finally{<br /> if(inputfile != null) {<br /> inputfile.close();<br /> inputfile =null;<br /> }<br /> client.close();<br /> }<br /> }
+  </p>
+  
+  <p>
+  </p>
+</div>
+
+  </div><a class="u-url" href="/archives/166" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">徐艺洲</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">徐艺洲</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">xcl3721</span></a></li><li><a href="https://www.twitter.com/xcl3721"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">xcl3721</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>知止定静安虑得</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
