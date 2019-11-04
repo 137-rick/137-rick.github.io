@@ -1,0 +1,48 @@
+I"Q<p>在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。</p>
+
+<p>具体模拟效果如下图：</p>
+
+<pre class="wp-block-code"><code>class ServiceHelper
+{
+
+    public static function invoke($service = '', $serviceFunction = '', $params = array())
+    {
+        try {
+            $result = {$serviceFunction}(...$params);
+            return new Service_Result($result);
+        } catch ( Exception $e ) {
+            $code = $e-&gt;getCode();
+            if ( $code == 1 ) {
+                $code = -1;
+            }
+            return new Service_Result(array("stat" =&gt; $code, "msg" =&gt; $e-&gt;getMessage(), "data" =&gt; array(), "backtrace" =&gt; $e-&gt;getTraceAsString()));
+        }
+    }
+
+    public static function isOk($result)
+    {
+        return isset($result["stat"]) &amp;&amp; $result["stat"] == 1 ? true : false;
+    }
+
+}</code></pre>
+
+<p>但是这样的封装会有其他问题，在IDE下我们如果使用一个代理类去调用Service，按住CTRL或CMD点击是无法直接跳转对应函数。如下图：Services_xxxx_xxx是可以点击跳转到对应类，但是submitXXXX点击无法跳转</p>
+
+<p>调用效果代码如下：</p>
+
+<pre class="wp-block-code"><code>$Ret = ServiceHelper::invoke('Services_xxxx_xxx', 'submitXXXX', [“param1”,"param2");
+
+if ( !$Ret-&gt;isOk() ) {
+    return xxxxx error;
+}</code></pre>
+
+<p>行业常见办法是在ServiceHelper类的注释中加入@Method \xxxxpkg\xxxxclass</p>
+
+<p>今天发现call_user_function这个函数的参数类名和method都可以点</p>
+
+<p>追过去后发现有@param callback $xxxx注释，这个注释可以让IDE主动识别Array(“classname”,”methodname”);</p>
+
+<p>设置这个参数给ServiceHelper后传入的Services_xxxx_xxx和submitXXXX都可以被点击跳转了</p>
+
+<p>考虑到之前这个问题我也被困扰过很久，但是相关资料网上没有，特在这里记录一下，分享给有缘人。</p>
+:ET
