@@ -1,0 +1,24 @@
+<p>在saltstack远程将项目composer 做dump优化的时候碰到如下错误提示</p>
+
+<p>17:17:23 [SSH] executing…<br />
+17:17:26 ERROR: Minions returned with non-zero exit code<br />
+17:17:26 xxxxxxxxxxxxxxxx:<br />
+17:17:26<br />
+17:17:26<br />
+17:17:26 [RuntimeException]<br />
+17:17:26 The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly<br />
+17:17:26<br />
+17:17:26 [SSH] completed<br />
+17:17:26 [SSH] exit-status: 11<br />
+17:17:26<br />
+17:17:26 Build step ‘Execute shell script on remote host using ssh’ marked build as failure</p>
+
+<p>原来命令:</p>
+
+<p>cd /home/xxx/xxxx/ &amp;&amp; /usr/local/php/bin/php ./Bin/composer dump-autoload -o -a –no-dev</p>
+
+<p>经过检测发现是HOME和COMPOSER_HOME没有设置，改为</p>
+
+<p>cd /home/xxxx/xxx/ &amp;&amp; HOME=”/home/xxxx” COMPOSER_HOME=”/home/xxxx/.config/composer” /usr/local/php/bin/php ./Bin/composer dump-autoload -o -a –no-dev</p>
+
+<p>即可解决，composer需要这个目录写cache而很多环境变量在saltstack这里没有设置，导致此问题</p>

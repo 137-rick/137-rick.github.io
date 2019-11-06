@@ -1,0 +1,77 @@
+<div id="sina_keyword_ad_area2" class="articalContent   ">
+  <p>
+    boonex是国外的一个很不错的sns社区程序，但是如果你不花钱购买会在网站底部显示一个广告条，如果你在模板去掉这个东西的话，你的网站将不会运行，这个很郁闷，我研究了下写出了我怎么破解，只是讨论借鉴，因为我觉得这个网站的加密方式很有意思
+  </p>
+  
+  <p>
+    修改\inc\desgign.inc.php
+  </p>
+  
+  <p>
+    在pagecode
+  </p>
+  
+  <p>
+    和send_header_page_change之间
+  </p>
+  
+  <p>
+    的东西都删除掉
+  </p>
+  
+  <p>
+    然后用以下内容覆盖掉即可
+  </p>
+  
+  <p>
+    $source=&#8217;Z2xvYmFsICRfcGFnZTsNCmdsb2JhbCAkX3BhZ2VfY29udDsNCiAgICAgICAgDQokczQzNTIzNiA9IGJhc2U2NF9kZWNvZGUoICdZbUZ6WlRZMFgyUmxZMjlrWlE9PScgKTsvL2Jhc2U2NF9kZWNvZGUNCiRzNTg5MzU1ID0gJ1gxOWliMjl1WlhoZlptOXZkR1Z5YzE5Zic7Ly9fX2Jvb25leF9mb290ZXJzX18NCiRzNzQzNzY1ID0gJ1oyeHZZbUZzSUNSemFYUmxPdzBLWjJ4dlltRnNJQ1IwYlhCc093MEtEUW9rYzBadmIzUmxjbk1nUFNBbkp6c05DbWxtSUNoblpYUlFZWEpoYlNnblpXNWhZbXhsWDJSdmJIQm9hVzVmWm05dmRHVnlKeWtwSUhzTkNpQWdJQ0FOQ2lBZ0lDQWtjMEZtWmtsRUlEMGdkSEpwYlNoblpYUlFZWEpoYlNnblltOXZibVY0UVdabVNVUW5LU2s3RFFvZ0lDQWdhV1lvSUhOMGNteGxiaWdnSkhOQlptWkpSQ0FwSUNrZ0pITkJabVpKUkNBdVBTQW5MbWgwYld3bk93MEtEUW9nSUNBZ2IySmZjM1JoY25Rb0tUc05DaUFnSUEwS0lDQWdJQ1J6Um05dmRHVnljeUE5SUc5aVgyZGxkRjlqYkdWaGJpZ3BPdzBLZlEwS0RRcHlaWFIxY200Z0pITkdiMjkwWlhKek93PT0nOw0KJHM3ODI0ODYgPSAnYzNSeWNHOXonOw0KJHM5NTAzMDQgPSAnYzNSeVgzSmxjR3hoWTJVPSc7DQokczk0Mzk4NSA9ICdjSEpsWjE5eVpYQnNZV05sJzsNCiRzNjc3NDM0ID0gJ1dXOTFJR2hoZG1VZ2JXRnVkV0ZzYkhrZ2NtVnRiM1psWkNBOFlTQm9jbVZtUFNKb2RIUndPaTh2ZDNkM0xtSnZiMjVsZUM1amIyMHZJajVDYjI5dVJYZzhMMkUrSUdadmIzUmxjbk1nZDJsMGFHOTFkQ0J3WVhscGJtY2dabTl5SUhSb1pTQnlhV2RvZENCMGJ5NGdVR3hsWVhObExDQm5ieUIwYnlBOFlTQm9jbVZtUFNKb2RIUndjem92TDNkM2R5NWliMjl1WlhndVkyOXRMM0JoZVcxbGJuUXVjR2h3UDNCeWIyUjFZM1E5Ukc5c2NHaHBiaUkrUW05dmJrVjRMbU52YlR3dllUNGdZVzVrSUc5eVpHVnlJSFJvWlNCaFpDQm1jbVZsSUd4cFkyVnVjMlZ6SUhSdklHSmxJR0ZpYkdVZ2RHOGdkWE5sSUhsdmRYSWdjMmwwWlNCM2FYUm9iM1YwSUR4aElHaHlaV1k5SW1oMGRIQTZMeTkzZDNjdVltOXZibVY0TG1OdmJTOGlQa0p2YjI1RmVEd3ZZVDRnWm05dmRHVnljeTRnVkdobGVTQjNhV3hzSUdKbElHRjFkRzl0WVhScFkyRnNiSGtnY21WdGIzWmxaQ0JoY3lCemIyOXVJR0Z6SUhsdmRTQnlaV2RwYzNSbGNpQjViM1Z5SUdGa0lHWnlaV1VnYkdsalpXNXpaWE11SUZCc1pXRnpaU3dnY0hWMElIUm9aU0E4WWo1ZlgySnZiMjVsZUY5bWIyOTBaWEp6WDE4OEwySStJR3RsZVNCaVlXTnJJR2x1ZEc4Z1JHOXNjR2hwYmlCMFpXMXdiR0YwWlM0PSc7DQokczU0NjY5MyA9ICdibUZ0WlY5cGJtUmxlQT09JzsNCiRzNjcxNTc0ID0gJ2NHRnljMlZRWVdkbFFubE9ZVzFsJzsNCg0KJHM5Mzc1ODQgPSAkczQzNTIzNiggJHM3ODI0ODYgKTsNCiRzMDIzOTUwID0gJHM0MzUyMzYoICRzOTUwMzA0ICk7DQokczkzNzUwNCA9ICRzNDM1MjM2KCAkczk0Mzk4NSApOw0KJHMzODU5NDMgPSAkczQzNTIzNiggJHM1NDY2OTMgKTsNCiRzMzc1MDEzID0gJHM0MzUyMzYoICRzNjcxNTc0ICk7DQoNCiRzOTg3NTYwID0gJF9wYWdlOw0KJHM5MTc1NjEgPSAkX3BhZ2VfY29udDsNCiRzOTQ2NTkwID0gZmFsc2U7DQokczg1OTM0OCA9IGFycmF5KCAyOSwgNDMsIDQ0LCA1OSwgNzksIDgwLCAxNTAgKTsNCg0KJHM2NTM5ODcgPSAkczc1Mzc4Ny0+JHMzNzUwMTMoJHM2NTM5ODcsICRzOTE3NTYxWyRzOTg3NTYwWyRzMzg1OTQzXV0pOw0KaWYoIGluX2FycmF5KCAkczk4NzU2MFskczM4NTk0M10sICRzODU5MzQ4ICkgb3IgJHM5Mzc1ODQoICRzNjUzOTg3LCAkczQzNTIzNiggJHM1ODkzNTUgKSApICE9PSAkczk0NjU5MCApIHsNCiAgICAkczY1Mzk4NyA9ICRzMDIzOTUwKCAkczQzNTIzNiggJHM1ODkzNTUgKSwgZXZhbCggJHM0MzUyMzYoJHM3NDM3NjUpICksICRzNjUzOTg3ICk7DQogICAgZWNobyAkczY1Mzk4NzsNCn0gZWxzZQ0KICAgIGVjaG8gJHM5ODc1NjBbJHMzODU5NDNdIC4gJyAnIC4gJHM0MzUyMzYoICRzNjc3NDM0ICk7&#8242;;
+  </p>
+  
+  <p>
+    $s947586=&#8217;echo&#8217;;
+  </p>
+  
+  <p>
+    $$s947586=create_function( &#8216;$s753787, $s653987&#8217;, base64_decode($source ) );
+  </p>
+  
+  <p>
+    这样就完成了
+  </p>&lt;/p&gt; 
+  
+  <p>
+    可能很多朋友问这个里面都是什么，我贴出来一点：
+  </p>
+  
+  <p>
+    global $_page;<br />global $_page_cont;
+  </p>
+  
+  <p>
+    $s435236 = base64_decode( &#8216;YmFzZTY0X2RlY29kZQ==&#8217;);//base64_decode<br />$s589355 = &#8216;X19ib29uZXhfZm9vdGVyc19f&#8217;;//__boonex_footers__<br />$s743765 =&#8217;Z2xvYmFsICRzaXRlOw0KZ2xvYmFsICR0bXBsOw0KDQokc0Zvb3RlcnMgPSAnJzsNCmlmIChnZXRQYXJhbSgnZW5hYmxlX2RvbHBoaW5fZm9vdGVyJykpIHsNCiAgICANCiAgICAkc0FmZklEID0gdHJpbShnZXRQYXJhbSgnYm9vbmV4QWZmSUQnKSk7DQogICAgaWYoIHN0cmxlbiggJHNBZmZJRCApICkgJHNBZmZJRCAuPSAnLmh0bWwnOw0KDQogICAgb2Jfc3RhcnQoKTsNCiAgIA0KICAgICRzRm9vdGVycyA9IG9iX2dldF9jbGVhbigpOw0KfQ0KDQpyZXR1cm4gJHNGb290ZXJzOw==&#8217;;//这里是我修改的地方，就是一些版权信息，我给去掉很多。。。只留下一点有用的东西<br />$s782486 = &#8216;c3RycG9z&#8217;;<br />$s950304 = &#8216;c3RyX3JlcGxhY2U=&#8217;;<br />$s943985 = &#8216;cHJlZ19yZXBsYWNl&#8217;;<br />$s677434 =&#8217;WW91IGhhdmUgbWFudWFsbHkgcmVtb3ZlZCA8YSBocmVmPSJodHRwOi8vd3d3LmJvb25leC5jb20vIj5Cb29uRXg8L2E+IGZvb3RlcnMgd2l0aG91dCBwYXlpbmcgZm9yIHRoZSByaWdodCB0by4gUGxlYXNlLCBnbyB0byA8YSBocmVmPSJodHRwczovL3d3dy5ib29uZXguY29tL3BheW1lbnQucGhwP3Byb2R1Y3Q9RG9scGhpbiI+Qm9vbkV4LmNvbTwvYT4gYW5kIG9yZGVyIHRoZSBhZCBmcmVlIGxpY2Vuc2VzIHRvIGJlIGFibGUgdG8gdXNlIHlvdXIgc2l0ZSB3aXRob3V0IDxhIGhyZWY9Imh0dHA6Ly93d3cuYm9vbmV4LmNvbS8iPkJvb25FeDwvYT4gZm9vdGVycy4gVGhleSB3aWxsIGJlIGF1dG9tYXRpY2FsbHkgcmVtb3ZlZCBhcyBzb29uIGFzIHlvdSByZWdpc3RlciB5b3VyIGFkIGZyZWUgbGljZW5zZXMuIFBsZWFzZSwgcHV0IHRoZSA8Yj5fX2Jvb25leF9mb290ZXJzX188L2I+IGtleSBiYWNrIGludG8gRG9scGhpbiB0ZW1wbGF0ZS4=&#8217;;<br />$s546693 = &#8216;bmFtZV9pbmRleA==&#8217;;<br />$s671574 = &#8216;cGFyc2VQYWdlQnlOYW1l&#8217;;
+  </p>
+  
+  <p>
+    $s937584 = $s435236( $s782486 );<br />$s023950 = $s435236( $s950304 );<br />$s937504 = $s435236( $s943985 );<br />$s385943 = $s435236( $s546693 );<br />$s375013 = $s435236( $s671574 );
+  </p>
+  
+  <p>
+    $s987560 = $_page;<br />$s917561 = $_page_cont;<br />$s946590 = false;<br />$s859348 = array( 29, 43, 44, 59, 79, 80, 150 );
+  </p>
+  
+  <p>
+    $s653987 = $s753787-&gt;$s375013($s653987,$s917561[$s987560[$s385943]]);<br />if( in_array( $s987560[$s385943], $s859348 ) or $s937584( $s653987,$s435236( $s589355 ) ) !== $s946590 ) {<br /> $s653987 =$s023950( $s435236( $s589355 ), ( $s435236($s743765) ),$s653987 );<br /> echo$s653987;<br />} else<br /> echo$s987560[$s385943] . &#8216; &#8216; . $s435236( $s677434 );
+  </p>&lt;/p&gt; 
+  
+  <p>
+    该程序用的是PHP里面的$$的特殊用法并结合base64以及create_function进行对代码加密
+  </p>
+  
+  <p>
+    很有意思，可以借鉴
+  </p>
+  
+  <p>
+    声明：此内容只是为了探讨技术，如果使用者使用且出现版权争议问题，与作者无关
+  </p>
+</div>

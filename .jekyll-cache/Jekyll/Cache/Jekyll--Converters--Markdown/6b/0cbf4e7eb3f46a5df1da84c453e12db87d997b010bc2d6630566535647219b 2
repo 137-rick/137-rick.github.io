@@ -1,4 +1,0 @@
-I"�<div id="sina_keyword_ad_area2" class="articalContent   ">
-  今天无聊把我工作机升级了下内核<br />结果发现声卡又没有声音了<br />使用hda工具也不能出声音了<br />恨郁闷<br />后来发下/dev/snd不见了<br />于是上官网一查，原来这个东西要分开装了<br />按下面的地址安装后（hda还有效）就可以了<br />https://wiki.ubuntu.com/Audio/InstallingLinuxAlsaDriverModules&lt;/p&gt;
-</div>
-:ET

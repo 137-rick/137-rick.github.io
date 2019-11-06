@@ -1,0 +1,209 @@
+<div id="sina_keyword_ad_area2" class="articalContent   ">
+  <p>
+    #include <unistd.h><br />#include &lt;sys/param.h&gt;<br />#include <sybfront.h><br />#include <sybdb.h><br />#include <syberror.h><br />#include <stdio.h><br />#include <iostream><br />#include <iomanip><br />using namespace std;
+  &lt;/p&gt;
+  
+  <p>
+    #define UID &#8220;sa&#8221;<br />#define PWD &#8220;&#8221;<br />#define PROGNAME &#8220;C1-8&#8221;<br />#define DBSERVER &#8220;10.10.36.11:1433&#8221;<br />#define DBNAME &#8220;ourwork&#8221;
+  </p>
+  
+  <p>
+    LOGINREC *login;<br />DBPROCESS *dbconn;<br />char hostname[MAXHOSTNAMELEN];
+  </p>
+  
+  <p>
+    DBCHAR CardID[5];<br />DBCHAR name[20];<br />DBCHAR works[8];<br />DBCHAR daytime[18];
+  </p>
+  
+  <p>
+    char getchose()<br />{<br />char a=0;<br />while(a==0)cin&gt;&gt;a;<br />return a;<br />}
+  </p>
+  
+  <p>
+    int pr(int i=0)<br />{<br />switch (i)<br />{<br />case 0:<br />cout&lt;&lt;&#8220;\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n&#8221;&lt;&lt;endl;<br />break;
+  </p>
+  
+  <p>
+    case 1:<br />cout&lt;&lt;&#8220;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; Red System &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; 1.Workers List &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; 2.Add Workers &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; 3.Delete Workers &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; 4.Find Workers &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; other will exit &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632; Made By xcl&amp; zr 2005@Copy Right &#9632;&#8221;;<br />cout&lt;&lt;&#8220;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#8221;;<br />break;
+  </p>
+  
+  <p>
+    case 2:<br />cout&lt;&lt;&#8220;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#8221;;<br />cout&lt;&lt;&#8220;&#9734; &#9734;&#8221;;<br />cout&lt;&lt;&#8220;&#9734; Worker List Menu &#9734;&#8221;;<br />cout&lt;&lt;&#8220;&#9734; &#9734;&#8221;;<br />cout&lt;&lt;&#8220;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;&#9734;\n&#8221;; <br />break;
+  </p>
+  
+  <p>
+    case 3:<br />cout&lt;&lt;&#8220;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#8221;;<br />cout&lt;&lt;&#8220;&#9633; &#9633;&#8221;;<br />cout&lt;&lt;&#8220;&#9633; Add Workers &#9633;&#8221;;<br />cout&lt;&lt;&#8220;&#9633; &#9633;&#8221;;<br />cout&lt;&lt;&#8220;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;\n&#8221;;
+  </p>
+  
+  <p>
+    break;
+  </p>
+  
+  <p>
+    case 4:<br />cout&lt;&lt;&#8220;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#8221;;<br />cout&lt;&lt;&#8220;&#9733; &#9733;&#8221;;<br />cout&lt;&lt;&#8220;&#9733; Delete Workers &#9733;&#8221;;<br />cout&lt;&lt;&#8220;&#9733; &#9733;&#8221;;<br />cout&lt;&lt;&#8220;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;\n&#8221;; <br />break;
+  </p>
+  
+  <p>
+    case 5:<br />cout&lt;&lt;&#8220;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#8221;;<br />cout&lt;&lt;&#8220;&#9670; &#9670;&#8221;;<br />cout&lt;&lt;&#8220;&#9670; Find Workers &#9670;&#8221;;<br />cout&lt;&lt;&#8220;&#9670; &#9670;&#8221;;<br />cout&lt;&lt;&#8220;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;&#9670;\n&#8221;; <br />break;
+  </p>
+  
+  <p>
+    case 7:<br />cout&lt;&lt;&#8220;ΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘ&#8221;;<br />cout&lt;&lt;&#8220;Θ Θ&#8221;;<br />cout&lt;&lt;&#8220;Θ ~^_^~Thank Your Bye Bye~^_^~Θ&#8221;;<br />cout&lt;&lt;&#8220;Θ Θ&#8221;;<br />cout&lt;&lt;&#8220;ΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘΘ\n&#8221;; <br />break;
+  </p>
+  
+  <p>
+    }<br />return 0;<br />}
+  </p>
+  
+  <p>
+    void init()<br />{
+  </p>
+  
+  <p>
+    if (dbinit() == FAIL) <br />cout&lt;&lt;endl&lt;&lt;stderr&lt;&lt;&#8220;Couldnot initdb.\n&#8221;&lt;&lt;endl;
+  </p>
+  
+  <p>
+    if ((login = dblogin()) == FAIL) <br />cout&lt;&lt;endl&lt;&lt;stderr&lt;&lt;&#8220;Couldnot initialize dblogin()structure.\n&#8221;&lt;&lt;endl;
+  </p>
+  
+  <p>
+    DBSETLUSER(login, UID);<br />DBSETLPWD(login, PWD);<br />DBSETLAPP(login, PROGNAME);<br />if (gethostname(hostname, MAXHOSTNAMELEN) == 0)<br />DBSETLHOST(login, hostname);
+  </p>
+  
+  <p>
+    if ((dbconn = dbopen(login, DBSERVER)) ==NULL) <br />cout&lt;&lt;endl&lt;&lt;stderr&lt;&lt;endl&lt;&lt;&#8220;Couldnot connect to DB Server:%s\n&#8221;&lt;&lt;endl&lt;&lt;DBSERVER;
+  </p>
+  
+  <p>
+    if ((dbuse(dbconn, DBNAME)) == FAIL)<br />cout&lt;&lt;endl&lt;&lt;stderr&lt;&lt;&#8220;Couldnot switch to database %s on DB Server%s\n&#8221;&lt;&lt;DBNAME&lt;&lt;DBSERVER&lt;&lt;endl;
+  </p>
+  
+  <p>
+    dbloginfree(login);
+  </p>
+  
+  <p>
+    //////////////////////////////
+  </p>
+  
+  <p>
+    }
+  </p>
+  
+  <p>
+    void setsql()<br />{
+  </p>
+  
+  <p>
+    dbcmd(dbconn, &#8220;select * from worker &#8220;);
+  </p>
+  
+  <p>
+    if (dbsqlexec(dbconn) == FAIL) <br />{<br />cout&lt;&lt;endl&lt;&lt;stderr&lt;&lt;&#8220;Couldnot execute the sqlstatement~~~~&#8221;&lt;&lt;endl;
+  </p>
+  
+  <p>
+    }
+  </p>
+  
+  <p>
+    dbresults(dbconn);<br />}
+  </p>
+  
+  <p>
+    void bindfield()<br />{
+  </p>
+  
+  <p>
+    dbbind(dbconn, 2, NTBSTRINGBIND, 0, (BYTE*)&amp;name);<br />dbbind(dbconn, 3, NTBSTRINGBIND, 0, (BYTE*)&amp;works);<br />dbbind(dbconn, 4, NTBSTRINGBIND, 0, (BYTE*)&amp;CardID);<br />//dbbind(dbconn, 5, NTBSTRINGBIND, 0, (BYTE*)&amp;daytime);
+  </p>
+  
+  <p>
+    }
+  </p>
+  
+  <p>
+    void showall()<br />{
+  </p>
+  
+  <p>
+    while (dbnextrow(dbconn) != NO_MORE_ROWS) <br />{
+  </p>
+  
+  <p>
+    cout&lt;&lt;setw(20)&lt;&lt;name&lt;&lt;setw(10)&lt;&lt;works&lt;&lt;setw(7)&lt;&lt;CardID&lt;&lt;endl;<br />}<br />dbresults(dbconn); <br />}
+  </p>
+  
+  <p>
+    void clearsql()<br />{<br />dbfreebuf(dbconn);
+  </p>
+  
+  <p>
+    }<br />void close()<br />{&lt;br / &gt;dbclose(dbconn);<br />dbexit();
+  </p>
+  
+  <p>
+    }
+  </p>
+  
+  <p>
+    main()<br />{<br />init();<br />char cho;<br />pr(0);<br />pr(1);<br />cho =getchose();<br />if (cho==&#8217;1&#8242;)<br />{<br />pr(0);<br />pr(2);<br />setsql();<br />bindfield();<br />showall();<br />}
+  </p>
+  
+  <p>
+    if(cho==&#8217;2&#8242;)<br />{<br />char tname[20];<br />char tCardID[5];<br />char tworks[8];<br />char tempsql[90];<br />pr(0);<br />pr(3);<br />cout&lt;&lt;&#8220;entername&#8221;&lt;&lt;endl;<br />cin&gt;&gt;tname;<br />cout&lt;&lt;&#8220;enterCardID&#8221;&lt;&lt;endl;<br />cin&gt;&gt;tCardID;<br />cout&lt;&lt;&#8220;enterworks&#8221;&lt;&lt;endl;<br />cin&gt;&gt;tworks;<br />sprintf(tempsql,&#8221;insert worker(name,works,cardid)values(&#8216;%s&#8217;,&#8217;%s&#8217;,&#8217;%s&#8217;)&#8221;,tname,tworks,tCardID);<br />clearsql();<br />dbcmd(dbconn, tempsql);
+  </p>
+  
+  <p>
+    if (dbsqlexec(dbconn) == FAIL) <br />{<br />cout&lt;&lt;endl&lt;&lt;stderr&lt;&lt;&#8220;Couldnot execute the sqlstatement&#8221;&lt;&lt;endl;
+  </p>
+  
+  <p>
+    }
+  </p>
+  
+  <p>
+    dbresults(dbconn);<br />}
+  </p>
+  
+  <p>
+    if(cho==&#8217;3&#8242;)<br />{<br />pr(4);<br />char tcardid[30];<br />char tempsql[80];<br />cout&lt;&lt;&#8220;enter the worker&#8217;s cardid youwant to delete&#8221;&lt;&lt;endl;<br />cin&gt;&gt;tcardid;
+  </p>
+  
+  <p>
+    sprintf(tempsql,&#8221;delete from worker where cardid =&#8217;%s'&#8221;,tcardid);<br />clearsql();<br />dbcmd(dbconn, tempsql);
+  </p>
+  
+  <p>
+    if (dbsqlexec(dbconn) == FAIL) <br />{<br />cout&lt;&lt;endl&lt;&lt;stderr&lt;&lt;&#8220;Couldnot execute the sqlstatement&#8221;&lt;&lt;endl; <br />} <br />dbresults(dbconn);<br />}
+  </p>
+  
+  <p>
+    if(cho==&#8217;4&#8242;)<br />{<br />pr(5);<br />char tcardid[30];<br />char tempsql[80];<br />cout&lt;&lt;&#8220;enter the worker&#8217;s cardid youwant to find&#8221;&lt;&lt;endl;<br />cin&gt;&gt;tcardid;
+  </p>
+  
+  <p>
+    sprintf(tempsql,&#8221;select * from worker where cardid like&#8217;%%%s%%'&#8221;,tcardid);<br />clearsql();<br />dbcmd(dbconn, tempsql);
+  </p>
+  
+  <p>
+    if (dbsqlexec(dbconn) == FAIL) <br />{<br />cout&lt;&lt;endl&lt;&lt;stderr&lt;&lt;&#8220;Couldnot execute the sqlstatement&#8221;&lt;&lt;endl; <br />} <br />dbresults(dbconn);
+  </p>
+  
+  <p>
+    bindfield();<br />showall();
+  </p>
+  
+  <p>
+    }
+  </p>
+  
+  <p>
+    pr(7);<br />clearsql();<br />close();<br />cout&lt;&lt;&#8220;ok&#8221;&lt;&lt;endl;<br />}
+  </p>
+  
+  <p>
+    cd ~ vi .bash_profile 环境: 输入 LD_LIBRARY_PATH=/usr/local/lib LD=/usr/local/lib export LD_LIBRARY_PATH 退出vi 执行exportLD_LIBRARY_PATH=/usr/local/lib 编译命令使用 g++ -lsybdb sample.cpp 运行./a.out
+  </p>
+</iomanip></iostream></stdio.h></syberror.h></sybdb.h></sybfront.h></unistd.h></p></div>

@@ -1,0 +1,27 @@
+<div id="sina_keyword_ad_area2" class="articalContent   ">
+  这个是用Action Script3.0脚本写的<br />在炮弹发射的时候，用于计算抛物线y=a*x*x + b* x +c公式中a,b,c&lt;/p&gt; 
+  
+  <p>
+    //炮弹的射程<br /> var shotWidth:int=targetX-startX;<br /> //炮弹的射程高度<br /> varshotHeight:int=shotWidth/2-shotWidth*0.2;<br /> //炮弹抛物线的系数<br /> var a:Number,b:Number,c:Number;<br /> var result:Array = new Array();
+  </p>
+  
+  <p>
+    //根据炮弹的发射点、高度、射程计算出炮弹抛物线的三点<br /> var x1:int=startX;<br /> var y1:int=startY;
+  </p>
+  
+  <p>
+    var x2:int=startX+shotWidth/2;<br /> var y2:int=startY-shotHeight;
+  </p>
+  
+  <p>
+    var x3:int=startX+shotWidth;<br /> var y3:int=startY;
+  </p>
+  
+  <p>
+    b =((y1-y3)*(x1*x1-x2*x2)-(y1-y2)*(x1*x1-x3*x3))/((x1-x3)*(x1*x1-x2*x2)-(x1-x2)*(x1*x1-x3*x3));<br /> a = ((y1-y2)-b*(x1-x2))/(x1*x1-x2*x2);<br /> c=y1-a*x1*x1-b*x1;
+  </p>
+  
+  <p>
+    以上数值获取到后<br />根据子弹的x数值获取y坐标即可<br />movingBullet.y = (int)(movingBullet.arca * movingBullet.x *movingBullet.x<br /> + movingBullet.arcb *movingBullet.x + movingBullet.arcc);
+  </p>
+</div>

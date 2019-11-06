@@ -1,0 +1,45 @@
+<div id="sina_keyword_ad_area2" class="articalContent   ">
+  <div>
+    <span>只是记录一下这个恶搞的方案……&lt;/p&gt; 
+    
+    <p>
+      各位经常做接口的PHPer肯定经历过和Java程序对接加解密这样的恶心事情吧<br />java算出来的东西和php算出来的结果就是不一样……<br />这个算是一个恶搞的解决方案，仅供大家参考
+    </p>
+    
+    <p>
+      首先将java的那一堆加密函数做成以main函数启动的J2SE程序<br />这样使用java命令行就可以执行这个编译后的class<br />这样我们只要传入参数就可以利用java做加密解密了……
+    </p>
+    
+    <p>
+      如在shell下<br />&lt;/span&gt;java class名 参数1 参数2 参数3 参数4 &#8230;. 参数6
+    </p>
+    
+    <p>
+      <span><br />而在php内使用函数调用shell执行java的程序<br /></span>&lt;/div&gt; 
+      
+      <div>
+        <span>string exec ( string command,&amp;returnval)</span>
+      </div>
+      
+      <div>
+        其中command为命令行
+      </div>
+      
+      <div>
+        命令执行实例如下
+      </div>
+      
+      <div>
+        <div style="TexT-inDenT: 12em">
+          java class名 参数1 参数2 参数3 参数4 &#8230;.参数6
+        </div>
+        
+        <div>
+          结果返回：
+        </div>
+      </div>
+      
+      <div style="TexT-inDenT: 12em">
+        &amp;returnval里面的值就是结果&lt;/p&gt;
+      </div>
+</p></span></div></div>

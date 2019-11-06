@@ -1,0 +1,187 @@
+<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+  <span style="font-size:10.5pt;mso-bidi-font-size:11.0pt; font-family:宋体;mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin; mso-fareast-theme-font:minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font: minor-latin;mso-bidi-font-family:"><br />服务降级，当服务器压力剧增的情况下，根据当前业务情况及流量对一些服务和页面有策略的降级，以此释放服务器资源以保证核心任务的正常运行。&lt;/p&gt; 
+  
+  <p>
+    <b>服务降级方式：</b><br />&lt;/span&gt;
+  </p>
+  
+  <p style="margin-left:63.0pt;text-indent:-21.0pt; mso-char-indent-count:0;mso-list:l0 level1 lfo1">
+    <b style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family: Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">服务接口拒绝服务：</span></b><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin; mso-fareast-font-family:宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family: Calibri;mso-hansi-theme-font:minor-latin">无用户特定信息，页面能访问，但是添加删除提示服务器繁忙。页面内容也可在</span><span>Varnish</span><span style="font-family:宋体;mso-ascii-font-family: Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">或</span><span>CDN</span><span style="font-family:宋体;mso-ascii-font-family:Calibri; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">内获取。</span>
+  </p>
+  
+  <p style="margin-left:63.0pt;text-indent:-21.0pt; mso-char-indent-count:0;mso-list:l0 level1 lfo1">
+    <span style="font-family:Wingdings;mso-fareast-font-family:Wingdings; mso-bidi-font-family:Wingdings"><span style="mso-list:ignore"><span style="font:7.0pt"> </span></span></span><b style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family: Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">页面拒绝服务：</span></b><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin; mso-fareast-font-family:宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family: Calibri;mso-hansi-theme-font:minor-latin">页面提示由于服务繁忙此服务暂停。跳转到</span><span>varnish</span><span style="font-family:宋体;mso-ascii-font-family: Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">或</span><span>nginx</span><span style="font-family:宋体;mso-ascii-font-family:Calibri; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">的一个静态页面。</span>
+  </p>
+  
+  <p style="margin-left:63.0pt;text-indent:-21.0pt; mso-char-indent-count:0;mso-list:l0 level1 lfo1">
+    <b style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family: Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">延迟持久化：</span></b><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin; mso-fareast-font-family:宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family: Calibri;mso-hansi-theme-font:minor-latin">页面访问照常，但是涉及记录变更，会提示稍晚能看到结果，将数据记录到异步队列或</span><span>log</span><span style="font-family:宋体;mso-ascii-font-family:Calibri; mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">，服务恢复后执行。</span>
+  </p>
+  
+  <p style="margin-left:63.0pt;text-indent:-21.0pt; mso-char-indent-count:0;mso-list:l0 level1 lfo1">
+    <b style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family: Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">随机拒绝服务</span></b><span style="font-family:宋体;mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin; mso-fareast-font-family:宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family: Calibri;mso-hansi-theme-font:minor-latin">：服务接口随机拒绝服务，让用户重试，目前较少有人采用。因为用户体验不佳。</span>
+  </p>
+  
+  <p style="margin-left:63.0pt;text-indent:-21.0pt; mso-char-indent-count:0;mso-list:l0 level1 lfo1">
+  </p>
+  
+  <p>
+    <b>持久层降级方式</b>
+  </p>
+  
+  <table style="width:354.35pt;margin-left:42.05pt;border-collapse:collapse;border: none;mso-border-alt:solid #A3A3A3 1.0pt;mso-yfti-tbllook:1184;mso-padding-alt: 0cm 0cm 0cm 0cm" border="1" cellpadding="0" cellspacing="0" width="472">
+    <tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes;height:15.6pt">
+      <td style="width:101.9pt;border:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="136">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <b><span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">数据操作动作</span></b>
+        </p>
+      </td>
+      
+      <td style="width:110.7pt;border:solid #A3A3A3 1.0pt; border-left:none;mso-border-left-alt:solid #A3A3A3 1.0pt;padding:2.0pt 3.0pt 2.0pt 3.0pt; height:15.6pt" valign="top" width="148">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <b><span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-ascii-font-family:Calibri; mso-hansi-font-family:Calibri;mso-bidi-font-family:宋体;mso-font-kerning:0pt">通过</span></b><b><span style="mso-bidi-font-size:10.5pt;mso-ascii-font-family:Calibri; mso-fareast-font-family:宋体;mso-hansi-font-family:Calibri;mso-bidi-font-family: 宋体;mso-font-kerning:0pt">Cache</span></b><b><span style="mso-bidi-font-size: 10.5pt;font-family:宋体;mso-ascii-font-family:Calibri;mso-hansi-font-family: Calibri;mso-bidi-font-family:宋体;mso-font-kerning:0pt">工作</span></b>
+        </p>
+      </td>
+      
+      <td style="width:5.0cm;border:solid #A3A3A3 1.0pt; border-left:none;mso-border-left-alt:solid #A3A3A3 1.0pt;padding:2.0pt 3.0pt 2.0pt 3.0pt; height:15.6pt" valign="top" width="189">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <b><span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">通过异步数据队列</span></b>
+        </p>
+      </td>
+    </tr>
+    
+    <tr style="mso-yfti-irow:1;height:15.6pt">
+      <td style="width:101.9pt;border:solid #A3A3A3 1.0pt; border-top:none;mso-border-top-alt:solid #A3A3A3 1.0pt;padding:2.0pt 3.0pt 2.0pt 3.0pt; height:15.6pt" valign="top" width="136">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">增<span>insert</span></span>
+        </p>
+      </td>
+      
+      <td style="width:110.7pt;border-top:none;border-left: none;border-bottom:solid #A3A3A3 1.0pt;border-right:solid #A3A3A3 1.0pt; mso-border-top-alt:solid #A3A3A3 1.0pt;mso-border-left-alt:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="148">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">禁止</span>
+        </p>
+      </td>
+      
+      <td style="width:5.0cm;border-top:none;border-left:none; border-bottom:solid #A3A3A3 1.0pt;border-right:solid #A3A3A3 1.0pt; mso-border-top-alt
+:solid #A3A3A3 1.0pt;mso-border-left-alt:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="189">
+        &lt;/p&gt; 
+        
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">允许但不能有重复问题</span>
+        </p>
+      </td>
+    </tr>
+    
+    <tr style="mso-yfti-irow:2;height:15.6pt">
+      <td style="width:101.9pt;border:solid #A3A3A3 1.0pt; border-top:none;mso-border-top-alt:solid #A3A3A3 1.0pt;padding:2.0pt 3.0pt 2.0pt 3.0pt; height:15.6pt" valign="top" width="136">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">删<span>delete</span></span>
+        </p>
+      </td>
+      
+      <td style="width:110.7pt;border-top:none;border-left: none;border-bottom:solid #A3A3A3 1.0pt;border-right:solid #A3A3A3 1.0pt; mso-border-top-alt:solid #A3A3A3 1.0pt;mso-border-left-alt:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="148">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">禁止</span>
+        </p>
+      </td>
+      
+      <td style="width:5.0cm;border-top:none;border-left:none; border-bottom:solid #A3A3A3 1.0pt;border-right:solid #A3A3A3 1.0pt; mso-border-top-alt:solid #A3A3A3 1.0pt;mso-border-left-alt:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="189">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">允许但不能有复合操作</span>
+        </p>
+      </td>
+    </tr>
+    
+    <tr style="mso-yfti-irow:3;height:15.6pt">
+      <td style="width:101.9pt;border:solid #A3A3A3 1.0pt; border-top:none;mso-border-top-alt:solid #A3A3A3 1.0pt;padding:2.0pt 3.0pt 2.0pt 3.0pt; height:15.6pt" valign="top" width="136">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">改<span>update</span></span>
+        </p>
+      </td>
+      
+      <td style="width:110.7pt;border-top:none;border-left: none;border-bottom:solid #A3A3A3 1.0pt;border-right:solid #A3A3A3 1.0pt; mso-border-top-alt:solid #A3A3A3 1.0pt;mso-border-left-alt:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="148">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">禁止</span>
+        </p>
+      </td>
+      
+      <td style="width:5.0cm;border-top:none;border-left:none; border-bottom:solid #A3A3A3 1.0pt;border-right:solid #A3A3A3 1.0pt; mso-border-top-alt:solid #A3A3A3 1.0pt;mso-border-left-alt:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="189">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">允许只留最后结果</span>
+        </p>
+      </td>
+    </tr>
+    
+    <tr style="mso-yfti-irow:4;mso-yfti-lastrow:yes;height:15.6pt">
+      <td style="width:101.9pt;border:solid #A3A3A3 1.0pt; border-top:none;mso-border-top-alt:solid #A3A3A3 1.0pt;padding:2.0pt 3.0pt 2.0pt 3.0pt; height:15.6pt" valign="top" width="136">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">查<span>query</span></span>
+        </p>
+      </td>
+      
+      <td style="width:110.7pt;border-top:none;border-left: none;border-bottom:solid #A3A3A3 1.0pt;border-right:solid #A3A3A3 1.0pt; mso-border-top-alt:solid #A3A3A3 1.0pt;mso-border-left-alt:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="148">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">允许，若未命中问询mysql或其他持久层</span>
+        </p>
+      </td>
+      
+      <td style="width:5.0cm;border-top:none;border-left:none; border-bottom:solid #A3A3A3 1.0pt;border-right:solid #A3A3A3 1.0pt; mso-border-top-alt:solid #A3A3A3 1.0pt;mso-border-left-alt:solid #A3A3A3 1.0pt; padding:2.0pt 3.0pt 2.0pt 3.0pt;height:15.6pt" valign="top" width="189">
+        <p style="text-align:left;mso-pagination:widow-orphan" align="left">
+          <span style="mso-bidi-font-size:10.5pt;font-family:宋体;mso-bidi-font-family:宋体; mso-font-kerning:0pt">走</span><span style="mso-bidi-font-size: 10.5pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:宋体;mso-hansi-font-family: Calibri;mso-bidi-font-family:宋体;mso-font-kerning:0pt">cache</span>
+        </p>
+      </td>
+    </tr>
+  </table>
+  
+  <p>
+    降级方式
+  </p>
+  
+  <p style="margin-left:21.0pt;mso-para-margin-left:2.0gd">
+    <b style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family: Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">直觉管理方式：运维人员可以指定哪些模块降级。</span></b>
+  </p>
+  
+  <p style="margin-left:42.0pt">
+    <span style="font-family:宋体; mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family: 宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family:Calibri; mso-hansi-theme-font:minor-latin">当服务器检测到压力增大，服务器监测自动发送通知给运维人员</span>
+  </p>
+  
+  <p style="margin-left:42.0pt">
+    <span style="font-family:宋体; mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family: 宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family:Calibri; mso-hansi-theme-font:minor-latin">运维人员根据自己或相关人员判断后通过配置平台设置当前运行等级来降级</span>
+  </p>
+  
+  <p style="margin-left:42.0pt">
+    <span style="font-family:宋体; mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family: 宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family:Calibri; mso-hansi-theme-font:minor-latin">降级首先可以对非核心业务进行接口降级。</span>
+  </p>
+  
+  <p style="margin-left:42.0pt">
+    <span style="font-family:宋体; mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family: 宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family:Calibri; mso-hansi-theme-font:minor-latin">如果效果不显著，开始对一些页面进行降级，以此保证核心功能的正常运行。</span>
+  </p>
+  
+  <p>
+    <span> </span>
+  </p>
+  
+  <p style="margin-left:21.0pt;mso-para-margin-left:2.0gd">
+    <b style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family: Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:宋体;mso-fareast-theme-font: minor-fareast;mso-hansi-font-family:Calibri;mso-hansi-theme-font:minor-latin">分级管理方式：运维人员无需关心业务细节，直接按级别降低即可。</span></b>
+  </p>
+  
+  <p style="margin-left:42.0pt">
+    <span style="font-family:宋体; mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family: 宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family:Calibri; mso-hansi-theme-font:minor-latin">当服务器检测到压力增大，服务检测自动发送通知给运维人员。</span>
+  </p>
+  
+  <p style="margin-left:42.0pt">
+    <span style="font-family:宋体; mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family: 宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family:Calibri; mso-hansi-theme-font:minor-latin">运维人员根据情况选择运行等级</span><span>1~10.</span>
+  </p>
+  
+  <p style="margin-left:42.0pt">
+    <span style="font-family:宋体; mso-ascii-font-family:Calibri;mso-ascii-theme-font:minor-latin;mso-fareast-font-family: 宋体;mso-fareast-theme-font:minor-fareast;mso-hansi-font-family:Calibri; mso-hansi-theme-font:minor-latin">各个应用根据自己的级别自动判断是否工作，<br /> 如何拒绝</span>
+  </p>
+  
+  <p>
+    <b><br />服务降级埋点的地方：</b>
+  </p>
+  
+  <p>
+    消息中间件：所有API调用可以使用消息中间件进行控制<br /> 前端页面：指定网址不可访问（NGINX+LUA）<br /> 底层数据驱动：拒绝所有增删改动作，只允许查询
+  </p>
+</span></div>

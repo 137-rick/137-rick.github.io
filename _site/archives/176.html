@@ -1,0 +1,8 @@
+<p>细节介绍，做排行建议不做全站的，除非你有很大的redis集群或使用ssdb</p>
+
+<p>那么就维持前几万用户即可……<br />
+使用redis的zset即可</p>
+
+<pre class="wp-block-preformatted">$this-&gt;redis-&gt;zAdd($rankType, $score, $key);<br />if ($length &gt; 0) { //限个数<br />  $all = $this-&gt;redis-&gt;zCard($rankType);<br />  if ($all &gt; $length) {<br />    $keys = $this-&gt;redis-&gt;zRange($rankType, 0, $all -$length);<br />    foreach ($keys as $key) {<br />        $this-&gt;redis-&gt;zDelete($rankType, $key);<br />    }<br />  }<br />}</pre>
+
+<p>此代码来自zphp（基础swoole的实时通讯框架）</p>

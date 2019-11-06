@@ -1,0 +1,241 @@
+<div id="sina_keyword_ad_area2" class="articalContent   ">
+  之前一篇介绍了PHP扩展环境搭建及大致项目结构流程介绍<br />这章将围绕PHP以及C语言变量进行介绍&lt;/p&gt; 
+  
+  <p>
+    <b>C语言字符串指针及操作函数</b><br />这里主要介绍字符串操作相关，可能大家会很奇怪，为什么我介绍的都是关于变量和字符串的操作知识。事实上我们的网页服务器大部分时间都是在拼接字符串，所以我们用c扩展的时候大部分时间都是在针对内存空间内的字符串进行操作，而php扩展和php交互的时候是通过变量进行传递所以字符串操作和转换是这个里面的基本操作……
+  </p>
+  
+  <p>
+    以下指针数据类型都是char类型，不同类型的指针移动指针时会移动不同长度。
+  </p>
+  
+  <p>
+    实际看几个例子<br />char长度为一字节，16进制为0xFF 2进制为1111 1111<br />int为两个字节 16进制为 0xFFFF， 2进制为1111 1111 1111 1111<br />注意：如果在声明类型未指定 unsigned时，那么以上两个类型的 2进制第一位将作为正负值判断而不作为表示数值1代表负数，0为正数。
+  </p>
+  
+  <p>
+    注意:上文提到的int并不一定是两个字节，这个长度取决于系统，在32位系统和64位系统中实际表示长度不同。所以，对这类不同系统有变长的变量用其他指针读取的时候务必用sizeof算一下他的长度。
+  </p>
+  
+  <p>
+    <font COLOR="#4D6DF3">char teststring[50];</font><br />声明一个teststring字符串，最大长度50，这个方式在程序执行完毕后会自动释放，这个方式很环保……我目前最喜欢的方式，当然这个方式会浪费一定内存空间……并且不灵活（定长）……不过好在目前这个需求是够用的……
+  </p>
+  
+  <p>
+    <font COLOR="#4D6DF3">char *ptest;</font><br />声明一个字符串指针，注意目前他指向地址未知，我们程序在指定有效空间之前不要对他进行操作，否则肯定会会导致程序崩溃，系统不稳定。
+  </p>
+  
+  <p>
+    <b>下面两步就是给指针指向一个合法分配的内存空间。</b>
+  </p>
+  
+  <p>
+    <font COLOR="#0A07FF">ptest=teststring;</font><br />让指针指向teststring的存储空间，这里指针变量实际存储的是这个char串的首个char的内存地址，对与c来说一个字符串在内存中是一个连续的内存空间，在读取使用字符串的时候碰到&#8217;\0&#8217;时代表这个字符串结束，如果某字符串超过分配空间大小……等着系统挂掉吧……c是不会检测溢出这类事情的……
+  </p>
+  
+  <p>
+    <font COLOR="#4D6DF3">ptest=malloc(sizeof(char)*50);</font><br />此为在运行期间动态分配一块长度为char类型长度*50的空间，这里务必注意在使用完毕后程序结束之前必须释放，否则会导致这块内存在系统重启前不能被其他程序使用，如果调用频繁会导致系统没有可用内存……。
+  </p>
+  
+  <p>
+    <font COLOR="#4D6DF3">ptest</font> 当前指针地址
+  </p>
+  
+  <p>
+    <font COLOR="#4D6DF3">*(ptest+1)</font>相当于teststring[1]，即指向第二个字符;
+  </p>
+  
+  <p>
+    <font COLOR="#4D6DF3">(*ptest)++</font>相当于teststring[0]++,即指向的第一个字符变量内值+1;
+  </p>
+  
+  <p>
+    <font COLOR="#4D6DF3">ptest++</font>相当于teststring[1]，这里不同的是以后代码使用ptest时他指向的地址将不是第一个字符，而是第二个，再次提示不同数据类型步进字节个数不同。
+  </p>
+  
+  <p>
+    <b>关于字符串结尾注意事项</b><br />malloc后以及teststring声明后，我们在上面操作中并没有给他赋任何数值，所以他们目前的内容是随机的，务必在对他们进行赋值后再做其他读取操作，至少要赋值&#8217;\0&#8217;在首个char内，否则很可能会导致输出50个char内存空间内数据后还会继续输出后面的内存空间内数据直到碰到&#8217;\0&#8217;。如果没有进行任何初始化动作直接进行操作的结果会很悲剧。
+  </p>
+  
+  <p>
+    C一些变量操作函数，这里只是简单罗列一下具体细节自己查看下<br /><font COLOR="#4D6DF3">strcat(dst,src); </font> 字符串拼接，将src追加在dst字符串结尾<br /><font COLOR="#4D6DF3">sprintf(dst,&#8221;%ld&#8221;,idx) </font> 将int转换成显示的char，如123转换成&#8221;123&#8243;保存到dst内<br /><font COLOR="#4D6DF3">sscanf(&#8220;123456 &#8220;, &#8220;%s&#8221;,dst);</font> 将string转换成int，保存到dst内<br /><font COLOR="#4D6DF3">memset(dst,&#8217;\0&#8242;,100);</font> 将dst内存区域长度100全部填入\0<br /><font COLOR="#4D6DF3">strncpy(dst, src,len);</font> 将src，拷贝到dst,拷贝长度len，这个不会在结尾打\0要注意
+  </p>
+  
+  <p>
+    php扩展的一些函数<br /><font COLOR="#4D6DF3">zend_parse_parameters(ZEND_NUM_ARGS()TSRMLS_CC, &#8220;s&#8221;, &amp;str1,&amp;strlen);</font>用于接收函数后参数<br />注意这里的s代表传入数据为字符串，后面str1为接收字符串变量，strlen为字符串长度，目前已知字符串长度超过4k会被自动截断。其他类型及相关方法，可以参考网上资料……
+  </p>
+  
+  <div>
+    <wbr />
+  </div>
+  
+  <p>
+    <b>注意</b>：记得在变量之间来回拷贝追加的时候记得自己判断下追加长度是否超过目前（最大空间长度-1，减1是给结尾\0用)，否则会溢出……哎各种溢出。另外，注意一下这几个函数输入输出的数据类型……
+  </p>
+  
+  <p>
+    <b>PHP变量在C语言的操作<br /></b>PHP内的脚本经过Zend引擎“翻译”后，变成OPCODE，Zend根据OPCODE做调用以下c方法完成变量的操作<br />由于内容很多，这里不一一叙述，只是列出一个网上找到的PHP数组操作与C数组操作对应函数操作对比
+  </p>
+  
+  <p>
+    <b>PHP语法 C语法（arr是zval*） 意义</b><br />$arr = array(); array_init(arr); 初始化一个新数组<br />$arr[] = NULL; add_next_index_null(arr); 向数字索引的数组增加指定类型的值<br />$arr[] = 42; add_next_index_long(arr, 42);<br />$arr[] = true; add_next_index_bool(arr, 1);<br />$arr[] = 3.14; add_next_index_double(arr, 3.14);<br />$arr[] = &#8216;foo&#8217;; add_next_index_string(arr, &#8220;foo&#8221;, 1);<br />$arr[] = $myvar; add_next_index_zval(arr, myvar);<br />$arr[0] = NULL; add_index_null(arr, 0); 向数组中指定的数字索引增加指定类型的值<br />$arr[1] = 42; add_index_long(arr, 1, 42);<br />$arr[2] = true; add_index_bool(arr, 2, 1);<br />$arr[3] = 3.14; add_index_double(arr, 3, 3.14);<br />$arr[4] = &#8216;foo&#8217;; add_index_string(arr, 4, &#8220;foo&#8221;, 1);<br />$arr[5] = $myvar; add_index_zval(arr, 5, myvar);<br />$arr[&#8216;abc&#8217;] =NULL; add_assoc_null(arr, &#8220;abc&#8221;); 向关联索引的数组增加指定类型的值<br />$arr[&#8216;def&#8217;] =711; add_assoc_long(arr, &#8220;def&#8221;, 711);<br />$arr[&#8216;ghi&#8217;] = true; add_assoc_bool(arr, &#8220;ghi&#8221;, 1);<br />$arr[&#8216;jkl&#8217;] = 1.44; add_assoc_double(arr, &#8220;jkl&#8221;, 1.44);<br />$arr[&#8216;mno&#8217;] = &#8216;baz&#8217;; add_assoc_string(arr,&#8221;mno&#8221;, &#8220;baz&#8221;, 1);<br />$arr[&#8216;pqr&#8217;] = $myvar; add_assoc_zval(arr, &#8220;pqr&#8221;,myvar);
+  </p>
+  
+  <p>
+    c指针包装的字符串在回传给PHP的时候建议用estrdup处理下，要不回去获取的可能是未知数据。
+  </p>
+  
+  <p>
+    PHP的数组在C内读取<br />主要有两个方式我就介绍我目前使用的方式<br />看代码：<br /><font COLOR="#4D6DF3">// input paramter<br />zval *zval_cookie;//用zval接收php传给php扩展内函数的参数&lt;/p&gt; 
+    
+    <p>
+      // running var<br />HashTable*hash_cookie; //使用哈希表在c内保存传入数组<br />HashPositionhash_pointer; //当前哈希表指针变量<br />inthash_count; //哈希表内数据个数
+    </p>
+    
+    <p>
+      //temp var<br />char*key; //key指针<br />zval**data; //哈希表内单条数据value的指针<br />zvaltmp_data; //value转换后的字符串指针<br />inttype; //key的数据类型<br />uintkey_len; //key的长度<br />ulongidx;<br /> //当前数组索引id
+    </p>
+    
+    <p>
+      hash_cookie = Z_ARRVAL_P(zval_cookie);//将传入php数组转换成哈希表<br />//count cookie item<br />hash_count = zend_hash_num_elements(hash_cookie);//获取哈希表内数据条数
+    </p>
+    
+    <p>
+      //遍历哈希表<br />for(<br /> zend_hash_internal_pointer_reset_ex(hash_cookie,&amp;hash_pointer);//重置哈希指针位置<br /> zend_hash_get_current_data_ex(hash_cookie, (void**)&amp;data,&amp;hash_pointer)==SUCCESS; //判断是否还有没有遍历的数据（通过获取value是否成功判定）<br /> zend_hash_move_forward_ex(hash_cookie,&amp;hash_pointer) //向下一条挪动哈希指针<br /> )<br />{<br /> //上面已经获取了哈希表内当前指针指向的value，这里获取key<br /> type =zend_hash_get_current_key_ex(hash_cookie,&amp;key,&amp;key_len,&amp;idx,0,&amp;hash_pointer);
+    </p>
+    
+    <p>
+      //注意这里convert_to_string操作会改变指针指定区域数据，所以用zval_copy_ctor另外复制了一份<br /> tmp_data = **data;<br /> zval_copy_ctor(&amp;tmp_data);<br /> convert_to_string(&amp;tmp_data);//转换成字符串
+    </p>
+    
+    <p>
+      zval_dtor(&amp;tmp_data);//释放tmp_data<br />}&lt;/font&gt;
+    </p>
+    
+    <p>
+      PHP扩展调用PHP函数，在PHP扩展调用PHP函数有点麻烦，下面给出我调通的代码，有兴趣可以直接拿去用<br /><font COLOR="#4D6DF3">zval function_name;//要调用的函数名<br />zval *retval;//返回结果<br />zval **argv[2];//参数集<br />zval *param;//参数1<br />MAKE_STD_ZVAL(retval);<br />MAKE_STD_ZVAL(param);&lt;/p&gt; 
+      
+      <p>
+        ZVAL_STRING(param, xxxx, 1);//把要加密的字符串扔给param<br />argv[0] = &param;<br />argv[1] = &return_data;
+      </p>
+      
+      <p>
+        ZVAL_STRING(&amp;function_name, &#8220;parse_str&#8221;,1);//将要调用的函数名称传进去<br />//下面的参数介绍，第三个函数名，第四个返回值，第五个参数个数，第六个参数<br />if (call_user_function(EG(function_table), NULL,&amp;function_name, retval, 2, *argv) == FAILURE){<br /> //调用失败<br /> RETURN_BOOL(0);<br />}<br />else {<br /> //调用成功<br /> RETURN_ZVAL(return_data, 1, 1);<br />}&lt;/font&gt;
+      </p>
+      
+      <p>
+        结果返回
+      </p>
+      
+      <table cellpadding="5" border="2">
+        <tr>
+          <th>
+            宏
+          </th>
+          
+          <th>
+            说明
+          </th>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_RESOURCE(resource)
+          </td>
+          
+          <td>
+            设定返回值为指定的一个资源。
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_BOOL(bool)
+          </td>
+          
+          <td>
+            设定返回值为指定的一个布尔值。
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_NULL
+          </td>
+          
+          <td>
+            设定返回值NULL
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_LONG(long)
+          </td>
+          
+          <td>
+            设定返回值为指定的一个长整数。
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_DOUBLE(double)
+          </td>
+          
+          <td>
+            设定返回值为指定的一个双精度浮点数。
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_STRING(string, duplicate)
+          </td>
+          
+          <td>
+            设定返回值为指定的一个字符串，duplicate 含义同 RETURN_STRING。
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_STRINGL(string, length, duplicate)
+          </td>
+          
+          <td>
+            设定返回值为指定的一个定长的字符串。其余跟 RETVAL_STRING 相同。这个宏速度更快而且是二进制安全的。
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_EMPTY_STRING
+          </td>
+          
+          <td>
+            设定返回值为空字符串。
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_FALSE
+          </td>
+          
+          <td>
+            设定返回值为布尔值假。
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            RETVAL_TRUE
+          </td>
+          
+          <td>
+            设定返回值为布尔值真。
+          </td>
+        </tr>
+      </table>
+</font></p></font></p></div>
