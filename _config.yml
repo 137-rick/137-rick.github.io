@@ -56,7 +56,7 @@ disqus: loffer #shortname
 
 
 # 输入Google Analytics web tracking code
-# google_analytics:
+google_analytics: UA-27354989-1
 
 # 输入你的网站域名（如果你没有添加自己的域名，而是直接用GitHub pages分配的域名的话可以省略）
 # url: http://www.fireidea.com
