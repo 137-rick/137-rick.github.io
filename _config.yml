@@ -40,11 +40,11 @@ excerpt_separator: <!-- more -->
 
 # 你的社交网络链接，它们会作为图标出现在你的网站页脚中，可选填写
 footer-links:
-  weibo: https://weibo.com/thinkpc
-  facebook: https://www.facebook.com/xcl.rockman
-  github: https://github.com/xcl3721
+  weibo: thinkpc
+  facebook: xcl.rockman
+  github: xcl3721
   rss: rss
-  twitter: https://twitter.com/xcl3721
+  twitter: xcl3721
 
 # 站点页脚的文字
 footer-text: Copyright (c) 2019 thinkpc
