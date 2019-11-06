@@ -1,4 +1,47 @@
-<div id="sina_keyword_ad_area2" class="articalContent   ">
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>innodb变态分页，COUNT | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="innodb变态分页，COUNT" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="今天跟“校长”研究怎么加快innodb一些操作，弄出以下语句&lt;/p&gt; 优化过的count //强制使用索引，进行count //SELECTcount(1) FROM xxxxy use index(PRIMARY); 如果数据连续，中间没有断数据，那么可以用以下方法加快分页，平时如果用limit数据越往后分页查询速度会越慢…… //变态分页 //SELECT *FROM coupon_xxxxy WHERE xxxxy_id between 4007373 and4007385 ; //变态count //SELECTorder_id FROM coupon_order_pay order by order_id desc limit 0,1;" />
+<meta property="og:description" content="今天跟“校长”研究怎么加快innodb一些操作，弄出以下语句&lt;/p&gt; 优化过的count //强制使用索引，进行count //SELECTcount(1) FROM xxxxy use index(PRIMARY); 如果数据连续，中间没有断数据，那么可以用以下方法加快分页，平时如果用limit数据越往后分页查询速度会越慢…… //变态分页 //SELECT *FROM coupon_xxxxy WHERE xxxxy_id between 4007373 and4007385 ; //变态count //SELECTorder_id FROM coupon_order_pay order by order_id desc limit 0,1;" />
+<link rel="canonical" href="http://localhost:4000/archives/148" />
+<meta property="og:url" content="http://localhost:4000/archives/148" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2012-09-28T15:16:58+08:00" />
+<script type="application/ld+json">
+{"description":"今天跟“校长”研究怎么加快innodb一些操作，弄出以下语句&lt;/p&gt; 优化过的count //强制使用索引，进行count //SELECTcount(1) FROM xxxxy use index(PRIMARY); 如果数据连续，中间没有断数据，那么可以用以下方法加快分页，平时如果用limit数据越往后分页查询速度会越慢…… //变态分页 //SELECT *FROM coupon_xxxxy WHERE xxxxy_id between 4007373 and4007385 ; //变态count //SELECTorder_id FROM coupon_order_pay order by order_id desc limit 0,1;","author":{"@type":"Person","name":"徐艺洲"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/148"},"@type":"BlogPosting","url":"http://localhost:4000/archives/148","headline":"innodb变态分页，COUNT","dateModified":"2012-09-28T15:16:58+08:00","datePublished":"2012-09-28T15:16:58+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    
+
+    <h1 id="project_title">徐艺洲</h1>
+    <h2 id="project_tagline">知止定静安虑得</h2>
+  </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+  <section id="main_content" class="inner">
+    <div id="sina_keyword_ad_area2" class="articalContent   ">
   今天跟“校长”研究怎么加快innodb一些操作，弄出以下语句&lt;/p&gt; 
   
   <p>
@@ -9,3 +52,18 @@
     如果数据连续，中间没有断数据，那么可以用以下方法加快分页，<br />平时如果用limit数据越往后分页查询速度会越慢……<br /> //变态分页<br /> //SELECT *FROM coupon_xxxxy WHERE xxxxy_id between 4007373 and4007385 ;<br /> //变态count<br /> //SELECTorder_id FROM coupon_order_pay order by order_id desc limit 0,1;
   </p>
 </div>
+
+  </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+</div>
+
+
+</body>
+</html>

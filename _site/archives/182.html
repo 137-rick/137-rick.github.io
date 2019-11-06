@@ -1,4 +1,47 @@
-<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>php mysql_connect自动共用链接的坑 | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="php mysql_connect自动共用链接的坑" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="今天在底层开了mysql多服务器链接功能，但是发现偶尔会出现db串台的情况 比如a库内的cccs表，底层会请求到b库找cccs表，这个问题很奇怪 后来发现原来虽然底层实现了多实例，一个db链接对象一个链接，但是在mysql_connect这层也会自动做链接重复直接复用即bool $new_link =false这个选项，打开后一切正常，略坑，特此记录 底层链接自动复用的规则为，ip，用户名密码同样的时候自动复用 mysql_connect([string $server =ini_get(&#8220;mysql.default_host&#8221;)[,string $username =ini_get(&#8220;mysql.default_user&#8221;)[,string $password =ini_get(&#8220;mysql.default_password&#8221;)[,bool $new_link =false[,int $client_flags =0]]]]])" />
+<meta property="og:description" content="今天在底层开了mysql多服务器链接功能，但是发现偶尔会出现db串台的情况 比如a库内的cccs表，底层会请求到b库找cccs表，这个问题很奇怪 后来发现原来虽然底层实现了多实例，一个db链接对象一个链接，但是在mysql_connect这层也会自动做链接重复直接复用即bool $new_link =false这个选项，打开后一切正常，略坑，特此记录 底层链接自动复用的规则为，ip，用户名密码同样的时候自动复用 mysql_connect([string $server =ini_get(&#8220;mysql.default_host&#8221;)[,string $username =ini_get(&#8220;mysql.default_user&#8221;)[,string $password =ini_get(&#8220;mysql.default_password&#8221;)[,bool $new_link =false[,int $client_flags =0]]]]])" />
+<link rel="canonical" href="http://localhost:4000/archives/182" />
+<meta property="og:url" content="http://localhost:4000/archives/182" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-12-08T14:14:06+08:00" />
+<script type="application/ld+json">
+{"description":"今天在底层开了mysql多服务器链接功能，但是发现偶尔会出现db串台的情况 比如a库内的cccs表，底层会请求到b库找cccs表，这个问题很奇怪 后来发现原来虽然底层实现了多实例，一个db链接对象一个链接，但是在mysql_connect这层也会自动做链接重复直接复用即bool $new_link =false这个选项，打开后一切正常，略坑，特此记录 底层链接自动复用的规则为，ip，用户名密码同样的时候自动复用 mysql_connect([string $server =ini_get(&#8220;mysql.default_host&#8221;)[,string $username =ini_get(&#8220;mysql.default_user&#8221;)[,string $password =ini_get(&#8220;mysql.default_password&#8221;)[,bool $new_link =false[,int $client_flags =0]]]]])","author":{"@type":"Person","name":"徐艺洲"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/182"},"@type":"BlogPosting","url":"http://localhost:4000/archives/182","headline":"php mysql_connect自动共用链接的坑","dateModified":"2014-12-08T14:14:06+08:00","datePublished":"2014-12-08T14:14:06+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    
+
+    <h1 id="project_title">徐艺洲</h1>
+    <h2 id="project_tagline">知止定静安虑得</h2>
+  </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+  <section id="main_content" class="inner">
+    <div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
   <div style="text-indent: 2em;">
     <span style="color: rgb(115, 115, 115); font-family: 'Fira Mono', 'source Code pro', monospace; font-size: 16.363636016845703px; letter-spacing: -1px; line-height: 24px; word-spacing: -2px;"><span style="text-rendering: optimizelegibility; color: rgb(51, 102, 153);">今天在底层开了mysql多服务器链接功能，但是发现偶尔会出现db串台的情况</span></span>
   </div>
@@ -43,3 +86,18 @@ g: -1px; line-height: 24px; word-spacing: -2px; background-color: rgb(255, 255, 
     <span style="color: rgb(115, 115, 115); font-family: 'Fira Mono', 'source Code pro', monospace; font-size: 16.363636016845703px; letter-spacing: -1px; line-height: 24px; word-spacing: -2px; background-color: rgb(255, 255, 255);"><br /></span>
   </div>
 </div>
+
+  </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+</div>
+
+
+</body>
+</html>

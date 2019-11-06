@@ -1,8 +1,0 @@
-I"M<div id="sina_keyword_ad_area2" class="articalContent   ">
-  最近和silverlight搭配做页面，但是silverlight老是在最顶层，设置css的z-index后仍旧如此，后来总算找到了解决方法<br />在object声明内加入<br />&lt;param name=“quality”value=“transparent”&gt;<br />&lt;param name=&#8221;windowless&#8221; value=&#8221;true&#8221;/&gt;<br />&lt;param name=&#8221;wmode&#8221;value=&#8221;opaque&#8221;&gt;<br />这几个参数即可&lt;/p&gt; 
-  
-  <p>
-    如果是ie的话那么就加载embed里面 类似quality=transparent,xxx=xxx..
-  </p>
-</div>
-:ET

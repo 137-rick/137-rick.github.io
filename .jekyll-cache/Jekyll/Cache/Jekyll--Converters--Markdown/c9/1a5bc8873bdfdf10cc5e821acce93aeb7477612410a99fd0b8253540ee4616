@@ -1,8 +1,0 @@
-I"t<div id="sina_keyword_ad_area2" class="articalContent   ">
-  这个坑是凯胖子发现的……<br />我们在使用curl的post的时候是用如下命令执行的&lt;/p&gt; 
-  
-  <p>
-    curl_setopt($ch, CURLOPT_POST, 1);<br />但是如果不设置POST参数<br />curl_setopt($ch, CURLOPT_POSTFIELDS, $params);<br />那么CURL会将POST请求变成了GET
-  </p>
-</div>
-:ET

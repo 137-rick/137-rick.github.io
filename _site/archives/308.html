@@ -1,4 +1,47 @@
-<p>在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。</p>
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>如何使PHP IDE 识别__CALL魔法函数引用 | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="如何使PHP IDE 识别__CALL魔法函数引用" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。" />
+<meta property="og:description" content="在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。" />
+<link rel="canonical" href="http://localhost:4000/archives/308" />
+<meta property="og:url" content="http://localhost:4000/archives/308" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-03-22T16:37:06+08:00" />
+<script type="application/ld+json">
+{"description":"在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。","author":{"@type":"Person","name":"徐艺洲"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/308"},"@type":"BlogPosting","url":"http://localhost:4000/archives/308","headline":"如何使PHP IDE 识别__CALL魔法函数引用","dateModified":"2019-03-22T16:37:06+08:00","datePublished":"2019-03-22T16:37:06+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    
+
+    <h1 id="project_title">徐艺洲</h1>
+    <h2 id="project_tagline">知止定静安虑得</h2>
+  </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+  <section id="main_content" class="inner">
+    <p>在写框架调用Service层的的时候，常常想在Controller和Service之间隔断一层，使用一个类去统一调用Service。好处很多Controller与Service之间隔离性提高，并且能够规范输入输出，能够拦截底层异常Exception。</p>
 
 <p>具体模拟效果如下图：</p>
 
@@ -45,3 +88,18 @@ if ( !$Ret-&gt;isOk() ) {
 <p>设置这个参数给ServiceHelper后传入的Services_xxxx_xxx和submitXXXX都可以被点击跳转了</p>
 
 <p>考虑到之前这个问题我也被困扰过很久，但是相关资料网上没有，特在这里记录一下，分享给有缘人。</p>
+
+  </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+</div>
+
+
+</body>
+</html>

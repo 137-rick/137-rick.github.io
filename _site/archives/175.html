@@ -1,4 +1,47 @@
-<div id="sina_keyword_ad_area2" class="articalContent   ">
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>redis php 队列开发 | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="redis php 队列开发" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="目前使用的list实现的队列其中有几个关键点记录一下&lt;/p&gt; //阻塞获取，默认等待3秒，如果没有那么循环一次 $result =$model-&gt;brPop($QUEUENAME, 3);使用此方式可以防止快速多次扫描redis if(function_exists(&#8220;pcntl_signal&#8221;)){ declare(ticks = 1); pcntl_signal(SIGTERM,&#8221;signal&#8221;); pcntl_signal(SIGINT,&#8221;signal&#8221;); pcntl_signal(SIGINT,&#8221;signal&#8221;); functionsignal($signo) { global $RUNNING_FLAG; switch ($signo) { case SIGINT: case SIGKILL: case SIGTERM: if($RUNNING_FLAG){ //第一次接收到，那么等执行完毕退出 $RUNNING_FLAG=false; echo &#8220;first time close.. \r\n&#8221;; }else{ //第二次接收到,直接退出 echo &#8220;shutdown &#8230;\r\n&#8221;; exit; } break; } }} 使用此方式可以防止队列任务正在执行时被退出 使用shell脚本可以监视当前有多少个消费进程在跑#通用高优先级队列，对响应要求较高可以放这里high_count=4;high_currcount=`ps -ef|grep &#8220;queue.php high&#8221;|grep -v grep|wc-l`;if [ &#8220;$high_currcount&#8221; -lt &#8220;$high_count&#8221; ];then for((i=$high_currcount;i&lt;$high_count;i++)); do phpxxxxx/queue/queue.php high &gt;/dev/null 2&gt;&amp;1 &amp; donefi" />
+<meta property="og:description" content="目前使用的list实现的队列其中有几个关键点记录一下&lt;/p&gt; //阻塞获取，默认等待3秒，如果没有那么循环一次 $result =$model-&gt;brPop($QUEUENAME, 3);使用此方式可以防止快速多次扫描redis if(function_exists(&#8220;pcntl_signal&#8221;)){ declare(ticks = 1); pcntl_signal(SIGTERM,&#8221;signal&#8221;); pcntl_signal(SIGINT,&#8221;signal&#8221;); pcntl_signal(SIGINT,&#8221;signal&#8221;); functionsignal($signo) { global $RUNNING_FLAG; switch ($signo) { case SIGINT: case SIGKILL: case SIGTERM: if($RUNNING_FLAG){ //第一次接收到，那么等执行完毕退出 $RUNNING_FLAG=false; echo &#8220;first time close.. \r\n&#8221;; }else{ //第二次接收到,直接退出 echo &#8220;shutdown &#8230;\r\n&#8221;; exit; } break; } }} 使用此方式可以防止队列任务正在执行时被退出 使用shell脚本可以监视当前有多少个消费进程在跑#通用高优先级队列，对响应要求较高可以放这里high_count=4;high_currcount=`ps -ef|grep &#8220;queue.php high&#8221;|grep -v grep|wc-l`;if [ &#8220;$high_currcount&#8221; -lt &#8220;$high_count&#8221; ];then for((i=$high_currcount;i&lt;$high_count;i++)); do phpxxxxx/queue/queue.php high &gt;/dev/null 2&gt;&amp;1 &amp; donefi" />
+<link rel="canonical" href="http://localhost:4000/archives/175" />
+<meta property="og:url" content="http://localhost:4000/archives/175" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-05-05T14:17:33+08:00" />
+<script type="application/ld+json">
+{"description":"目前使用的list实现的队列其中有几个关键点记录一下&lt;/p&gt; //阻塞获取，默认等待3秒，如果没有那么循环一次 $result =$model-&gt;brPop($QUEUENAME, 3);使用此方式可以防止快速多次扫描redis if(function_exists(&#8220;pcntl_signal&#8221;)){ declare(ticks = 1); pcntl_signal(SIGTERM,&#8221;signal&#8221;); pcntl_signal(SIGINT,&#8221;signal&#8221;); pcntl_signal(SIGINT,&#8221;signal&#8221;); functionsignal($signo) { global $RUNNING_FLAG; switch ($signo) { case SIGINT: case SIGKILL: case SIGTERM: if($RUNNING_FLAG){ //第一次接收到，那么等执行完毕退出 $RUNNING_FLAG=false; echo &#8220;first time close.. \\r\\n&#8221;; }else{ //第二次接收到,直接退出 echo &#8220;shutdown &#8230;\\r\\n&#8221;; exit; } break; } }} 使用此方式可以防止队列任务正在执行时被退出 使用shell脚本可以监视当前有多少个消费进程在跑#通用高优先级队列，对响应要求较高可以放这里high_count=4;high_currcount=`ps -ef|grep &#8220;queue.php high&#8221;|grep -v grep|wc-l`;if [ &#8220;$high_currcount&#8221; -lt &#8220;$high_count&#8221; ];then for((i=$high_currcount;i&lt;$high_count;i++)); do phpxxxxx/queue/queue.php high &gt;/dev/null 2&gt;&amp;1 &amp; donefi","author":{"@type":"Person","name":"徐艺洲"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/175"},"@type":"BlogPosting","url":"http://localhost:4000/archives/175","headline":"redis php 队列开发","dateModified":"2014-05-05T14:17:33+08:00","datePublished":"2014-05-05T14:17:33+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    
+
+    <h1 id="project_title">徐艺洲</h1>
+    <h2 id="project_tagline">知止定静安虑得</h2>
+  </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+  <section id="main_content" class="inner">
+    <div id="sina_keyword_ad_area2" class="articalContent   ">
   目前使用的list实现的队列<br />其中有几个关键点记录一下&lt;/p&gt; 
   
   <p>
@@ -25,3 +68,18 @@
     for((i=$high_currcount;i&lt;$high_count;i++));<br /> do<br /> phpxxxxx/queue/queue.php high &gt;/dev/null 2&gt;&amp;1 &amp;<br /> done<br />fi
   </p>
 </div>
+
+  </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+</div>
+
+
+</body>
+</html>

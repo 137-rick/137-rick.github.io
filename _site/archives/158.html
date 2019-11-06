@@ -1,4 +1,47 @@
-<div id="sina_keyword_ad_area2" class="articalContent   ">
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Gearman 任务mysql持久化 | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Gearman 任务mysql持久化" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="这里只是简单记录下&lt;/p&gt; gearman异步任务下发过多的时候可以对没处理完成的异步任务持久化保存，持久化的方式很多支持mysql psqlmemcache等 在gearman编译过程中的./configure步骤时，会自动检测系统内已有安装环境，并在configure完成后提示支持哪些持久化扩展，这里我只用了mysql方式 操作步骤如下 在mysql创建数据库及对应数据表 create database gearmancreate table `gearman_queue` (`unique_key` varchar(64) NOT NULL,`function_name` varchar(255) NOT NULL,`priority` int(11) NOT NULL,`data` LONGBLOB NOT NULL,`when_to_run` INT, PRIMARY KEY (`unique_key`)) //在启动gearmand的时候指定扩展类型 扩展对应的端口 用户名 密码 以及数据库gearmand &#8211;queue-type mysql &#8211;mysql-host 127.0.0.1 &#8211;mysql-dbgearman &#8211;mysql-user &#8220;root&#8221; &#8211;mysql-password &#8220;&#8221; -w 2 -d" />
+<meta property="og:description" content="这里只是简单记录下&lt;/p&gt; gearman异步任务下发过多的时候可以对没处理完成的异步任务持久化保存，持久化的方式很多支持mysql psqlmemcache等 在gearman编译过程中的./configure步骤时，会自动检测系统内已有安装环境，并在configure完成后提示支持哪些持久化扩展，这里我只用了mysql方式 操作步骤如下 在mysql创建数据库及对应数据表 create database gearmancreate table `gearman_queue` (`unique_key` varchar(64) NOT NULL,`function_name` varchar(255) NOT NULL,`priority` int(11) NOT NULL,`data` LONGBLOB NOT NULL,`when_to_run` INT, PRIMARY KEY (`unique_key`)) //在启动gearmand的时候指定扩展类型 扩展对应的端口 用户名 密码 以及数据库gearmand &#8211;queue-type mysql &#8211;mysql-host 127.0.0.1 &#8211;mysql-dbgearman &#8211;mysql-user &#8220;root&#8221; &#8211;mysql-password &#8220;&#8221; -w 2 -d" />
+<link rel="canonical" href="http://localhost:4000/archives/158" />
+<meta property="og:url" content="http://localhost:4000/archives/158" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-03-01T09:34:03+08:00" />
+<script type="application/ld+json">
+{"description":"这里只是简单记录下&lt;/p&gt; gearman异步任务下发过多的时候可以对没处理完成的异步任务持久化保存，持久化的方式很多支持mysql psqlmemcache等 在gearman编译过程中的./configure步骤时，会自动检测系统内已有安装环境，并在configure完成后提示支持哪些持久化扩展，这里我只用了mysql方式 操作步骤如下 在mysql创建数据库及对应数据表 create database gearmancreate table `gearman_queue` (`unique_key` varchar(64) NOT NULL,`function_name` varchar(255) NOT NULL,`priority` int(11) NOT NULL,`data` LONGBLOB NOT NULL,`when_to_run` INT, PRIMARY KEY (`unique_key`)) //在启动gearmand的时候指定扩展类型 扩展对应的端口 用户名 密码 以及数据库gearmand &#8211;queue-type mysql &#8211;mysql-host 127.0.0.1 &#8211;mysql-dbgearman &#8211;mysql-user &#8220;root&#8221; &#8211;mysql-password &#8220;&#8221; -w 2 -d","author":{"@type":"Person","name":"徐艺洲"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/158"},"@type":"BlogPosting","url":"http://localhost:4000/archives/158","headline":"Gearman 任务mysql持久化","dateModified":"2013-03-01T09:34:03+08:00","datePublished":"2013-03-01T09:34:03+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    
+
+    <h1 id="project_title">徐艺洲</h1>
+    <h2 id="project_tagline">知止定静安虑得</h2>
+  </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+  <section id="main_content" class="inner">
+    <div id="sina_keyword_ad_area2" class="articalContent   ">
   这里只是简单记录下&lt;/p&gt; 
   
   <p>
@@ -28,3 +71,18 @@
   <p>
   </p>
 </div>
+
+  </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+</div>
+
+
+</body>
+</html>

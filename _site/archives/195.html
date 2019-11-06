@@ -1,4 +1,47 @@
-<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>json_decode中转换大数值问题 | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="json_decode中转换大数值问题" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="当json内数值如18446744073709551615 这个数值这么大的时候 json解析后会返回float(1.844674407371E+19) 这不是我们期望的，好在php5.4+带了一个选项在decode的时候，加上JSON_BIGINT_AS_STRING 大数值会转成string类型json_decode($output,true , 512 , JSON_BIGINT_AS_STRING);" />
+<meta property="og:description" content="当json内数值如18446744073709551615 这个数值这么大的时候 json解析后会返回float(1.844674407371E+19) 这不是我们期望的，好在php5.4+带了一个选项在decode的时候，加上JSON_BIGINT_AS_STRING 大数值会转成string类型json_decode($output,true , 512 , JSON_BIGINT_AS_STRING);" />
+<link rel="canonical" href="http://localhost:4000/archives/195" />
+<meta property="og:url" content="http://localhost:4000/archives/195" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-02-18T16:47:50+08:00" />
+<script type="application/ld+json">
+{"description":"当json内数值如18446744073709551615 这个数值这么大的时候 json解析后会返回float(1.844674407371E+19) 这不是我们期望的，好在php5.4+带了一个选项在decode的时候，加上JSON_BIGINT_AS_STRING 大数值会转成string类型json_decode($output,true , 512 , JSON_BIGINT_AS_STRING);","author":{"@type":"Person","name":"徐艺洲"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/195"},"@type":"BlogPosting","url":"http://localhost:4000/archives/195","headline":"json_decode中转换大数值问题","dateModified":"2016-02-18T16:47:50+08:00","datePublished":"2016-02-18T16:47:50+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    
+
+    <h1 id="project_title">徐艺洲</h1>
+    <h2 id="project_tagline">知止定静安虑得</h2>
+  </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+  <section id="main_content" class="inner">
+    <div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
   <div>
     当json内数值如18446744073709551615 这个数值这么大的时候
   </div>
@@ -15,3 +58,18 @@
     <span style="line-height: 21px;">大数值会转成string类型<br /></span>json_decode($output,true , 512 , JSON_BIGINT_AS_STRING);
   </div>
 </div>
+
+  </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+</div>
+
+
+</body>
+</html>

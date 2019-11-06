@@ -1,4 +1,47 @@
-<div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>使用Shell获取上一个月、星期的时间范围 | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="使用Shell获取上一个月、星期的时间范围" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="#!/bin/bash date_today=`date -d &#8216;1 day ago&#8217; +%Y%m%d` #最近7天 date_befor_7day=`date -d &#8216;7 day ago&#8217; +%Y%m%d` #上一个完整周(周一到周日) OFDAY=&#8221;`date &#8220;+%u&#8221;`&#8221; STEPOFDAY=&#8221;`expr $OFDAY + 6`&#8221; date_befor_weekday=&#8221;`date -d &#8216;-&#8216;$STEPOFDAY&#8217; day&#39;&#8221;+%Y-%m-%d&#8221;`&#8221; date_befor_weekday_end=&#8221;`date -d &#8216;-&#8216;$OFDAY&#8217; day&#39;&#8221;+%Y-%m-%d&#8221;`&#8221; #本月 date_this_month=`date +%Y%m01` #上一个完整月 date_befor_month=`date -d &#8216;1 month ago&#8217; +%Y%m01` #最近三个月 date_befor_3month=`date -d &#8216;3 month ago&#8217; +%Y%m01` #上个季度 echo &#8220;当天:$date_today&#8221; echo &#8220;最近7天:$date_befor_7day &#8211; $date_today&#8221; echo &#8220;上一个完整周:$date_befor_weekday -$date_befor_weekday_end&#8221; echo &#8220;本月内:$date_this_month &#8211; $date_today&#8221; echo &#8220;上个完整月:$date_befor_month &#8211; $date_this_month&#8221;" />
+<meta property="og:description" content="#!/bin/bash date_today=`date -d &#8216;1 day ago&#8217; +%Y%m%d` #最近7天 date_befor_7day=`date -d &#8216;7 day ago&#8217; +%Y%m%d` #上一个完整周(周一到周日) OFDAY=&#8221;`date &#8220;+%u&#8221;`&#8221; STEPOFDAY=&#8221;`expr $OFDAY + 6`&#8221; date_befor_weekday=&#8221;`date -d &#8216;-&#8216;$STEPOFDAY&#8217; day&#39;&#8221;+%Y-%m-%d&#8221;`&#8221; date_befor_weekday_end=&#8221;`date -d &#8216;-&#8216;$OFDAY&#8217; day&#39;&#8221;+%Y-%m-%d&#8221;`&#8221; #本月 date_this_month=`date +%Y%m01` #上一个完整月 date_befor_month=`date -d &#8216;1 month ago&#8217; +%Y%m01` #最近三个月 date_befor_3month=`date -d &#8216;3 month ago&#8217; +%Y%m01` #上个季度 echo &#8220;当天:$date_today&#8221; echo &#8220;最近7天:$date_befor_7day &#8211; $date_today&#8221; echo &#8220;上一个完整周:$date_befor_weekday -$date_befor_weekday_end&#8221; echo &#8220;本月内:$date_this_month &#8211; $date_today&#8221; echo &#8220;上个完整月:$date_befor_month &#8211; $date_this_month&#8221;" />
+<link rel="canonical" href="http://localhost:4000/archives/198" />
+<meta property="og:url" content="http://localhost:4000/archives/198" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-04-22T15:33:58+08:00" />
+<script type="application/ld+json">
+{"description":"#!/bin/bash date_today=`date -d &#8216;1 day ago&#8217; +%Y%m%d` #最近7天 date_befor_7day=`date -d &#8216;7 day ago&#8217; +%Y%m%d` #上一个完整周(周一到周日) OFDAY=&#8221;`date &#8220;+%u&#8221;`&#8221; STEPOFDAY=&#8221;`expr $OFDAY + 6`&#8221; date_befor_weekday=&#8221;`date -d &#8216;-&#8216;$STEPOFDAY&#8217; day&#39;&#8221;+%Y-%m-%d&#8221;`&#8221; date_befor_weekday_end=&#8221;`date -d &#8216;-&#8216;$OFDAY&#8217; day&#39;&#8221;+%Y-%m-%d&#8221;`&#8221; #本月 date_this_month=`date +%Y%m01` #上一个完整月 date_befor_month=`date -d &#8216;1 month ago&#8217; +%Y%m01` #最近三个月 date_befor_3month=`date -d &#8216;3 month ago&#8217; +%Y%m01` #上个季度 echo &#8220;当天:$date_today&#8221; echo &#8220;最近7天:$date_befor_7day &#8211; $date_today&#8221; echo &#8220;上一个完整周:$date_befor_weekday -$date_befor_weekday_end&#8221; echo &#8220;本月内:$date_this_month &#8211; $date_today&#8221; echo &#8220;上个完整月:$date_befor_month &#8211; $date_this_month&#8221;","author":{"@type":"Person","name":"徐艺洲"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/198"},"@type":"BlogPosting","url":"http://localhost:4000/archives/198","headline":"使用Shell获取上一个月、星期的时间范围","dateModified":"2016-04-22T15:33:58+08:00","datePublished":"2016-04-22T15:33:58+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    
+
+    <h1 id="project_title">徐艺洲</h1>
+    <h2 id="project_tagline">知止定静安虑得</h2>
+  </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+  <section id="main_content" class="inner">
+    <div id="sina_keyword_ad_area2" class="articalContent   newfont_family">
   <div>
     #!/bin/bash
   </div>
@@ -106,3 +149,18 @@
     echo &#8220;上个完整月:$date_befor_month &#8211; $date_this_month&#8221;
   </div>
 </div>
+
+  </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+</div>
+
+
+</body>
+</html>

@@ -1,4 +1,47 @@
-<div id="sina_keyword_ad_area2" class="articalContent   ">
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,maximum-scale=2">
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>CURL POST大数据和lighttpd出现的问题 | 徐艺洲</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="CURL POST大数据和lighttpd出现的问题" />
+<meta name="author" content="徐艺洲" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="作者: laruence(http://www.laruence.com) 本文地址: http://www.laruence.com/2011/01/20/1840.html 转载请注明出处 在使用curl做POST的时候, 当要POST的数据大于1024字节的时候, curl并不会直接就发起POST请求,而是会分为俩步, 1. 发送一个请求,包含一个Expect:100-continue, 询问Server使用愿意接受数据 2.接收到Server返回的100-continue应答以后, 才把数据POST给Server 这是libcurl的行为. 具体的RFC相关描述: http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3 于是,这样就有了一个问题, 并不是所有的Server都会正确应答100-continue, 比如lighttpd,就会返回417 “Expectation Failed”, 则会造成逻辑出错,, 要解决的办法也挺容易: curl_setopt($ch,CURLOPT_HTTPHEADER, array(&#8216;Expect:&#8217;)); //Disable Expect: header (lighttpd does not support it)" />
+<meta property="og:description" content="作者: laruence(http://www.laruence.com) 本文地址: http://www.laruence.com/2011/01/20/1840.html 转载请注明出处 在使用curl做POST的时候, 当要POST的数据大于1024字节的时候, curl并不会直接就发起POST请求,而是会分为俩步, 1. 发送一个请求,包含一个Expect:100-continue, 询问Server使用愿意接受数据 2.接收到Server返回的100-continue应答以后, 才把数据POST给Server 这是libcurl的行为. 具体的RFC相关描述: http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3 于是,这样就有了一个问题, 并不是所有的Server都会正确应答100-continue, 比如lighttpd,就会返回417 “Expectation Failed”, 则会造成逻辑出错,, 要解决的办法也挺容易: curl_setopt($ch,CURLOPT_HTTPHEADER, array(&#8216;Expect:&#8217;)); //Disable Expect: header (lighttpd does not support it)" />
+<link rel="canonical" href="http://localhost:4000/archives/124" />
+<meta property="og:url" content="http://localhost:4000/archives/124" />
+<meta property="og:site_name" content="徐艺洲" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2011-03-28T15:39:01+08:00" />
+<script type="application/ld+json">
+{"description":"作者: laruence(http://www.laruence.com) 本文地址: http://www.laruence.com/2011/01/20/1840.html 转载请注明出处 在使用curl做POST的时候, 当要POST的数据大于1024字节的时候, curl并不会直接就发起POST请求,而是会分为俩步, 1. 发送一个请求,包含一个Expect:100-continue, 询问Server使用愿意接受数据 2.接收到Server返回的100-continue应答以后, 才把数据POST给Server 这是libcurl的行为. 具体的RFC相关描述: http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3 于是,这样就有了一个问题, 并不是所有的Server都会正确应答100-continue, 比如lighttpd,就会返回417 “Expectation Failed”, 则会造成逻辑出错,, 要解决的办法也挺容易: curl_setopt($ch,CURLOPT_HTTPHEADER, array(&#8216;Expect:&#8217;)); //Disable Expect: header (lighttpd does not support it)","author":{"@type":"Person","name":"徐艺洲"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/archives/124"},"@type":"BlogPosting","url":"http://localhost:4000/archives/124","headline":"CURL POST大数据和lighttpd出现的问题","dateModified":"2011-03-28T15:39:01+08:00","datePublished":"2011-03-28T15:39:01+08:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div id="header_wrap" class="outer">
+  <header class="inner">
+    
+
+    <h1 id="project_title">徐艺洲</h1>
+    <h2 id="project_tagline">知止定静安虑得</h2>
+  </header>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+  <section id="main_content" class="inner">
+    <div id="sina_keyword_ad_area2" class="articalContent   ">
   <div>
     <ul>
       <li>
@@ -60,3 +103,18 @@
     </li>
   </ol>
 </div>
+
+  </section>
+</div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+  <footer class="inner">
+    
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+  </footer>
+</div>
+
+
+</body>
+</html>
