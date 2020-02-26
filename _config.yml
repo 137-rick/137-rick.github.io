@@ -47,7 +47,7 @@ footer-links:
   twitter: xcl3721
 
 # 站点页脚的文字
-footer-text: Copyright (c) 2019 thinkpc 京ICP备16019273号-1
+footer-text: Copyright (c) 2019 thinkpc <a href='http://www.beian.miit.gov.cn/'>京ICP备16019273号-1</a>
 
 # 评论，注意，请不要同时添加多种不同的评论区
 
