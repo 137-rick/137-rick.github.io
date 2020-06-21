@@ -37,10 +37,10 @@ categories:
        REGISTER_LONG_CONSTANT("TIDEWAYS_XHPROF_FLAGS_MEMORY_ALLOC_AS_MU", TIDEWAYS_XHPROF_FLAGS_MEMORY_ALLOC_AS_MU, CONST_CS | CONST_PERSISTENT);
    
        _zend_execute_internal = zend_execute_internal; 
-       zend_execute_internal = tideways_xhprof_execute_internal; //here 这里替换函数指针
+       zend_execute_internal = tideways_xhprof_execute_internal; //here 这里替换
    
        _zend_execute_ex = zend_execute_ex;
-       zend_execute_ex = tideways_xhprof_execute_ex; //here 这里替换 脚本入口指针
+       zend_execute_ex = tideways_xhprof_execute_ex; //here 这里替换 
    
        return SUCCESS;
    }
