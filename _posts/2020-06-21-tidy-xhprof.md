@@ -1,6 +1,6 @@
 ---
 id: 330
-title: 并不是所有文件Append都是原子性的
+title: xhprof原理分析
 date: 2020-06-21T14:45:49+08:00
 author: 徐艺洲
 layout: post
